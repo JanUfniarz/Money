@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MaterialApp());
+void main() => runApp(MaterialApp(
+  theme: ThemeData(
+    primarySwatch: Colors.green,
+  ),
+  home: View() ,
+));
 
 class View extends StatefulWidget {
 
@@ -9,10 +14,21 @@ class View extends StatefulWidget {
 }
 
 class _ViewState extends State<View> {
+
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Money"),
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(
+          Icons.add
+        ),
+      ),
+    );
   }
 }
-
-
