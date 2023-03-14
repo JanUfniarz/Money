@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'balance_card.dart';
 
 void main() => runApp(MaterialApp(
   theme: ThemeData(
@@ -28,6 +29,15 @@ class _ViewState extends State<View> {
         child: Icon(
           Icons.add
         ),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          BalanceCard(
+              accountsValues: [1040.20, 2000.00]
+          ),
+        ],
       ),
     );
   }
