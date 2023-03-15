@@ -20,8 +20,15 @@ class _ViewState extends State<View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        title: Text("Money"),
+        backgroundColor: Color(0xff162b16),
+        title: Text(
+          "Money",
+          style: TextStyle(
+            color: Color(0xff86f786),
+          ),
+        ),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(

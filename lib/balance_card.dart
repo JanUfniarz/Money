@@ -14,10 +14,9 @@ class _BalanceCardState extends State<BalanceCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[700],
+      color: Colors.grey[850],
       child: Column(
         children: <Widget>[
-          //Text(balanceSum() as String),
           FutureBuilder<String>(
             future: balanceSum(),
             builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
