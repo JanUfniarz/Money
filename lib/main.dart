@@ -20,13 +20,13 @@ class _ViewState extends State<View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[900],
+      backgroundColor: MyColor.background,
       appBar: AppBar(
-        backgroundColor: MyColor.greenDark,
+        backgroundColor: MyColor.main,
         title: Text(
           "Money",
           style: TextStyle(
-            color: MyColor.greenLight,
+            color: MyColor.font,
           ),
         ),
         centerTitle: true,
@@ -36,7 +36,7 @@ class _ViewState extends State<View> {
         child: Icon(
           Icons.add
         ),
-        backgroundColor: MyColor.orchid,
+        backgroundColor: MyColor.accent,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

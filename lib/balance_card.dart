@@ -27,7 +27,7 @@ class _BalanceCardState extends State<BalanceCard> {
   Widget build(BuildContext context) {
 
     return Card(
-      color: Colors.grey[850],
+      color: MyColor.background,
       child: Column(
         children: <Widget>[
           Row(
@@ -36,7 +36,7 @@ class _BalanceCardState extends State<BalanceCard> {
               Text(
                 "  Your\n  Balance: ",
                 style: TextStyle(
-                    color: MyColor.greenLight,
+                    color: MyColor.font,
                     fontSize: 20
                 ),
               ),
@@ -51,7 +51,7 @@ class _BalanceCardState extends State<BalanceCard> {
                       return Text(
                         snapshot.data ?? "0.00",
                         style: TextStyle(
-                          color: MyColor.greenLight,
+                          color: MyColor.accent,
                           fontSize: 50
                         ),
                       );
@@ -157,7 +157,7 @@ class _AccountCardState extends State<AccountCard> {
       width: 150,
       height: 80,
       child: Card(
-        color: MyColor.greenDark,
+        color: MyColor.main,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,7 +172,7 @@ class _AccountCardState extends State<AccountCard> {
                   return Text(
                     snapshot.data ?? "null",
                     style: TextStyle(
-                        color: MyColor.greenLight,
+                        color: MyColor.font,
                         fontSize: 20
                     ),
                   );
@@ -185,7 +185,7 @@ class _AccountCardState extends State<AccountCard> {
               width: 100,
               child: Divider(
                 thickness: 2,
-                color: MyColor.orchid,
+                color: MyColor.accent,
               ),
             ),
             FutureBuilder<String>(
@@ -198,7 +198,7 @@ class _AccountCardState extends State<AccountCard> {
                   return  Text(
                     snapshot.data ?? "null",
                     style: TextStyle(
-                        color: MyColor.greenLight,
+                        color: MyColor.font,
                         fontSize: 30
                     ),
                   );
