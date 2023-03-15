@@ -63,9 +63,12 @@ class _BalanceCardState extends State<BalanceCard> {
               SizedBox(width: 80),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: accountCards,
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: accountCards,
+            ),
           ),
         ],
       ),
@@ -150,50 +153,62 @@ class _AccountCardState extends State<AccountCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: MyColor.greenDark,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          FutureBuilder<String>(
-            future: name(),
-            builder: (
-                BuildContext context,
-                AsyncSnapshot<String> snapshot
-                ) {
-              if (snapshot.hasData) {
-                return Text(
-                  snapshot.data ?? "null",
-                  style: TextStyle(
-                      color: MyColor.greenLight,
-                      fontSize: 30
-                  ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
-          ),
-          FutureBuilder<String>(
-            future: value(),
-            builder: (
-                BuildContext context,
-                AsyncSnapshot<String> snapshot
-                ) {
-              if (snapshot.hasData) {
-                return  Text(
-                  snapshot.data ?? "null",
-                  style: TextStyle(
-                      color: MyColor.greenLight,
-                      fontSize: 30
-                  ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
-          ),
-        ],
+    return SizedBox(
+      width: 150,
+      height: 80,
+      child: Card(
+        color: MyColor.greenDark,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            FutureBuilder<String>(
+              future: name(),
+              builder: (
+                  BuildContext context,
+                  AsyncSnapshot<String> snapshot
+                  ) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data ?? "null",
+                    style: TextStyle(
+                        color: MyColor.greenLight,
+                        fontSize: 20
+                    ),
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+            SizedBox(
+              width: 100,
+              child: Divider(
+                thickness: 2,
+                color: MyColor.orchid,
+              ),
+            ),
+            FutureBuilder<String>(
+              future: value(),
+              builder: (
+                  BuildContext context,
+                  AsyncSnapshot<String> snapshot
+                  ) {
+                if (snapshot.hasData) {
+                  return  Text(
+                    snapshot.data ?? "null",
+                    style: TextStyle(
+                        color: MyColor.greenLight,
+                        fontSize: 30
+                    ),
+                  );
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

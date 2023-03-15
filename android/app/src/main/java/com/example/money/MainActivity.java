@@ -24,6 +24,7 @@ public class MainActivity extends FlutterActivity {
 
         accounts.add(new Account("Test Acc", 1250.75));
         accounts.add(new Account("Test 2", 124.50));
+        accounts.add(new Account("Test 3", 12.50));
 
         super.configureFlutterEngine(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
