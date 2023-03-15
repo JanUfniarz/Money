@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/my_color.dart';
 import 'balance_card.dart';
 
 void main() => runApp(MaterialApp(
@@ -16,17 +17,16 @@ class View extends StatefulWidget {
 
 class _ViewState extends State<View> {
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
-        backgroundColor: Color(0xff162b16),
+        backgroundColor: MyColor.greenDark,
         title: Text(
           "Money",
           style: TextStyle(
-            color: Color(0xff86f786),
+            color: MyColor.greenLight,
           ),
         ),
         centerTitle: true,
@@ -36,6 +36,7 @@ class _ViewState extends State<View> {
         child: Icon(
           Icons.add
         ),
+        backgroundColor: MyColor.orchid,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
