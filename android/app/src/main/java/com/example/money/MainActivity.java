@@ -46,17 +46,6 @@ public class MainActivity extends FlutterActivity {
                                     result.success(res);
 
                             }
-//                            if (call.method.equals("addAccount")) {
-//                                //result.success(addAccount());
-//                                accounts.add(new Account(
-//                                        (String) arguments.get("name"),
-//                                        (double) arguments.get("value")
-//                                ));
-//                            } else if (call.method.equals("balanceSum")){
-//
-//                            } else {
-//                                result.notImplemented();
-//                            }
                         }
                 );
     }
