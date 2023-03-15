@@ -34,9 +34,7 @@ class _ViewState extends State<View> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          BalanceCard(
-              accountsValues: [1040.20, 2000.00]
-          ),
+          BalanceCard(),
         ],
       ),
     );

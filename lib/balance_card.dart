@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class BalanceCard extends StatelessWidget {
+class BalanceCard extends StatefulWidget {
 
-  List<double> accountsValues;
-  double balanceSum = 0;
+  @override
+  State<BalanceCard> createState() => _BalanceCardState();
 
-  BalanceCard({required this.accountsValues}) {
-    balanceSum = accountsValues.reduce((x, y) => x + y);
-  }
+  BalanceCard();
+}
+
+class _BalanceCardState extends State<BalanceCard> {
 
   @override
   Widget build(BuildContext context) {
@@ -16,13 +17,26 @@ class BalanceCard extends StatelessWidget {
       color: Colors.grey[700],
       child: Column(
         children: <Widget>[
-          Text("Test"),
+          //Text(balanceSum() as String),
+          FutureBuilder<String>(
+            future: balanceSum(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.hasData) {
+                  return Text(snapshot.data ?? "0.00");
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+          ),
           ElevatedButton(
-              onPressed: addAccount(
-                name: "account",
-                value: 100.50,
-              ),
-              child: Icon(Icons.accessibility),
+            onPressed: () =>
+                setState(() =>
+                    addAccount(
+                      name: "account",
+                      value: 100.50,
+                    )
+                ),
+            child: Icon(Icons.accessibility),
           )
         ],
       ),
@@ -32,10 +46,20 @@ class BalanceCard extends StatelessWidget {
   static const channel = MethodChannel("com.flutter.epic/main");
 
   addAccount({required String name, required double value}) {
-    var arguments = <String, dynamic> {
-      "name" : name,
-      "value" : value,
+    var arguments = <String, dynamic>{
+      "name": name,
+      "value": value,
     };
     channel.invokeMethod("addAccount", arguments);
+  }
+
+  Future<String> balanceSum() async {
+    String res = "";
+    try {
+      res = await channel.invokeMethod("balanceSum");
+    } catch (e) {
+      print(e);
+    }
+    return res;
   }
 }

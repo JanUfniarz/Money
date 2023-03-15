@@ -1,10 +1,13 @@
 package com.example.money;
 
+import android.os.Build;
+
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,7 @@ public class MainActivity extends FlutterActivity {
 
     private List<Account> accounts = new ArrayList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
@@ -23,20 +27,37 @@ public class MainActivity extends FlutterActivity {
                         (call, result) -> {
                             final Map<String, Object> arguments = call.arguments();
 
-                            if (call.method.equals("addAccount")) {
-                                //result.success(addAccount());
-                                addAccount(
-                                        (String) arguments.get("name"),
-                                        (double) arguments.get("value")
-                                );
-                            } else {
-                                result.notImplemented();
+                            switch (call.method) {
+                                default:
+                                    result.notImplemented();
+                                    break;
+                                case "addAccount":
+                                    //result.success(addAccount());
+                                    accounts.add(new Account(
+                                            (String) arguments.get("name"),
+                                            (double) arguments.get("value")
+                                    ));
+                                    break;
+                                case "balanceSum":
+                                    double sum = accounts.stream()
+                                            .map(account -> account.value)
+                                            .reduce(Double::sum).orElseThrow();
+                                    String res = String.valueOf(sum);
+                                    result.success(res);
+
                             }
+//                            if (call.method.equals("addAccount")) {
+//                                //result.success(addAccount());
+//                                accounts.add(new Account(
+//                                        (String) arguments.get("name"),
+//                                        (double) arguments.get("value")
+//                                ));
+//                            } else if (call.method.equals("balanceSum")){
+//
+//                            } else {
+//                                result.notImplemented();
+//                            }
                         }
                 );
-    }
-
-    private void addAccount(String name, double value) {
-        accounts.add(new Account(name, value));
     }
 }
