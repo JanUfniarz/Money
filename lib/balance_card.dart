@@ -108,6 +108,31 @@ class _BalanceCardState extends State<BalanceCard> {
       print("res: $res");
       index++;
     }
+    res.add(
+        GestureDetector(
+          onTap: () async {
+            await Navigator.pushNamed(context, "/add_account");
+            setState(() {
+              getLength();
+            });
+          },
+          child: SizedBox(
+            width: 150,
+            height: 80,
+            child: Card(
+              color: MyColor.main,
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  size: 60,
+                  color: MyColor.accent,
+                ),
+              ),
+
+            ),
+          ),
+        )
+    );
     return res;
   }
 
