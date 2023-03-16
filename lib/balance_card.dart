@@ -75,15 +75,9 @@ class _BalanceCardState extends State<BalanceCard> {
     );
   }
 
-  static const channel = MethodChannel("com.flutter.balance_card/MainActivity");
-
-  addAccount({required String name, required double value}) {
-    var arguments = <String, dynamic> {
-      "name": name,
-      "value": value,
-    };
-    channel.invokeMethod("addAccount", arguments);
-  }
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
 
   Future<String> balanceSum() async {
     String res = "";
@@ -105,16 +99,16 @@ class _BalanceCardState extends State<BalanceCard> {
     int index = 0;
     while (index < accountCount) {
       res.add(AccountCard(index: index));
-      print("res: $res");
       index++;
     }
     res.add(
         GestureDetector(
           onTap: () async {
-            await Navigator.pushNamed(context, "/add_account");
-            setState(() {
-              getLength();
-            });
+            dynamic result = await Navigator
+                .pushNamed(context, "/add_account");
+            Map<String, dynamic> arguments = result;
+            channel.invokeMethod("addAccount", arguments);
+            getLength();
           },
           child: SizedBox(
             width: 150,
@@ -128,7 +122,6 @@ class _BalanceCardState extends State<BalanceCard> {
                   color: MyColor.accent,
                 ),
               ),
-
             ),
           ),
         )
@@ -141,12 +134,12 @@ class _BalanceCardState extends State<BalanceCard> {
       accountCards = _upList();
     });
   }
-
-
 }
 
 class AccountCard extends StatefulWidget {
-  static const channel = MethodChannel("com.flutter.balance_card/MainActivity");
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
   int index;
 
 

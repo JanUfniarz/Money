@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:money/my_color.dart';
 
+import 'package:flutter/services.dart';
+
 class AddAccount extends StatelessWidget {
+
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
+
+  String? name;
+  double? value;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +32,7 @@ class AddAccount extends StatelessWidget {
                 filled: true,
                 fillColor: MyColor.textField,
               ),
-              onChanged: (text) {
-                //TODO Handle the text input here
-              },
+              onChanged: (text) => name = text,
             ),
             TextField(
               decoration: InputDecoration(
@@ -34,9 +41,7 @@ class AddAccount extends StatelessWidget {
                 fillColor: MyColor.textField,
               ),
               keyboardType: TextInputType.number,
-              onChanged: (text) {
-                //TODO Handle the text input here
-              },
+              onChanged: (text) => value = double.parse(text),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -49,7 +54,12 @@ class AddAccount extends StatelessWidget {
               width: 90,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, <String, dynamic>{
+                    "name": name,
+                    "value": value,
+                  });
+                },
                 child: Text(
                   "Add",
                   style: TextStyle(
@@ -58,7 +68,7 @@ class AddAccount extends StatelessWidget {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: MyColor.accent,
+                  backgroundColor: MyColor.accent,
                 ),
               ),
             ),
