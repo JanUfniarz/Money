@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money/my_color.dart';
 
-import 'package:flutter/services.dart';
-
 class AddAccount extends StatelessWidget {
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
 
   String? name;
   double? value;
@@ -19,6 +13,7 @@ class AddAccount extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: MyColor.main,
         title: Text("Add Account"),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(50),

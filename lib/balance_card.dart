@@ -25,8 +25,8 @@ class _BalanceCardState extends State<BalanceCard> {
 
   @override
   Widget build(BuildContext context) {
-
     return Card(
+      shadowColor: Colors.transparent,
       color: MyColor.background,
       child: Column(
         children: <Widget>[
@@ -171,61 +171,74 @@ class _AccountCardState extends State<AccountCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      height: 80,
-      child: Card(
-        color: MyColor.main,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            FutureBuilder<String>(
-              future: name(),
-              builder: (
-                  BuildContext context,
-                  AsyncSnapshot<String> snapshot
-                  ) {
-                if (snapshot.hasData) {
-                  return Text(
-                    snapshot.data ?? "null",
-                    style: TextStyle(
-                        color: MyColor.font,
-                        fontSize: 20
-                    ),
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-            SizedBox(
-              width: 100,
-              child: Divider(
-                thickness: 2,
-                color: MyColor.accent,
+    return GestureDetector(
+      onTap: () async {
+        var arguments = <String, dynamic>{
+          "name" : await name(),
+          "value" : double.parse(await value()),
+        };
+        await Navigator.pushNamed(
+          context,
+          "/account_view",
+          arguments: arguments,
+        );
+      },
+      child: SizedBox(
+        width: 150,
+        height: 80,
+        child: Card(
+          color: MyColor.main,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              FutureBuilder<String>(
+                future: name(),
+                builder: (
+                    BuildContext context,
+                    AsyncSnapshot<String> snapshot
+                    ) {
+                  if (snapshot.hasData) {
+                    return Text(
+                      snapshot.data ?? "null",
+                      style: TextStyle(
+                          color: MyColor.font,
+                          fontSize: 20
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
               ),
-            ),
-            FutureBuilder<String>(
-              future: value(),
-              builder: (
-                  BuildContext context,
-                  AsyncSnapshot<String> snapshot
-                  ) {
-                if (snapshot.hasData) {
-                  return  Text(
-                    snapshot.data ?? "null",
-                    style: TextStyle(
-                        color: MyColor.font,
-                        fontSize: 30
-                    ),
-                  );
-                } else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
-          ],
+              SizedBox(
+                width: 100,
+                child: Divider(
+                  thickness: 2,
+                  color: MyColor.accent,
+                ),
+              ),
+              FutureBuilder<String>(
+                future: value(),
+                builder: (
+                    BuildContext context,
+                    AsyncSnapshot<String> snapshot
+                    ) {
+                  if (snapshot.hasData) {
+                    return  Text(
+                      snapshot.data ?? "null",
+                      style: TextStyle(
+                          color: MyColor.font,
+                          fontSize: 30
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
