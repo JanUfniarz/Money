@@ -81,7 +81,8 @@ class _AccountViewState extends State<AccountView> {
                             builder: (context) {
                               return Padding(
                                 padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                                    bottom: MediaQuery.of(context).viewInsets.bottom
+                                ),
                                 child: SizedBox(
                                   height: 300,
                                   child: Padding(
@@ -164,10 +165,89 @@ class _AccountViewState extends State<AccountView> {
                       width: 90,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: MyColor.main,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25),
+                                ),
+                              ),
+                              builder: (context) {
+                                return Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context).viewInsets.bottom
+                                  ),
+                                  child: SizedBox(
+                                    height: 300,
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(height: 10),
+                                          Text(
+                                            "Change Balance",
+                                            style: TextStyle(
+                                              color: MyColor.font,
+                                              fontSize: 30,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              left: 20,
+                                              right: 20,
+                                              top: 10,
+                                              bottom: 30,
+                                            ),
+                                            child: Divider(
+                                              color: MyColor.accent,
+                                              thickness: 2,
+                                            ),
+                                          ),
+                                          TextField(
+                                              decoration: InputDecoration(
+                                                hintText: 'New Balance',
+                                                filled: true,
+                                                fillColor: MyColor.textField,
+                                              ),
+                                              keyboardType: TextInputType.number,
+                                              onChanged: (text) {}
+                                          ),
+                                          SizedBox(height: 30),
+                                          SizedBox(
+                                            width: 90,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                              onPressed: () {},
+                                              child: Center(
+                                                child: Text(
+                                                  "Save",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: MyColor.background,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: MyColor.accent,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+                          );
+                        },
                         child: Center(
                           child: Text(
-                            "Change\nBallance",
+                            "Change\nBalance",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: MyColor.font,
@@ -184,7 +264,100 @@ class _AccountViewState extends State<AccountView> {
                       width: 90,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: MyColor.main,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(25),
+                                  topLeft: Radius.circular(25),
+                                ),
+                              ),
+                              builder: (context) {
+                                return SizedBox(
+                                  height: 300,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SizedBox(height: 10),
+                                        Text(
+                                          "Delete Account",
+                                          style: TextStyle(
+                                            color: MyColor.font,
+                                            fontSize: 30,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 20,
+                                            right: 20,
+                                            top: 10,
+                                            bottom: 30,
+                                          ),
+                                          child: Divider(
+                                            color: MyColor.accent,
+                                            thickness: 2,
+                                          ),
+                                        ),
+                                        SizedBox(height: 30),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 20),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: <Widget>[
+                                              SizedBox(
+                                                width: 90,
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Delete",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: MyColor.font,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: MyColor.delete,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 90,
+                                                height: 50,
+                                                child: ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Center(
+                                                    child: Text(
+                                                      "Cancel",
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: MyColor.background,
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: MyColor.accent,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                          );
+                        },
                         child: Center(
                           child: Icon(
                             Icons.delete,
@@ -206,4 +379,3 @@ class _AccountViewState extends State<AccountView> {
     );
   }
 }
-
