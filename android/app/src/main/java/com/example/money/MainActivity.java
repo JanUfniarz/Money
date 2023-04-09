@@ -39,7 +39,6 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addAccount":
-                                    //result.success(addAccount());
                                     accounts.add(new Account(
                                             (String) arguments.get("name"),
                                             (double) arguments.get("value")
@@ -67,9 +66,10 @@ public class MainActivity extends FlutterActivity {
                                                 "");
                                     }
                                     break;
+
                                 case "getValue":
                                     try {
-                                        double value = ((Account) accounts
+                                        double value = (accounts
                                                 .get((int) arguments.get("index")))
                                                 .value;
                                         result.success(value);
@@ -80,10 +80,26 @@ public class MainActivity extends FlutterActivity {
                                                 "");
                                     }
                                     break;
+
                                 case "getLength":
                                     int len = accounts.size();
                                     result.success(len);
                                     break;
+
+                                case "changeName" :
+                                    accounts.get((int) arguments.get("index"))
+                                            .name = (String) arguments.get("newName");
+                                    break;
+
+                                case "changeValue" :
+                                    accounts.get((int) arguments.get("index"))
+                                            .value = (double) arguments.get("newValue");
+                                    break;
+
+                                case "deleteAccount" :
+                                    accounts.remove((int) arguments.get("index"));
+                                    break;
+
                             }
                         }
                 );

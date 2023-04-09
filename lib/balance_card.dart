@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money/my_color.dart';
@@ -52,7 +50,7 @@ class _BalanceCardState extends State<BalanceCard> {
                         snapshot.data ?? "0.00",
                         style: TextStyle(
                           color: MyColor.accent,
-                          fontSize: 50
+                          fontSize: 70
                         ),
                       );
                     } else {
@@ -60,7 +58,7 @@ class _BalanceCardState extends State<BalanceCard> {
                     }
                   },
               ),
-              SizedBox(width: 80),
+              SizedBox(width: 60),
             ],
           ),
           SingleChildScrollView(
@@ -137,11 +135,12 @@ class _BalanceCardState extends State<BalanceCard> {
 }
 
 class AccountCard extends StatefulWidget {
+
   static const channel = MethodChannel(
       "com.flutter.balance_card/MainActivity"
   );
-  int index;
 
+  int index;
 
   AccountCard({super.key, required this.index});
 
@@ -176,12 +175,14 @@ class _AccountCardState extends State<AccountCard> {
         var arguments = <String, dynamic>{
           "name" : await name(),
           "value" : double.parse(await value()),
+          "index" : widget.index,
         };
         await Navigator.pushNamed(
           context,
           "/account_view",
           arguments: arguments,
         );
+        setState(() {});
       },
       child: SizedBox(
         width: 150,

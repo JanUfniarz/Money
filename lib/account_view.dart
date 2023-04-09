@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:money/my_color.dart';
 
+import 'package:flutter/services.dart';
+
 class AccountView extends StatefulWidget {
 
   @override
@@ -11,6 +13,14 @@ class _AccountViewState extends State<AccountView> {
 
   String? name;
   double? value;
+  int? index;
+
+  String? newName;
+  double? newValue;
+
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +28,9 @@ class _AccountViewState extends State<AccountView> {
     final arguments = ModalRoute.of(context)!
         .settings.arguments as Map<String, dynamic>;
 
-    name = arguments['name'];
-    value = arguments['value'];
+    name ??= arguments['name'];
+    value ??= arguments['value'];
+    index = arguments['index'];
 
     return Scaffold(
       backgroundColor: MyColor.background,
@@ -63,6 +74,7 @@ class _AccountViewState extends State<AccountView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
+                    //* Change Name
                     SizedBox(
                       width: 90,
                       height: 50,
@@ -115,14 +127,27 @@ class _AccountViewState extends State<AccountView> {
                                             filled: true,
                                             fillColor: MyColor.textField,
                                           ),
-                                          onChanged: (text) {}
+                                          onChanged: (text) => newName = text
                                         ),
                                         SizedBox(height: 30),
                                         SizedBox(
                                           width: 90,
                                           height: 50,
                                           child: ElevatedButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              var argumentsToJava = <String, dynamic>{
+                                              "index" : index,
+                                              "newName" : newName,
+                                              };
+
+                                              channel.invokeMethod(
+                                                "changeName",
+                                                argumentsToJava,
+                                              );
+
+                                              setState(() => name = newName);
+                                              Navigator.pop(context);
+                                            },
                                             child: Center(
                                               child: Text(
                                                 "Save",
@@ -161,6 +186,7 @@ class _AccountViewState extends State<AccountView> {
                         ),
                       ),
                     ),
+                    //* Change Balance
                     SizedBox(
                       width: 90,
                       height: 50,
@@ -214,14 +240,27 @@ class _AccountViewState extends State<AccountView> {
                                                 fillColor: MyColor.textField,
                                               ),
                                               keyboardType: TextInputType.number,
-                                              onChanged: (text) {}
+                                              onChanged: (text) => newValue = double.parse(text)
                                           ),
                                           SizedBox(height: 30),
                                           SizedBox(
                                             width: 90,
                                             height: 50,
                                             child: ElevatedButton(
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                var argumentsToJava = <String, dynamic>{
+                                                  "index" : index,
+                                                  "newValue" : newValue,
+                                                };
+
+                                                channel.invokeMethod(
+                                                  "changeValue",
+                                                  argumentsToJava,
+                                                );
+
+                                                setState(() => value = newValue);
+                                                Navigator.pop(context);
+                                              },
                                               child: Center(
                                                 child: Text(
                                                   "Save",
@@ -260,6 +299,7 @@ class _AccountViewState extends State<AccountView> {
                         ),
                       ),
                     ),
+                    //* Delete Account
                     SizedBox(
                       width: 90,
                       height: 50,
@@ -312,7 +352,19 @@ class _AccountViewState extends State<AccountView> {
                                                 width: 90,
                                                 height: 50,
                                                 child: ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+
+                                                    var argumentsToJava = <String, dynamic>{
+                                                      "index" : index,
+                                                    };
+
+                                                    channel.invokeMethod(
+                                                      "deleteAccount",
+                                                      argumentsToJava
+                                                    );
+
+                                                    Navigator.popUntil(context, (route) => route.isFirst);
+                                                  },
                                                   child: Center(
                                                     child: Text(
                                                       "Delete",
@@ -332,7 +384,7 @@ class _AccountViewState extends State<AccountView> {
                                                 width: 90,
                                                 height: 50,
                                                 child: ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () => Navigator.pop(context),
                                                   child: Center(
                                                     child: Text(
                                                       "Cancel",
