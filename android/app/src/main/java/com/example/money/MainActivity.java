@@ -54,31 +54,17 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getName":
-                                    try {
-                                        String name = ((Account) accounts
-                                                .get((int) arguments.get("index")))
-                                                .name;
-                                        result.success(name);
-                                    } catch (IndexOutOfBoundsException e) {
-                                        result.error(
-                                                "IOOBE",
-                                                "IndexOutOfBoundsException",
-                                                "");
-                                    }
+                                    String name = (accounts
+                                            .get((int) arguments.get("index")))
+                                            .name;
+                                    result.success(name);
                                     break;
 
                                 case "getValue":
-                                    try {
-                                        double value = (accounts
-                                                .get((int) arguments.get("index")))
-                                                .value;
-                                        result.success(value);
-                                    } catch (IndexOutOfBoundsException e) {
-                                        result.error(
-                                                "IOOBE",
-                                                "IndexOutOfBoundsException",
-                                                "");
-                                    }
+                                    double value = (accounts
+                                            .get((int) arguments.get("index")))
+                                            .value;
+                                    result.success(value);
                                     break;
 
                                 case "getLength":
