@@ -182,7 +182,7 @@ class _AccountCardState extends State<AccountCard> {
           "/account_view",
           arguments: arguments,
         );
-        setState(() {});
+        Navigator.pushReplacementNamed(context, "/home");
       },
       child: SizedBox(
         width: 150,
