@@ -8,6 +8,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +17,30 @@ import java.util.Map;
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.flutter.balance_card/MainActivity";
 
-    private final List<Account> accounts = new ArrayList<>();
+    //? private final List<Account> accounts = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
 
-        accounts.add(new Account("Test Acc", 1250.75));
-        accounts.add(new Account("Test 2", 124.50));
-        accounts.add(new Account("Test 3", 12.50));
+        AccountDatabase db = Room.databaseBuilder(
+                getApplicationContext(),
+                AccountDatabase.class,
+                "Account_database")
+                .allowMainThreadQueries().build();
 
-        super.configureFlutterEngine(flutterEngine);
+//        ?accounts.add(new Account("Test Acc", 1250.75));
+//        ?accounts.add(new Account("Test 2", 124.50));
+//        ?accounts.add(new Account("Test 3", 12.50));
+
+//        Account test1 = new Account("Test Acc", 1250.75);
+//        Account test2 = new Account("Test 2", 124.50);
+//
+//        db.accountDao().InsertAll(test1, test2);
+
+        List<Account> accounts = db.accountDao().getAllAccounts();
+
+                super.configureFlutterEngine(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
@@ -38,8 +52,8 @@ public class MainActivity extends FlutterActivity {
                                     result.notImplemented();
                                     break;
 
-                                case "addAccount":
-                                    accounts.add(new Account(
+                                case "addAccount": //!
+                                    db.accountDao().InsertAll(new Account(
                                             (String) arguments.get("name"),
                                             (double) arguments.get("value")
                                     ));
@@ -72,17 +86,17 @@ public class MainActivity extends FlutterActivity {
                                     result.success(len);
                                     break;
 
-                                case "changeName" :
+                                case "changeName" : //!
                                     accounts.get((int) arguments.get("index"))
                                             .name = (String) arguments.get("newName");
                                     break;
 
-                                case "changeValue" :
+                                case "changeValue" : //!
                                     accounts.get((int) arguments.get("index"))
                                             .value = (double) arguments.get("newValue");
                                     break;
 
-                                case "deleteAccount" :
+                                case "deleteAccount" : //!
                                     accounts.remove((int) arguments.get("index"));
                                     break;
 
