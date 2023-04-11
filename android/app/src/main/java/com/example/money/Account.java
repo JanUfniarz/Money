@@ -1,8 +1,6 @@
 package com.example.money;
 
-import io.flutter.embedding.android.FlutterActivity;
-
-public class Account extends FlutterActivity {
+public class Account {
     public String name;
     public double value;
 
