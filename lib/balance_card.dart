@@ -78,7 +78,7 @@ class _BalanceCardState extends State<BalanceCard> {
   );
 
   Future<String> balanceSum() async {
-    String res = "";
+    String res = "0.00";
     try {
       res = await channel.invokeMethod("balanceSum");
     } catch (e) {

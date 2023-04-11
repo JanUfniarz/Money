@@ -8,6 +8,7 @@ import io.flutter.plugin.common.MethodChannel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,17 +17,21 @@ import java.util.Map;
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.flutter.balance_card/MainActivity";
 
-    private final List<Account> accounts = new ArrayList<>();
+    private List<Account> accounts = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
+                super.configureFlutterEngine(flutterEngine);
 
-        accounts.add(new Account("Test Acc", 1250.75));
-        accounts.add(new Account("Test 2", 124.50));
-        accounts.add(new Account("Test 3", 12.50));
+        AccountDatabase db = Room.databaseBuilder(
+                getApplicationContext(),
+                AccountDatabase.class,
+                "Account_database")
+                .allowMainThreadQueries().build();
 
-        super.configureFlutterEngine(flutterEngine);
+        reload(db);
+
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
@@ -39,7 +44,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addAccount":
-                                    accounts.add(new Account(
+                                    db.accountDao().InsertAll(new Account(
                                             (String) arguments.get("name"),
                                             (double) arguments.get("value")
                                     ));
@@ -73,21 +78,28 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "changeName" :
-                                    accounts.get((int) arguments.get("index"))
-                                            .name = (String) arguments.get("newName");
+                                    Account toChangeN = accounts.get((int) arguments.get("index"));
+                                    toChangeN.name = (String) arguments.get("newName");
+                                    db.accountDao().updateAccounts(toChangeN);
                                     break;
 
                                 case "changeValue" :
-                                    accounts.get((int) arguments.get("index"))
-                                            .value = (double) arguments.get("newValue");
+                                    Account toChangeV = accounts.get((int) arguments.get("index"));
+                                    toChangeV.value = (double) arguments.get("newValue");
+                                    db.accountDao().updateAccounts(toChangeV);
                                     break;
 
                                 case "deleteAccount" :
-                                    accounts.remove((int) arguments.get("index"));
+                                    db.accountDao().delete(
+                                            accounts.get((int) arguments.get("index")));
                                     break;
-
                             }
+                            reload(db);
                         }
                 );
+    }
+
+    private void reload(AccountDatabase db) {
+        accounts = db.accountDao().getAllAccounts();
     }
 }

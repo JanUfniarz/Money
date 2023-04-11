@@ -1,9 +1,18 @@
 package com.example.money;
 
-import io.flutter.embedding.android.FlutterActivity;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Account extends FlutterActivity {
+@Entity
+public class Account {
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+
+    @ColumnInfo(name = "name")
     public String name;
+
+    @ColumnInfo(name = "value")
     public double value;
 
     public Account(String name, double value) {
