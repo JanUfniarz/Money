@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'balance_card.dart';
-import 'my_color.dart';
+import 'palette.dart';
 
 class Home extends StatefulWidget {
 
@@ -14,13 +14,13 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColor.background,
+      backgroundColor: Palette.background,
       appBar: AppBar(
-        backgroundColor: MyColor.main,
+        backgroundColor: Palette.main,
         title: Text(
           "Money",
           style: TextStyle(
-            color: MyColor.font,
+            color: Palette.font,
           ),
         ),
         centerTitle: true,
@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
         child: Icon(
             Icons.add
         ),
-        backgroundColor: MyColor.accent,
+        backgroundColor: Palette.accent,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

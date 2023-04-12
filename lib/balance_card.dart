@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:money/my_color.dart';
+import 'package:money/palette.dart';
 
 class BalanceCard extends StatefulWidget {
 
@@ -25,7 +25,7 @@ class _BalanceCardState extends State<BalanceCard> {
   Widget build(BuildContext context) {
     return Card(
       shadowColor: Colors.transparent,
-      color: MyColor.background,
+      color: Palette.background,
       child: Column(
         children: <Widget>[
           Row(
@@ -34,7 +34,7 @@ class _BalanceCardState extends State<BalanceCard> {
               Text(
                 "  Your\n  Balance: ",
                 style: TextStyle(
-                    color: MyColor.font,
+                    color: Palette.font,
                     fontSize: 20
                 ),
               ),
@@ -49,7 +49,7 @@ class _BalanceCardState extends State<BalanceCard> {
                       return Text(
                         snapshot.data ?? "0.00",
                         style: TextStyle(
-                          color: MyColor.accent,
+                          color: Palette.accent,
                           fontSize: 70
                         ),
                       );
@@ -112,12 +112,12 @@ class _BalanceCardState extends State<BalanceCard> {
             width: 150,
             height: 80,
             child: Card(
-              color: MyColor.main,
+              color: Palette.main,
               child: Center(
                 child: Icon(
                   Icons.add,
                   size: 60,
-                  color: MyColor.accent,
+                  color: Palette.accent,
                 ),
               ),
             ),
@@ -188,7 +188,7 @@ class _AccountCardState extends State<AccountCard> {
         width: 150,
         height: 80,
         child: Card(
-          color: MyColor.main,
+          color: Palette.main,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -203,7 +203,7 @@ class _AccountCardState extends State<AccountCard> {
                     return Text(
                       snapshot.data ?? "null",
                       style: TextStyle(
-                          color: MyColor.font,
+                          color: Palette.font,
                           fontSize: 20
                       ),
                     );
@@ -216,7 +216,7 @@ class _AccountCardState extends State<AccountCard> {
                 width: 100,
                 child: Divider(
                   thickness: 2,
-                  color: MyColor.accent,
+                  color: Palette.accent,
                 ),
               ),
               FutureBuilder<String>(
@@ -229,7 +229,7 @@ class _AccountCardState extends State<AccountCard> {
                     return  Text(
                       snapshot.data ?? "null",
                       style: TextStyle(
-                          color: MyColor.font,
+                          color: Palette.font,
                           fontSize: 30
                       ),
                     );

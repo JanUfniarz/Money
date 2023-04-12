@@ -1,10 +1,12 @@
-package com.example.money;
+package com.example.money.account;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.example.money.account.Account;
 
 import java.util.List;
 

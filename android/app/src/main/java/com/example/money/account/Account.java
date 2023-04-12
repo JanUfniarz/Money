@@ -1,4 +1,4 @@
-package com.example.money;
+package com.example.money.account;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

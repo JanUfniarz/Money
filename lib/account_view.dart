@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money/my_color.dart';
+import 'package:money/palette.dart';
 
 import 'package:flutter/services.dart';
 
@@ -33,11 +33,11 @@ class _AccountViewState extends State<AccountView> {
     index = arguments['index'];
 
     return Scaffold(
-      backgroundColor: MyColor.background,
+      backgroundColor: Palette.background,
       appBar: AppBar(
         title: Text("Account"),
         centerTitle: true,
-        backgroundColor: MyColor.main,
+        backgroundColor: Palette.main,
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -52,7 +52,7 @@ class _AccountViewState extends State<AccountView> {
                 Text(
                   "$name",
                   style: TextStyle(
-                    color: MyColor.font,
+                    color: Palette.font,
                     fontSize: 30,
                   ),
                 ),
@@ -60,14 +60,14 @@ class _AccountViewState extends State<AccountView> {
                 Text(
                   "$value",
                   style: TextStyle(
-                    color: MyColor.accent,
+                    color: Palette.accent,
                     fontSize: 70,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: Divider(
-                    color: MyColor.accent,
+                    color: Palette.accent,
                     thickness: 2,
                   ),
                 ),
@@ -83,7 +83,7 @@ class _AccountViewState extends State<AccountView> {
                           showModalBottomSheet(
                             context: context,
                             isScrollControlled: true,
-                            backgroundColor: MyColor.main,
+                            backgroundColor: Palette.main,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
@@ -105,7 +105,7 @@ class _AccountViewState extends State<AccountView> {
                                         Text(
                                           "Change Name",
                                           style: TextStyle(
-                                            color: MyColor.font,
+                                            color: Palette.font,
                                             fontSize: 30,
                                           ),
                                         ),
@@ -117,7 +117,7 @@ class _AccountViewState extends State<AccountView> {
                                             bottom: 30,
                                           ),
                                           child: Divider(
-                                            color: MyColor.accent,
+                                            color: Palette.accent,
                                             thickness: 2,
                                           ),
                                         ),
@@ -125,7 +125,7 @@ class _AccountViewState extends State<AccountView> {
                                           decoration: InputDecoration(
                                             hintText: 'New Name',
                                             filled: true,
-                                            fillColor: MyColor.textField,
+                                            fillColor: Palette.textField,
                                           ),
                                           onChanged: (text) => newName = text
                                         ),
@@ -153,13 +153,13 @@ class _AccountViewState extends State<AccountView> {
                                                 "Save",
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                  color: MyColor.background,
+                                                  color: Palette.background,
                                                   fontSize: 15,
                                                 ),
                                               ),
                                             ),
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: MyColor.accent,
+                                              backgroundColor: Palette.accent,
                                             ),
                                           ),
                                         ),
@@ -176,13 +176,13 @@ class _AccountViewState extends State<AccountView> {
                             "Change\nName",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: MyColor.font,
+                              color: Palette.font,
                               fontSize: 15,
                             ),
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColor.main,
+                          backgroundColor: Palette.main,
                         ),
                       ),
                     ),
@@ -195,7 +195,7 @@ class _AccountViewState extends State<AccountView> {
                           showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              backgroundColor: MyColor.main,
+                              backgroundColor: Palette.main,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25),
@@ -217,7 +217,7 @@ class _AccountViewState extends State<AccountView> {
                                           Text(
                                             "Change Balance",
                                             style: TextStyle(
-                                              color: MyColor.font,
+                                              color: Palette.font,
                                               fontSize: 30,
                                             ),
                                           ),
@@ -229,7 +229,7 @@ class _AccountViewState extends State<AccountView> {
                                               bottom: 30,
                                             ),
                                             child: Divider(
-                                              color: MyColor.accent,
+                                              color: Palette.accent,
                                               thickness: 2,
                                             ),
                                           ),
@@ -237,7 +237,7 @@ class _AccountViewState extends State<AccountView> {
                                               decoration: InputDecoration(
                                                 hintText: 'New Balance',
                                                 filled: true,
-                                                fillColor: MyColor.textField,
+                                                fillColor: Palette.textField,
                                               ),
                                               keyboardType: TextInputType.number,
                                               onChanged: (text) => newValue = double.parse(text)
@@ -266,13 +266,13 @@ class _AccountViewState extends State<AccountView> {
                                                   "Save",
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                    color: MyColor.background,
+                                                    color: Palette.background,
                                                     fontSize: 15,
                                                   ),
                                                 ),
                                               ),
                                               style: ElevatedButton.styleFrom(
-                                                backgroundColor: MyColor.accent,
+                                                backgroundColor: Palette.accent,
                                               ),
                                             ),
                                           ),
@@ -289,13 +289,13 @@ class _AccountViewState extends State<AccountView> {
                             "Change\nBalance",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: MyColor.font,
+                              color: Palette.font,
                               fontSize: 15,
                             ),
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColor.main,
+                          backgroundColor: Palette.main,
                         ),
                       ),
                     ),
@@ -308,7 +308,7 @@ class _AccountViewState extends State<AccountView> {
                           showModalBottomSheet(
                               context: context,
                               isScrollControlled: true,
-                              backgroundColor: MyColor.main,
+                              backgroundColor: Palette.main,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25),
@@ -326,7 +326,7 @@ class _AccountViewState extends State<AccountView> {
                                         Text(
                                           "Delete Account",
                                           style: TextStyle(
-                                            color: MyColor.font,
+                                            color: Palette.font,
                                             fontSize: 30,
                                           ),
                                         ),
@@ -338,7 +338,7 @@ class _AccountViewState extends State<AccountView> {
                                             bottom: 30,
                                           ),
                                           child: Divider(
-                                            color: MyColor.accent,
+                                            color: Palette.accent,
                                             thickness: 2,
                                           ),
                                         ),
@@ -370,13 +370,13 @@ class _AccountViewState extends State<AccountView> {
                                                       "Delete",
                                                       textAlign: TextAlign.center,
                                                       style: TextStyle(
-                                                        color: MyColor.font,
+                                                        color: Palette.font,
                                                         fontSize: 15,
                                                       ),
                                                     ),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
-                                                    backgroundColor: MyColor.delete,
+                                                    backgroundColor: Palette.delete,
                                                   ),
                                                 ),
                                               ),
@@ -390,13 +390,13 @@ class _AccountViewState extends State<AccountView> {
                                                       "Cancel",
                                                       textAlign: TextAlign.center,
                                                       style: TextStyle(
-                                                        color: MyColor.background,
+                                                        color: Palette.background,
                                                         fontSize: 15,
                                                       ),
                                                     ),
                                                   ),
                                                   style: ElevatedButton.styleFrom(
-                                                    backgroundColor: MyColor.accent,
+                                                    backgroundColor: Palette.accent,
                                                   ),
                                                 ),
                                               ),
@@ -413,11 +413,11 @@ class _AccountViewState extends State<AccountView> {
                         child: Center(
                           child: Icon(
                             Icons.delete,
-                            color: MyColor.font,
+                            color: Palette.font,
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColor.delete,
+                          backgroundColor: Palette.delete,
                         ),
                       ),
                     ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money/my_color.dart';
+import 'package:money/palette.dart';
 
 class AddAccount extends StatelessWidget {
 
@@ -9,9 +9,9 @@ class AddAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColor.background,
+      backgroundColor: Palette.background,
       appBar: AppBar(
-        backgroundColor: MyColor.main,
+        backgroundColor: Palette.main,
         title: Text("Add Account"),
         centerTitle: true,
       ),
@@ -25,7 +25,7 @@ class AddAccount extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Name',
                 filled: true,
-                fillColor: MyColor.textField,
+                fillColor: Palette.textField,
               ),
               onChanged: (text) => name = text,
             ),
@@ -33,7 +33,7 @@ class AddAccount extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Balance',
                 filled: true,
-                fillColor: MyColor.textField,
+                fillColor: Palette.textField,
               ),
               keyboardType: TextInputType.number,
               onChanged: (text) => value = double.parse(text),
@@ -41,7 +41,7 @@ class AddAccount extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 50),
               child: Divider(
-                color: MyColor.accent,
+                color: Palette.accent,
                 thickness: 2,
               ),
             ),
@@ -58,12 +58,12 @@ class AddAccount extends StatelessWidget {
                 child: Text(
                   "Add",
                   style: TextStyle(
-                    color: MyColor.background,
+                    color: Palette.background,
                     fontSize: 20,
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyColor.accent,
+                  backgroundColor: Palette.accent,
                 ),
               ),
             ),
