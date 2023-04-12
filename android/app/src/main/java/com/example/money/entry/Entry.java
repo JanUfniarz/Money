@@ -35,16 +35,21 @@ public class Entry {
     @ColumnInfo(name = "account")
     public Account account;
 
+    @ColumnInfo(name = "category")
+    public Category category;
+
     public Entry(String tittle,
                  Type type,
                  double amount,
                  Date date,
-                 Account account
+                 Account account,
+                 Category category
     ) {
         this.tittle = tittle;
         this.type = type;
         this.amount = amount;
         this.date = date;
         this.account = account;
+        this.category = category;
     }
 }
