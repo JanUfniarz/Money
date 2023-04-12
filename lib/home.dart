@@ -25,18 +25,86 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-            Icons.add
-        ),
-        backgroundColor: Palette.accent,
-      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           BalanceCard(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            child: Divider(
+              color: Palette.accent,
+              thickness: 2,
+            ),
+          ),
+          Center(
+            child: Text(
+              "Add new:",
+              style: TextStyle(
+                color: Palette.font,
+                fontSize: 25,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                SizedBox(
+                  width: 90,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Income",
+                      style: TextStyle(
+                        color: Palette.font,
+                        fontSize: 15,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Palette.main,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 90,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Expense",
+                      style: TextStyle(
+                        color: Palette.font,
+                        fontSize: 15,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Palette.main,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 90,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      "Transfer",
+                      style: TextStyle(
+                        color: Palette.font,
+                        fontSize: 15,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Palette.main,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

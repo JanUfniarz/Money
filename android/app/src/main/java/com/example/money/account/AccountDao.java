@@ -6,8 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.money.account.Account;
-
 import java.util.List;
 
 @Dao
@@ -24,4 +22,7 @@ public interface AccountDao {
 
     @Query("SELECT * FROM Account")
     List<Account> getAllAccounts();
+
+    @Query("SELECT * FROM Account WHERE id = :id")
+    Account getById(int id);
 }

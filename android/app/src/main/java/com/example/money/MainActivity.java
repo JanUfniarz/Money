@@ -12,6 +12,7 @@ import androidx.room.Room;
 
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
+import com.example.money.entry.EntryDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +26,24 @@ public class MainActivity extends FlutterActivity {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
-                super.configureFlutterEngine(flutterEngine);
+        super.configureFlutterEngine(flutterEngine);
 
-        AccountDatabase db = Room.databaseBuilder(
+        AppContextSingleton.setContext(getApplicationContext());
+
+        //# YT
+        AccountDatabase account_db = Room.databaseBuilder(
                 getApplicationContext(),
                 AccountDatabase.class,
                 "Account_database")
                 .allowMainThreadQueries().build();
 
-        reload(db);
+        EntryDatabase entry_db = Room.databaseBuilder(
+                        getApplicationContext(),
+                        EntryDatabase.class,
+                        "Entry_database")
+                .allowMainThreadQueries().build();
+
+        reload(account_db, entry_db);
 
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
@@ -47,7 +57,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addAccount":
-                                    db.accountDao().InsertAll(new Account(
+                                    account_db.accountDao().InsertAll(new Account(
                                             (String) arguments.get("name"),
                                             (double) arguments.get("value")
                                     ));
@@ -83,26 +93,27 @@ public class MainActivity extends FlutterActivity {
                                 case "changeName" :
                                     Account toChangeN = accounts.get((int) arguments.get("index"));
                                     toChangeN.name = (String) arguments.get("newName");
-                                    db.accountDao().updateAccounts(toChangeN);
+                                    account_db.accountDao().updateAccounts(toChangeN);
                                     break;
 
                                 case "changeValue" :
                                     Account toChangeV = accounts.get((int) arguments.get("index"));
                                     toChangeV.value = (double) arguments.get("newValue");
-                                    db.accountDao().updateAccounts(toChangeV);
+                                    account_db.accountDao().updateAccounts(toChangeV);
                                     break;
 
                                 case "deleteAccount" :
-                                    db.accountDao().delete(
+                                    account_db.accountDao().delete(
                                             accounts.get((int) arguments.get("index")));
                                     break;
                             }
-                            reload(db);
+                            reload(account_db, entry_db);
                         }
                 );
     }
 
-    private void reload(AccountDatabase db) {
-        accounts = db.accountDao().getAllAccounts();
+    private void reload(AccountDatabase account_db,
+                        EntryDatabase entry_db) {
+        accounts = account_db.accountDao().getAllAccounts();
     }
 }
