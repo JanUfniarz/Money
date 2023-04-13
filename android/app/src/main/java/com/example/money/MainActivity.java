@@ -12,6 +12,7 @@ import androidx.room.Room;
 
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
+import com.example.money.entry.Entry;
 import com.example.money.entry.EntryDatabase;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.flutter.balance_card/MainActivity";
 
     private List<Account> accounts = new ArrayList<>();
+    private  List<Entry> entries = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
@@ -115,5 +117,6 @@ public class MainActivity extends FlutterActivity {
     private void reload(AccountDatabase account_db,
                         EntryDatabase entry_db) {
         accounts = account_db.accountDao().getAllAccounts();
+        entries = entry_db.entryDao().getAllEntries();
     }
 }

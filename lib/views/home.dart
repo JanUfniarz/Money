@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'balance_card.dart';
-import 'palette.dart';
+import '../widgets/balance_card.dart';
+import '../palette.dart';
 
 class Home extends StatefulWidget {
 
@@ -55,7 +55,16 @@ class _HomeState extends State<Home> {
                   width: 90,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+
+                      String type = "Income";
+
+                      await Navigator.pushNamed(
+                        context,
+                        "/add_entry",
+                        arguments: type,
+                      );
+                    },
                     child: Text(
                       "Income",
                       style: TextStyle(
@@ -64,7 +73,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main,
+                      backgroundColor: Palette.main2,
                     ),
                   ),
                 ),
@@ -81,7 +90,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main,
+                      backgroundColor: Palette.main2,
                     ),
                   ),
                 ),
@@ -98,7 +107,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main,
+                      backgroundColor: Palette.main2,
                     ),
                   ),
                 ),

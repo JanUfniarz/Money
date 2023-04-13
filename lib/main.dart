@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:money/account_view.dart';
-import 'package:money/add_accout.dart';
+import 'package:money/views/account_view.dart';
+import 'package:money/views/add_accout.dart';
+import 'package:money/views/add_entry.dart';
 
-import 'home.dart';
+import 'views/home.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: "/home",
@@ -10,5 +11,6 @@ void main() => runApp(MaterialApp(
     "/home" : (context) => Home(),
     "/add_account" : (context) => AddAccount(),
     "/account_view" : (context) => AccountView(),
+    "/add_entry" : (context) => AddEntry(),
   },
 ));
