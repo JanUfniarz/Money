@@ -11,7 +11,7 @@ import java.util.Date;
 //! import java.time.LocalDateTime;
 
 @Entity(tableName = "entry")
-//? @TypeConverters(Converter.class) //# GPT
+//? @TypeConverters(Converter.class)
 public class Entry {
     @PrimaryKey(autoGenerate = true)
     public int id;

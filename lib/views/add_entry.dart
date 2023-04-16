@@ -19,6 +19,15 @@ class _AddEntryState extends State<AddEntry> {
   //! List<String> accountNames = [];
   List<DropdownMenuItem<dynamic>> accountNames = [];
 
+  List<String> categories = [
+    "Basic expenditure",
+    "Enterprise",
+    "Travelling",
+    "House",
+    "Health and beauty",
+    "Transport",
+  ];
+
   String? account;
 
   @override
@@ -29,6 +38,14 @@ class _AddEntryState extends State<AddEntry> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<DropdownMenuItem<dynamic>> categoriesDMI = categories
+        .map((String item) {
+      return DropdownMenuItem<dynamic>(
+        value: item,
+        child: Text(item),
+      );
+    }).toList();
 
     String type = ModalRoute.of(context)!
         .settings.arguments as String;
@@ -41,7 +58,7 @@ class _AddEntryState extends State<AddEntry> {
         backgroundColor: Palette.main2,
       ),
       body: Padding(
-        padding: EdgeInsets.all(50),
+        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -64,9 +81,15 @@ class _AddEntryState extends State<AddEntry> {
               onChanged: (text) {},
             ),
             DropdownButton(
-              value: account,
+              value: accountNames.first,
               items: accountNames, //! Do not show
               onChanged: (item) => account = item.toString(),
+              isExpanded: true,
+            ),
+            DropdownButton(
+              value: categoriesDMI.first,
+              items: categoriesDMI,
+              onChanged: (item) {},
               isExpanded: true,
             ),
           ],

@@ -81,7 +81,16 @@ class _HomeState extends State<Home> {
                   width: 90,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+
+                      String type = "Expense";
+
+                      await Navigator.pushNamed(
+                        context,
+                        "/add_entry",
+                        arguments: type,
+                      );
+                    },
                     child: Text(
                       "Expense",
                       style: TextStyle(
@@ -98,7 +107,16 @@ class _HomeState extends State<Home> {
                   width: 90,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+
+                      String type = "Transfer";
+
+                      await Navigator.pushNamed(
+                        context,
+                        "/add_entry",
+                        arguments: type,
+                      );
+                    },
                     child: Text(
                       "Transfer",
                       style: TextStyle(
