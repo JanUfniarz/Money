@@ -28,8 +28,6 @@ class _AddEntryState extends State<AddEntry> {
     "Transport",
   ];
 
-  String? account;
-
   @override
   void initState() {
     super.initState();
@@ -47,8 +45,13 @@ class _AddEntryState extends State<AddEntry> {
       );
     }).toList();
 
+    // values to send
+    String selectedAccount = accountNames.first.value;
+    String selectedCategory = categoriesDMI.first.value;
     String type = ModalRoute.of(context)!
         .settings.arguments as String;
+    String? tittle;
+    double? amount;
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -69,7 +72,7 @@ class _AddEntryState extends State<AddEntry> {
                 filled: true,
                 fillColor: Palette.textField,
               ),
-              onChanged: (text) {},
+              onChanged: (text) => tittle = text,
             ),
             TextField(
               decoration: InputDecoration(
@@ -78,19 +81,27 @@ class _AddEntryState extends State<AddEntry> {
                 fillColor: Palette.textField,
               ),
               keyboardType: TextInputType.number,
-              onChanged: (text) {},
+              onChanged: (text) => amount = double.parse(text),
             ),
             DropdownButton(
-              value: accountNames.first,
-              items: accountNames, //! Do not show
-              onChanged: (item) => account = item.toString(),
+              value: selectedAccount,
+              items: accountNames,
+              onChanged: (item) => setState(() => selectedAccount = item),
               isExpanded: true,
+              style: TextStyle(
+                color: Palette.textField,
+                fontSize: 25
+              ),
             ),
             DropdownButton(
-              value: categoriesDMI.first,
+              value: selectedCategory,
               items: categoriesDMI,
-              onChanged: (item) {},
+              onChanged: (item) => setState(() => selectedCategory = item),
               isExpanded: true,
+              style: TextStyle(
+                  color: Palette.textField,
+                  fontSize: 25
+              ),
             ),
           ],
         ),
@@ -114,6 +125,7 @@ class _AddEntryState extends State<AddEntry> {
       );
 
       temp.add(name);
+      index++;
     }
 
     //# GPT
