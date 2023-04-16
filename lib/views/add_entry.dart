@@ -16,6 +16,13 @@ class _AddEntryState extends State<AddEntry> {
       "com.flutter.balance_card/MainActivity"
   );
 
+  // values to send
+  String? selectedAccount;
+  String? selectedCategory;
+  String? type;
+  String? tittle;
+  double? amount;
+
   //! List<String> accountNames = [];
   List<DropdownMenuItem<dynamic>> accountNames = [];
 
@@ -45,13 +52,10 @@ class _AddEntryState extends State<AddEntry> {
       );
     }).toList();
 
-    // values to send
-    String selectedAccount = accountNames.first.value;
-    String selectedCategory = categoriesDMI.first.value;
-    String type = ModalRoute.of(context)!
+    selectedAccount ??= accountNames.first.value;
+    selectedCategory ??= categoriesDMI.first.value;
+    type = ModalRoute.of(context)!
         .settings.arguments as String;
-    String? tittle;
-    double? amount;
 
     return Scaffold(
       backgroundColor: Palette.background,
