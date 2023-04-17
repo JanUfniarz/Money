@@ -12,10 +12,15 @@ import androidx.room.Room;
 
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
+import com.example.money.entry.Category;
 import com.example.money.entry.Entry;
 import com.example.money.entry.EntryDatabase;
+import com.example.money.entry.Type;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,21 +97,89 @@ public class MainActivity extends FlutterActivity {
                                     result.success(len);
                                     break;
 
-                                case "changeName" :
+                                case "changeName":
                                     Account toChangeN = accounts.get((int) arguments.get("index"));
                                     toChangeN.name = (String) arguments.get("newName");
                                     account_db.accountDao().updateAccounts(toChangeN);
                                     break;
 
-                                case "changeValue" :
+                                case "changeValue":
                                     Account toChangeV = accounts.get((int) arguments.get("index"));
                                     toChangeV.value = (double) arguments.get("newValue");
                                     account_db.accountDao().updateAccounts(toChangeV);
                                     break;
 
-                                case "deleteAccount" :
+                                case "deleteAccount":
                                     account_db.accountDao().delete(
                                             accounts.get((int) arguments.get("index")));
+                                    break;
+
+                                case "addEntry":
+                                    //* tittle
+                                    String tittle = (String) arguments.get("tittle");
+
+                                    //* type
+                                    Type type = Type.INCOME;
+                                    switch ((String) arguments.get("type")) {
+                                        case "Income":
+                                            type = Type.INCOME;
+                                            break;
+                                        case "Expense":
+                                            type = Type.EXPENSE;
+                                            break;
+                                        case "Transfer":
+                                            type = Type.TRANSFER;
+                                            break;
+                                    }
+
+                                    //* amount
+                                    double amount = (double) arguments.get("amount");
+
+                                    //* date
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                    Date date;
+
+                                    try {
+                                        date = sdf.parse((String) arguments.get("date"));
+                                    } catch (ParseException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+                                    //* account
+                                    Account account = new Account("!!!", -1);
+                                    for (Account ac : accounts)
+                                        if (ac.name == arguments.get("account"))
+                                            account = ac;
+
+                                    //*category
+                                    Category category = Category.OTHER;
+                                    switch ((String) arguments.get("category")) {
+                                        case "Basic expenditure":
+                                            category = Category.BASIC_EXPENDITURE;
+                                            break;
+                                        case "Enterprise":
+                                            category = Category.ENTERPRISE;
+                                            break;
+                                        case "Travelling":
+                                            category = Category.TRAVELLING;
+                                            break;
+                                        case "House":
+                                            category = Category.HOUSE;
+                                            break;
+                                        case "Health and beauty":
+                                            category = Category.HEALTH_AND_BEAUTY;
+                                            break;
+                                        case "Transport":
+                                            category = Category.TRANSPORT;
+                                            break;
+                                        case "Other":
+                                            category = Category.OTHER;
+                                            break;
+                                    }
+
+                                    entry_db.entryDao().InsertAll(
+                                            new Entry(tittle, type, amount, date, account, category));
+
                                     break;
                             }
                             reload(account_db, entry_db);

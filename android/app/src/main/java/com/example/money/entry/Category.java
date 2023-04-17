@@ -7,4 +7,5 @@ public enum Category {
     HOUSE,
     HEALTH_AND_BEAUTY,
     TRANSPORT,
+    OTHER,
 }

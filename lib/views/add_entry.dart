@@ -34,6 +34,7 @@ class _AddEntryState extends State<AddEntry> {
     "House",
     "Health and beauty",
     "Transport",
+    "Other",
   ];
 
   @override
@@ -62,7 +63,12 @@ class _AddEntryState extends State<AddEntry> {
       resizeToAvoidBottomInset: false,
       backgroundColor: Palette.background,
       appBar: AppBar(
-        title: Text("Add $type"),
+        title: Text(
+          "Add $type",
+          style: TextStyle(
+            color: Palette.background,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Palette.main2,
       ),
@@ -90,6 +96,7 @@ class _AddEntryState extends State<AddEntry> {
               onChanged: (text) => amount = double.parse(text),
             ),
             DropdownButton(
+              dropdownColor: Palette.background,
               value: selectedAccount,
               items: accountNames,
               onChanged: (item) => setState(() => selectedAccount = item),
@@ -100,13 +107,14 @@ class _AddEntryState extends State<AddEntry> {
               ),
             ),
             DropdownButton(
+              dropdownColor: Palette.background,
               value: selectedCategory,
               items: categoriesDMI,
               onChanged: (item) => setState(() => selectedCategory = item),
               isExpanded: true,
               style: TextStyle(
-                  color: Palette.textField,
-                  fontSize: 25
+                color: Palette.textField,
+                fontSize: 25
               ),
             ),
             Row(
@@ -134,10 +142,24 @@ class _AddEntryState extends State<AddEntry> {
                 onPressed: () {
                   print("type: $type "
                       "\ntittle: $tittle "
-                      "\nammount: $amount "
+                      "\namount: $amount "
                       "\naccount: $selectedAccount "
                       "\ncategory: $selectedCategory "
-                      "\ndate: ${_dateToString(selectedDate)} ");
+                      "\ndate: ${_dateToString(selectedDate)} "
+                  );
+
+                  Map<String, dynamic> arguments = {
+                    "type" : type,
+                    "tittle" : tittle,
+                    "amount" : amount,
+                    "account" : selectedAccount,
+                    "category" : selectedCategory,
+                    "date" : _dateToString(selectedDate),
+                  };
+
+                  channel.invokeMethod("addEntry", arguments);
+
+                  Navigator.pop(context);
                 },
                 child: Text(
                   "Add $type",

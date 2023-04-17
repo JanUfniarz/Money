@@ -81,6 +81,8 @@ class NewEntryButton extends StatelessWidget {
             "/add_entry",
             arguments: type,
           );
+
+          Navigator.pushReplacementNamed(context, "/home");
         },
         child: Text(
           "$type",
