@@ -51,88 +51,47 @@ class _HomeState extends State<Home> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                SizedBox(
-                  width: 90,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-
-                      String type = "Income";
-
-                      await Navigator.pushNamed(
-                        context,
-                        "/add_entry",
-                        arguments: type,
-                      );
-                    },
-                    child: Text(
-                      "Income",
-                      style: TextStyle(
-                        color: Palette.font,
-                        fontSize: 15,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main2,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 90,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-
-                      String type = "Expense";
-
-                      await Navigator.pushNamed(
-                        context,
-                        "/add_entry",
-                        arguments: type,
-                      );
-                    },
-                    child: Text(
-                      "Expense",
-                      style: TextStyle(
-                        color: Palette.font,
-                        fontSize: 15,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main2,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 90,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-
-                      String type = "Transfer";
-
-                      await Navigator.pushNamed(
-                        context,
-                        "/add_entry",
-                        arguments: type,
-                      );
-                    },
-                    child: Text(
-                      "Transfer",
-                      style: TextStyle(
-                        color: Palette.font,
-                        fontSize: 15,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Palette.main2,
-                    ),
-                  ),
-                ),
+                NewEntryButton(type: "Income"),
+                NewEntryButton(type: "Expense"),
+                NewEntryButton(type: "Transfer")
               ],
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class NewEntryButton extends StatelessWidget {
+  NewEntryButton({Key? key, required this.type}) : super(key: key);
+
+  String type;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 90,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: () async {
+
+          await Navigator.pushNamed(
+            context,
+            "/add_entry",
+            arguments: type,
+          );
+        },
+        child: Text(
+          "$type",
+          style: TextStyle(
+            color: Palette.background,
+            fontSize: 15,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Palette.main2,
+        ),
       ),
     );
   }
