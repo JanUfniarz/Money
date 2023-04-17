@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:money/widgets/date_picker.dart';
 import '../palette.dart';
 
 class AddEntry extends StatefulWidget {
@@ -17,13 +18,13 @@ class _AddEntryState extends State<AddEntry> {
   );
 
   // values to send
+  String? tittle;
+  String? type;
+  double? amount;
+  RestorableDateTime selectedDate = RestorableDateTime(DateTime.now());
   String? selectedAccount;
   String? selectedCategory;
-  String? type;
-  String? tittle;
-  double? amount;
 
-  //! List<String> accountNames = [];
   List<DropdownMenuItem<dynamic>> accountNames = [];
 
   List<String> categories = [
@@ -58,6 +59,7 @@ class _AddEntryState extends State<AddEntry> {
         .settings.arguments as String;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Palette.background,
       appBar: AppBar(
         title: Text("Add $type"),
@@ -107,6 +109,49 @@ class _AddEntryState extends State<AddEntry> {
                   fontSize: 25
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Date:",
+                  style: TextStyle(
+                    color: Palette.textField,
+                    fontSize: 25
+                  ),
+                ),
+                SizedBox(width: 10),
+                DatePicker(
+                  restorationId: "main",
+                  selectedDate: selectedDate,
+                ),
+              ],
+            ),
+            SizedBox(),
+            SizedBox(
+              width: 150,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  print("type: $type "
+                      "\ntittle: $tittle "
+                      "\nammount: $amount "
+                      "\naccount: $selectedAccount "
+                      "\ncategory: $selectedCategory "
+                      "\ndate: ${_dateToString(selectedDate)} ");
+                },
+                child: Text(
+                  "Add $type",
+                  style: TextStyle(
+                    color: Palette.background,
+                    fontSize: 20,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Palette.accent,
+                ),
+              ),
+            ),
+            SizedBox(),
           ],
         ),
       ),
@@ -141,5 +186,10 @@ class _AddEntryState extends State<AddEntry> {
         );
       }).toList();
     });
+  }
+
+  String _dateToString(RestorableDateTime date) {
+    String res = date.value.toString();
+    return res.replaceAll(" 00:00:00.000", "");
   }
 }
