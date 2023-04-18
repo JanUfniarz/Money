@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/widgets/entry_card.dart';
 
 import '../widgets/balance_card.dart';
 import '../palette.dart';
@@ -28,7 +29,7 @@ class _HomeState extends State<Home> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+        children: <Widget>[
           BalanceCard(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
@@ -56,7 +57,24 @@ class _HomeState extends State<Home> {
                 NewEntryButton(type: "Transfer")
               ],
             ),
-          )
+          ),
+          Center(
+            child: Text(
+              "Entries:",
+              style: TextStyle(
+                color: Palette.font,
+                fontSize: 25,
+              ),
+            ),
+          ),
+          EntryCard(
+            type: 'Expense',
+            tittle: 'tytuł',
+            amount: 43.99,
+            category: 'Travelling',
+            accountName: 'konto',
+            date: RestorableDateTime(DateTime.now()),
+          ),
         ],
       ),
     );
