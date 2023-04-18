@@ -13,6 +13,7 @@ import androidx.room.Room;
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
 import com.example.money.entry.Category;
+import com.example.money.entry.Converter;
 import com.example.money.entry.Entry;
 import com.example.money.entry.EntryDatabase;
 import com.example.money.entry.Type;
@@ -21,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -181,6 +183,27 @@ public class MainActivity extends FlutterActivity {
                                             new Entry(tittle, type, amount, date, account, category));
 
                                     break;
+
+                                case "getLengthOfEntries" :
+                                    int len2 = entries.size();
+                                    result.success(len2);
+                                    break;
+
+                                case "getEntryData" :
+                                    Entry entry = entries.get((int) arguments.get("index"));
+
+                                    Map<String, Object> response = new HashMap<>();
+                                    response.put("type", toFirstLetterUpperCase(
+                                            entry.type.toString()));
+                                    response.put("tittle", entry.tittle);
+                                    response.put("amount", entry.amount);
+                                    response.put("category", toFirstLetterUpperCase(
+                                            entry.category.toString()));
+                                    response.put("accountName", entry.account.name);
+                                    response.put("date", Converter.dateToTimestamp(entry.date));
+
+                                    result.success(response);
+                                    break;
                             }
                             reload(account_db, entry_db);
                         }
@@ -191,5 +214,14 @@ public class MainActivity extends FlutterActivity {
                         EntryDatabase entry_db) {
         accounts = account_db.accountDao().getAllAccounts();
         entries = entry_db.entryDao().getAllEntries();
+    }
+
+    public static String toFirstLetterUpperCase(String input) {
+        if (input == null || input.isEmpty()) return input;
+
+        String lowerCaseInput = input.toLowerCase();
+        String firstLetterUpperCase = lowerCaseInput.substring(0, 1).toUpperCase();
+        String restOfString = lowerCaseInput.substring(1);
+        return firstLetterUpperCase + restOfString;
     }
 }

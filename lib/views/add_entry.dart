@@ -157,7 +157,7 @@ class _AddEntryState extends State<AddEntry> {
                     "date" : _dateToString(selectedDate),
                   };
 
-                  //? channel.invokeMethod("addEntry", arguments);
+                  channel.invokeMethod("addEntry", arguments);
 
                   Navigator.pop(context);
                 },
@@ -212,6 +212,6 @@ class _AddEntryState extends State<AddEntry> {
 
   String _dateToString(RestorableDateTime date) {
     String res = date.value.toString();
-    return res.substring(0, res.length - 16);
+    return res.substring(0, res.length - 13);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:money/widgets/entry_card.dart';
 
 import '../widgets/balance_card.dart';
@@ -12,8 +13,30 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  int entriesCount = 0;
+  List<Widget> entryCards = [];
+
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _count();
+    _upList();
+    //! setState(() {
+    //!    entryCards = _upList() as List<Widget>;
+    //! });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _count();
+    _upList();
+
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
@@ -67,17 +90,90 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          EntryCard(
-            type: 'Expense',
-            tittle: 'tytuł',
-            amount: 43.99,
-            category: 'Travelling',
-            accountName: 'konto',
-            date: RestorableDateTime(DateTime.now()),
+          // EntryCard(
+          //   type: 'Expense',
+          //   tittle: 'tytuł',
+          //   amount: 43.99,
+          //   category: 'Travelling',
+          //   accountName: 'konto',
+          //   date: RestorableDateTime(DateTime.now()),
+          // ),
+          Card(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: entryCards
+            ),
+          ),
+          SizedBox(
+            width: 90,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Palette.main2,
+              ),
+              child: Text(
+                "See all",
+                style: TextStyle(
+                  color: Palette.background,
+                  fontSize: 15,
+                ),
+             ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  void _count() async
+      => setState(() async
+        => entriesCount = await channel.invokeMethod("getLengthOfEntries"));
+
+  void _upList() async {
+
+    int numberOfWidgets = entriesCount >= 5 ? 5 : entriesCount;
+    List<Widget> res = [];
+
+    int index = 0;
+    while (index < numberOfWidgets) {
+
+      Map<String, dynamic> arguments = {
+        "index" : index,
+      };
+
+      Map<String, dynamic> data = await channel
+          .invokeMethod("getEntryData", arguments);
+
+      res.add(EntryCard(
+        type: data["type"],
+        tittle: data["tittle"],
+        amount: data["amount"],
+        category: data["category"],
+        accountName: data["accountName"],
+        date: _convertStringToDate(data["date"]),
+      ));
+
+      index++;
+    }
+    setState(() => entryCards = res);
+  }
+
+  //# GTP
+  RestorableDateTime _convertStringToDate(String dateString) {
+    // Split the date string by "-" to get year, month, and day
+    List<String> dateParts = dateString.split("-");
+
+    // Extract year, month, and day from dateParts
+    int year = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int day = int.parse(dateParts[2]);
+
+    // Create a RestorableDateTime object with the parsed year, month, and day
+    RestorableDateTime restorableDateTime = RestorableDateTime(DateTime(year, month, day));
+
+    return restorableDateTime;
   }
 }
 

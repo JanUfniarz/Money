@@ -49,7 +49,6 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
           ItemBox(
             child: Text(
               _dateToString(widget.date),
-              //? "!!!!",
             ),
           ),
           ItemBox(
@@ -64,8 +63,6 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
             child: Text(
               widget.category,
               textAlign: TextAlign.center,
-              style: TextStyle(
-              ),
             ),
           ),
         ],
