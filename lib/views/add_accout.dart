@@ -6,13 +6,15 @@ class AddAccount extends StatelessWidget {
   String? name;
   double? value;
 
+  AddAccount({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
         backgroundColor: Palette.main,
-        title: Text("Add Account"),
+        title: const Text("Add Account"),
         centerTitle: true,
       ),
       body: Padding(
@@ -55,6 +57,9 @@ class AddAccount extends StatelessWidget {
                     "value": value,
                   });
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Palette.accent,
+                ),
                 child: Text(
                   "Add",
                   style: TextStyle(
@@ -62,12 +67,9 @@ class AddAccount extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Palette.accent,
-                ),
               ),
             ),
-            SizedBox(height: 80),
+            const SizedBox(height: 80),
           ],
         ),
       ),

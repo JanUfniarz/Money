@@ -43,7 +43,7 @@ class _DatePickerState extends State<DatePicker>
         return Theme(
           data: ThemeData(
             // Customize the theme here
-            colorScheme: ColorScheme.light().copyWith(
+            colorScheme: const ColorScheme.light().copyWith(
               // Example: Change the color of the header text
               primary: Palette.main,
               // Example: Change the color of the selected day

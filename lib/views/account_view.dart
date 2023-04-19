@@ -4,6 +4,7 @@ import 'package:money/palette.dart';
 import 'package:flutter/services.dart';
 
 class AccountView extends StatefulWidget {
+  const AccountView({super.key});
 
   @override
   State<AccountView> createState() => _AccountViewState();
@@ -35,14 +36,14 @@ class _AccountViewState extends State<AccountView> {
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
-        title: Text("Account"),
+        title: const Text("Account"),
         centerTitle: true,
         backgroundColor: Palette.main,
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Padding(
-          padding: EdgeInsets.all(30),
+          padding: const EdgeInsets.all(30),
           child: Align(
             alignment: Alignment.center,
             child: Column(
@@ -56,7 +57,7 @@ class _AccountViewState extends State<AccountView> {
                     fontSize: 30,
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   "$value",
                   style: TextStyle(
@@ -84,7 +85,7 @@ class _AccountViewState extends State<AccountView> {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Palette.main,
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
                                 topRight: Radius.circular(25),
                                 topLeft: Radius.circular(25),
@@ -98,10 +99,10 @@ class _AccountViewState extends State<AccountView> {
                                 child: SizedBox(
                                   height: 300,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Column(
                                       children: <Widget>[
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Text(
                                           "Change Name",
                                           style: TextStyle(
@@ -129,7 +130,7 @@ class _AccountViewState extends State<AccountView> {
                                           ),
                                           onChanged: (text) => newName = text
                                         ),
-                                        SizedBox(height: 30),
+                                        const SizedBox(height: 30),
                                         SizedBox(
                                           width: 90,
                                           height: 50,
@@ -148,6 +149,9 @@ class _AccountViewState extends State<AccountView> {
                                               setState(() => name = newName);
                                               Navigator.pop(context);
                                             },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Palette.accent,
+                                            ),
                                             child: Center(
                                               child: Text(
                                                 "Save",
@@ -157,9 +161,6 @@ class _AccountViewState extends State<AccountView> {
                                                   fontSize: 15,
                                                 ),
                                               ),
-                                            ),
-                                            style: ElevatedButton.styleFrom(
-                                              backgroundColor: Palette.accent,
                                             ),
                                           ),
                                         ),
@@ -171,6 +172,9 @@ class _AccountViewState extends State<AccountView> {
                             }
                           );
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Palette.main,
+                        ),
                         child: Center(
                           child: Text(
                             "Change\nName",
@@ -180,9 +184,6 @@ class _AccountViewState extends State<AccountView> {
                               fontSize: 15,
                             ),
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Palette.main,
                         ),
                       ),
                     ),
@@ -196,7 +197,7 @@ class _AccountViewState extends State<AccountView> {
                               context: context,
                               isScrollControlled: true,
                               backgroundColor: Palette.main,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25),
                                   topLeft: Radius.circular(25),
@@ -210,10 +211,10 @@ class _AccountViewState extends State<AccountView> {
                                   child: SizedBox(
                                     height: 300,
                                     child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 20),
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
                                       child: Column(
                                         children: <Widget>[
-                                          SizedBox(height: 10),
+                                          const SizedBox(height: 10),
                                           Text(
                                             "Change Balance",
                                             style: TextStyle(
@@ -242,7 +243,7 @@ class _AccountViewState extends State<AccountView> {
                                               keyboardType: TextInputType.number,
                                               onChanged: (text) => newValue = double.parse(text)
                                           ),
-                                          SizedBox(height: 30),
+                                          const SizedBox(height: 30),
                                           SizedBox(
                                             width: 90,
                                             height: 50,
@@ -261,6 +262,9 @@ class _AccountViewState extends State<AccountView> {
                                                 setState(() => value = newValue);
                                                 Navigator.pop(context);
                                               },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Palette.accent,
+                                              ),
                                               child: Center(
                                                 child: Text(
                                                   "Save",
@@ -270,9 +274,6 @@ class _AccountViewState extends State<AccountView> {
                                                     fontSize: 15,
                                                   ),
                                                 ),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Palette.accent,
                                               ),
                                             ),
                                           ),
@@ -284,6 +285,9 @@ class _AccountViewState extends State<AccountView> {
                               }
                           );
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Palette.main,
+                        ),
                         child: Center(
                           child: Text(
                             "Change\nBalance",
@@ -293,9 +297,6 @@ class _AccountViewState extends State<AccountView> {
                               fontSize: 15,
                             ),
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Palette.main,
                         ),
                       ),
                     ),
@@ -309,7 +310,7 @@ class _AccountViewState extends State<AccountView> {
                               context: context,
                               isScrollControlled: true,
                               backgroundColor: Palette.main,
-                              shape: RoundedRectangleBorder(
+                              shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(25),
                                   topLeft: Radius.circular(25),
@@ -319,10 +320,10 @@ class _AccountViewState extends State<AccountView> {
                                 return SizedBox(
                                   height: 300,
                                   child: Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 20),
+                                    padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Column(
                                       children: <Widget>[
-                                        SizedBox(height: 10),
+                                        const SizedBox(height: 10),
                                         Text(
                                           "Delete Account",
                                           style: TextStyle(
@@ -342,9 +343,9 @@ class _AccountViewState extends State<AccountView> {
                                             thickness: 2,
                                           ),
                                         ),
-                                        SizedBox(height: 30),
+                                        const SizedBox(height: 30),
                                         Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 20),
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: <Widget>[
@@ -365,6 +366,9 @@ class _AccountViewState extends State<AccountView> {
 
                                                     Navigator.popUntil(context, (route) => route.isFirst);
                                                   },
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Palette.delete,
+                                                  ),
                                                   child: Center(
                                                     child: Text(
                                                       "Delete",
@@ -375,9 +379,6 @@ class _AccountViewState extends State<AccountView> {
                                                       ),
                                                     ),
                                                   ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Palette.delete,
-                                                  ),
                                                 ),
                                               ),
                                               SizedBox(
@@ -385,6 +386,9 @@ class _AccountViewState extends State<AccountView> {
                                                 height: 50,
                                                 child: ElevatedButton(
                                                   onPressed: () => Navigator.pop(context),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor: Palette.accent,
+                                                  ),
                                                   child: Center(
                                                     child: Text(
                                                       "Cancel",
@@ -394,9 +398,6 @@ class _AccountViewState extends State<AccountView> {
                                                         fontSize: 15,
                                                       ),
                                                     ),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Palette.accent,
                                                   ),
                                                 ),
                                               ),
@@ -410,14 +411,14 @@ class _AccountViewState extends State<AccountView> {
                               }
                           );
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Palette.delete,
+                        ),
                         child: Center(
                           child: Icon(
                             Icons.delete,
                             color: Palette.font,
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Palette.delete,
                         ),
                       ),
                     ),

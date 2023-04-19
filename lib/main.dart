@@ -8,9 +8,9 @@ import 'views/home.dart';
 void main() => runApp(MaterialApp(
   initialRoute: "/home",
   routes: {
-    "/home" : (context) => Home(),
+    "/home" : (context) => const Home(),
     "/add_account" : (context) => AddAccount(),
-    "/account_view" : (context) => AccountView(),
-    "/add_entry" : (context) => AddEntry(),
+    "/account_view" : (context) => const AccountView(),
+    "/add_entry" : (context) => const AddEntry(),
   },
 ));

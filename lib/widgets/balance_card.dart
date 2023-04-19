@@ -6,8 +6,7 @@ class BalanceCard extends StatefulWidget {
 
   @override
   State<BalanceCard> createState() => _BalanceCardState();
-
-  BalanceCard({super.key});
+  const BalanceCard({super.key});
 }
 
 class _BalanceCardState extends State<BalanceCard> {
@@ -54,11 +53,11 @@ class _BalanceCardState extends State<BalanceCard> {
                         ),
                       );
                     } else {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                   },
               ),
-              SizedBox(width: 60),
+              const SizedBox(width: 60),
             ],
           ),
           SingleChildScrollView(
@@ -100,29 +99,29 @@ class _BalanceCardState extends State<BalanceCard> {
       index++;
     }
     res.add(
-        GestureDetector(
-          onTap: () async {
-            dynamic result = await Navigator
-                .pushNamed(context, "/add_account");
-            Map<String, dynamic> arguments = result;
-            channel.invokeMethod("addAccount", arguments);
-            getLength();
-          },
-          child: SizedBox(
-            width: 150,
-            height: 80,
-            child: Card(
-              color: Palette.main,
-              child: Center(
-                child: Icon(
-                  Icons.add,
-                  size: 60,
-                  color: Palette.accent,
-                ),
+      GestureDetector(
+        onTap: () async {
+          dynamic result = await Navigator
+              .pushNamed(context, "/add_account");
+          Map<String, dynamic> arguments = result;
+          channel.invokeMethod("addAccount", arguments);
+          getLength();
+        },
+        child: SizedBox(
+          width: 150,
+          height: 80,
+          child: Card(
+            color: Palette.main,
+            child: Center(
+              child: Icon(
+                Icons.add,
+                size: 60,
+                color: Palette.accent,
               ),
             ),
           ),
-        )
+        ),
+      )
     );
     return res;
   }
@@ -140,9 +139,9 @@ class AccountCard extends StatefulWidget {
       "com.flutter.balance_card/MainActivity"
   );
 
-  int index;
+  final int index;
 
-  AccountCard({super.key, required this.index});
+  const AccountCard({super.key, required this.index});
 
   @override
   State<AccountCard> createState() => _AccountCardState();
@@ -208,7 +207,7 @@ class _AccountCardState extends State<AccountCard> {
                       ),
                     );
                   } else {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                 },
               ),
@@ -234,7 +233,7 @@ class _AccountCardState extends State<AccountCard> {
                       ),
                     );
                   } else {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                 },
               ),

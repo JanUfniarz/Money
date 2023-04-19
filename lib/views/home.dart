@@ -6,6 +6,7 @@ import '../widgets/balance_card.dart';
 import '../palette.dart';
 
 class Home extends StatefulWidget {
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -22,19 +23,14 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
-    //! _count();
-    //! _upList();
     _loadData();
   }
 
   Future<void> _loadData() async {
     final count = await channel.invokeMethod<int>("getLengthOfEntries");
     final cards = <Widget>[];
-
-    print(count);
 
     for (int index = 0; index < count! && index < 5; index++) {
       final arguments = {"index": index};
@@ -54,7 +50,6 @@ class _HomeState extends State<Home> {
           date: _convertStringToDate(date),
       ));
     }
-    print((cards.first as EntryCard).category);
 
     setState(() {
       entriesCount = count;
@@ -64,9 +59,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    //! _count();
-    //! _upList();
-
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
@@ -85,7 +77,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           BalanceCard(),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             child: Divider(
               color: Palette.accent,
               thickness: 2,
@@ -101,10 +93,10 @@ class _HomeState extends State<Home> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
+              children: const <Widget>[
                 NewEntryButton(type: "Income"),
                 NewEntryButton(type: "Expense"),
                 NewEntryButton(type: "Transfer")
@@ -168,9 +160,9 @@ class _HomeState extends State<Home> {
 }
 
 class NewEntryButton extends StatelessWidget {
-  NewEntryButton({Key? key, required this.type}) : super(key: key);
+  const NewEntryButton({Key? key, required this.type}) : super(key: key);
 
-  String type;
+  final String type;
 
   @override
   Widget build(BuildContext context) {
@@ -188,15 +180,15 @@ class NewEntryButton extends StatelessWidget {
 
           Navigator.pushReplacementNamed(context, "/home");
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Palette.main2,
+        ),
         child: Text(
-          "$type",
+          type,
           style: TextStyle(
             color: Palette.background,
             fontSize: 15,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Palette.main2,
         ),
       ),
     );

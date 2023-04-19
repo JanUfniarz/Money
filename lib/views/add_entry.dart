@@ -73,7 +73,7 @@ class _AddEntryState extends State<AddEntry> {
         backgroundColor: Palette.main2,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,27 +127,19 @@ class _AddEntryState extends State<AddEntry> {
                     fontSize: 25
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 DatePicker(
                   restorationId: "main",
                   selectedDate: selectedDate,
                 ),
               ],
             ),
-            SizedBox(),
+            const SizedBox(),
             SizedBox(
               width: 150,
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  print("type: $type "
-                      "\ntitle: $title "
-                      "\namount: $amount "
-                      "\naccount: $selectedAccount "
-                      "\ncategory: $selectedCategory "
-                      "\ndate: ${_dateToString(selectedDate)} "
-                  );
-
                   Map<String, dynamic> arguments = {
                     "type" : type,
                     "title" : title,
@@ -161,6 +153,9 @@ class _AddEntryState extends State<AddEntry> {
 
                   Navigator.pop(context);
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Palette.accent,
+                ),
                 child: Text(
                   "Add $type",
                   style: TextStyle(
@@ -168,12 +163,9 @@ class _AddEntryState extends State<AddEntry> {
                     fontSize: 20,
                   ),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Palette.accent,
-                ),
               ),
             ),
-            SizedBox(),
+            const SizedBox(),
           ],
         ),
       ),

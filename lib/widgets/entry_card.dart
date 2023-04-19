@@ -3,14 +3,14 @@ import 'package:money/palette.dart';
 
 class EntryCard extends StatefulWidget {
 
-  String type;
-  String title;
-  double amount;
-  String category;
-  String accountName;
-  RestorableDateTime date;
+  final String type;
+  final String title;
+  final double amount;
+  final String category;
+  final String accountName;
+  final RestorableDateTime date;
 
-  EntryCard({Key? key,
+  const EntryCard({Key? key,
     required this.type,
     required this.title,
     required this.amount,
@@ -26,9 +26,6 @@ class EntryCard extends StatefulWidget {
 class _EntryCardState extends State<EntryCard> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
-
-    print(_dateToString(widget.date));
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,30 +77,25 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
   String _dateToString(RestorableDateTime date) {
     String res = date.value.toString();
     res = res.substring(0, res.length - 16);
-    //? res = res.replaceAll(" 00:00:00.000", "");
     return res.replaceAll("-", ".");
   }
 
   @override
-  // TODO: implement restorationId
   String? get restorationId => "main";
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    // TODO: implement restoreState
     registerForRestoration(widget.date, 'date');
-    //? registerForRestoration(
-    //?     _restorableDatePickerRouteFuture, 'date_picker_route_future');
   }
 }
 
 class ItemBox extends StatefulWidget {
 
-  Widget? child;
-  Color? color;
-  double? width;
+  final Widget? child;
+  final Color? color;
+  final double? width;
 
-  ItemBox({Key? key, this.child, this.color, this.width}) : super(key: key);
+  const ItemBox({Key? key, this.child, this.color, this.width}) : super(key: key);
 
   @override
   State<ItemBox> createState() => _ItemBoxState();
@@ -120,7 +112,7 @@ class _ItemBoxState extends State<ItemBox> {
         child: Container(
           color: widget.color ?? Palette.main2,
           child: Center(
-            child: widget.child ?? SizedBox(),
+            child: widget.child ?? const SizedBox(),
           ),
         ),
       ),
