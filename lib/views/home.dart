@@ -25,17 +25,47 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     super.initState();
 
-    _count();
-    _upList();
-    //! setState(() {
-    //!    entryCards = _upList() as List<Widget>;
-    //! });
+    //! _count();
+    //! _upList();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    final count = await channel.invokeMethod<int>("getLengthOfEntries");
+    final cards = <Widget>[];
+
+    print(count);
+
+    for (int index = 0; index < count! && index < 5; index++) {
+      final arguments = {"index": index};
+      final type = await channel.invokeMethod("getEntryType", arguments);
+      final title = await channel.invokeMethod("getEntryTitle", arguments);
+      final amount = await channel.invokeMethod("getEntryAmount", arguments);
+      final category = await channel.invokeMethod("getEntryCategory", arguments);
+      final accountName = await channel.invokeMethod("getEntryAccountName", arguments);
+      final date = await channel.invokeMethod("getEntryDate", arguments);
+
+      cards.add(EntryCard(
+          type: type,
+          title: title,
+          amount: amount,
+          category: category,
+          accountName: accountName,
+          date: _convertStringToDate(date),
+      ));
+    }
+    print((cards.first as EntryCard).category);
+
+    setState(() {
+      entriesCount = count;
+      entryCards = cards;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    _count();
-    _upList();
+    //! _count();
+    //! _upList();
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -90,15 +120,8 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-          // EntryCard(
-          //   type: 'Expense',
-          //   tittle: 'tytuł',
-          //   amount: 43.99,
-          //   category: 'Travelling',
-          //   accountName: 'konto',
-          //   date: RestorableDateTime(DateTime.now()),
-          // ),
           Card(
+            color: Palette.background,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -125,39 +148,6 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
-  }
-
-  void _count() async
-      => setState(() async
-        => entriesCount = await channel.invokeMethod("getLengthOfEntries"));
-
-  void _upList() async {
-
-    int numberOfWidgets = entriesCount >= 5 ? 5 : entriesCount;
-    List<Widget> res = [];
-
-    int index = 0;
-    while (index < numberOfWidgets) {
-
-      Map<String, dynamic> arguments = {
-        "index" : index,
-      };
-
-      Map<String, dynamic> data = await channel
-          .invokeMethod("getEntryData", arguments);
-
-      res.add(EntryCard(
-        type: data["type"],
-        tittle: data["tittle"],
-        amount: data["amount"],
-        category: data["category"],
-        accountName: data["accountName"],
-        date: _convertStringToDate(data["date"]),
-      ));
-
-      index++;
-    }
-    setState(() => entryCards = res);
   }
 
   //# GTP

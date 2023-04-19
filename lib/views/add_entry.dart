@@ -18,7 +18,7 @@ class _AddEntryState extends State<AddEntry> {
   );
 
   // values to send
-  String? tittle;
+  String? title;
   String? type;
   double? amount;
   RestorableDateTime selectedDate = RestorableDateTime(DateTime.now());
@@ -80,11 +80,11 @@ class _AddEntryState extends State<AddEntry> {
           children: <Widget>[
             TextField(
               decoration: InputDecoration(
-                hintText: 'Tittle',
+                hintText: 'title',
                 filled: true,
                 fillColor: Palette.textField,
               ),
-              onChanged: (text) => tittle = text,
+              onChanged: (text) => title = text,
             ),
             TextField(
               decoration: InputDecoration(
@@ -141,7 +141,7 @@ class _AddEntryState extends State<AddEntry> {
               child: ElevatedButton(
                 onPressed: () {
                   print("type: $type "
-                      "\ntittle: $tittle "
+                      "\ntitle: $title "
                       "\namount: $amount "
                       "\naccount: $selectedAccount "
                       "\ncategory: $selectedCategory "
@@ -150,7 +150,7 @@ class _AddEntryState extends State<AddEntry> {
 
                   Map<String, dynamic> arguments = {
                     "type" : type,
-                    "tittle" : tittle,
+                    "title" : title,
                     "amount" : amount,
                     "account" : selectedAccount,
                     "category" : selectedCategory,

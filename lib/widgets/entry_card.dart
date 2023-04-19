@@ -4,7 +4,7 @@ import 'package:money/palette.dart';
 class EntryCard extends StatefulWidget {
 
   String type;
-  String tittle;
+  String title;
   double amount;
   String category;
   String accountName;
@@ -12,7 +12,7 @@ class EntryCard extends StatefulWidget {
 
   EntryCard({Key? key,
     required this.type,
-    required this.tittle,
+    required this.title,
     required this.amount,
     required this.category,
     required this.accountName,
@@ -29,50 +29,50 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
 
     print(_dateToString(widget.date));
 
-    return Card(
-      color: Palette.background,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          ItemBox(
-            color: widget.type == "Expense"
-                ? Palette.delete : Palette.accent,
-            child: Text(
-              _amountToStr(widget.amount),
-              style: TextStyle(
-                color: widget.type == "Expense"
-                    ? Palette.font : Palette.background,
-              ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        ItemBox(
+          color: widget.type == "Expense"
+              ? Palette.delete : Palette.accent,
+          child: Text(
+            _amountToStr(widget.amount),
+            style: TextStyle(
+              color: widget.type == "Expense"
+                  ? Palette.font : Palette.background,
             ),
           ),
-          ItemBox(
-            child: Text(
-              _dateToString(widget.date),
-            ),
+        ),
+        ItemBox(
+          child: Text(
+            _dateToString(widget.date),
           ),
-          ItemBox(
-            color: Palette.accent,
-            child: Text(widget.tittle),
+        ),
+        ItemBox(
+          color: Palette.accent,
+          child: Text(widget.title),
+        ),
+        ItemBox(
+          child: Text(
+            widget.accountName,
+            textAlign: TextAlign.center,
           ),
-          ItemBox(
-            child: Text(widget.accountName),
+        ),
+        ItemBox(
+          color: Palette.accent,
+          child: Text(
+            widget.category,
+            textAlign: TextAlign.center,
           ),
-          ItemBox(
-            color: Palette.accent,
-            child: Text(
-              widget.category,
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   String _amountToStr(double amount) {
     String res = widget.type == "Expense"
-        ? "-" : "";
+        ? "-" : "+";
     String amountStr = amount.toString();
     return res + amountStr;
   }

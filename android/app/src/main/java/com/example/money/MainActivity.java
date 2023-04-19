@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -117,8 +118,8 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addEntry":
-                                    //* tittle
-                                    String tittle = (String) arguments.get("tittle");
+                                    //* title
+                                    String title = (String) arguments.get("title");
 
                                     //* type
                                     Type type = Type.INCOME;
@@ -180,7 +181,7 @@ public class MainActivity extends FlutterActivity {
                                     }
 
                                     entry_db.entryDao().InsertAll(
-                                            new Entry(tittle, type, amount, date, account, category));
+                                            new Entry(title, type, amount, date, account, category));
 
                                     break;
 
@@ -189,20 +190,47 @@ public class MainActivity extends FlutterActivity {
                                     result.success(len2);
                                     break;
 
-                                case "getEntryData" :
-                                    Entry entry = entries.get((int) arguments.get("index"));
+                                case "getEntryType" :
+                                    String entryType = toFirstLetterUpperCase(
+                                            entries.get((int) arguments.get("index"))
+                                                    .type.toString());
+                                    result.success(entryType);
+                                    break;
 
-                                    Map<String, Object> response = new HashMap<>();
-                                    response.put("type", toFirstLetterUpperCase(
-                                            entry.type.toString()));
-                                    response.put("tittle", entry.tittle);
-                                    response.put("amount", entry.amount);
-                                    response.put("category", toFirstLetterUpperCase(
-                                            entry.category.toString()));
-                                    response.put("accountName", entry.account.name);
-                                    response.put("date", Converter.dateToTimestamp(entry.date));
+                                case "getEntryTitle" :
+                                    String entryTitle =
+                                            entries.get((int) arguments.get("index"))
+                                                    .title;
+                                    result.success(entryTitle);
+                                    break;
 
-                                    result.success(response);
+                                case "getEntryAmount" :
+                                    double entryAmount =
+                                            entries.get((int) arguments.get("index"))
+                                                    .amount;
+                                    result.success(entryAmount);
+                                    break;
+
+                                case "getEntryCategory" :
+                                    String entryCategory = toFirstLetterUpperCase(
+                                            entries.get((int) arguments.get("index"))
+                                                    .category.toString());
+                                    result.success(entryCategory);
+                                    break;
+
+                                case "getEntryAccountName" :
+//!                                    String entryAccountName =
+//                                            entries.get((int) arguments.get("index"))
+//                                                    .account.name;
+//!                                    result.success(entryAccountName);
+                                    result.success("!!Account name!!");
+                                    break;
+
+                                case "getEntryDate" :
+                                    String entryDate = Converter.dateToTimestamp(
+                                            entries.get((int) arguments.get("index"))
+                                                    .date);
+                                    result.success(entryDate);
                                     break;
                             }
                             reload(account_db, entry_db);
@@ -214,6 +242,8 @@ public class MainActivity extends FlutterActivity {
                         EntryDatabase entry_db) {
         accounts = account_db.accountDao().getAllAccounts();
         entries = entry_db.entryDao().getAllEntries();
+        entries.add(new Entry("tytuł", Type.EXPENSE, 45.5, new Date(),
+                new Account("konto", 90), Category.TRANSPORT));
     }
 
     public static String toFirstLetterUpperCase(String input) {
@@ -222,6 +252,7 @@ public class MainActivity extends FlutterActivity {
         String lowerCaseInput = input.toLowerCase();
         String firstLetterUpperCase = lowerCaseInput.substring(0, 1).toUpperCase();
         String restOfString = lowerCaseInput.substring(1);
-        return firstLetterUpperCase + restOfString;
+        String connected = firstLetterUpperCase + restOfString;
+        return connected.replaceAll("_", " ");
     }
 }

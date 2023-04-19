@@ -16,8 +16,8 @@ public class Entry {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    @ColumnInfo(name = "tittle")
-    public String tittle;
+    @ColumnInfo(name = "title")
+    public String title;
 
     @ColumnInfo(name = "type")
     public Type type;
@@ -38,14 +38,14 @@ public class Entry {
     @ColumnInfo(name = "category")
     public Category category;
 
-    public Entry(String tittle,
+    public Entry(String title,
                  Type type,
                  double amount,
                  Date date,
                  Account account,
                  Category category
     ) {
-        this.tittle = tittle;
+        this.title = title;
         this.type = type;
         this.amount = amount;
         this.date = date;
