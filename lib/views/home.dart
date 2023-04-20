@@ -32,6 +32,18 @@ class _HomeState extends State<Home> {
     final count = await channel.invokeMethod<int>("getLengthOfEntries");
     final cards = <Widget>[];
 
+    cards.add(Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: const <Widget>[
+        labelBox(label: "Amount"),
+        labelBox(label: "Date"),
+        labelBox(label: "Title"),
+        labelBox(label: "Account"),
+        labelBox(label: "Category"),
+      ],
+    ));
+
     for (int index = 0; index < count! && index < 5; index++) {
       final arguments = {"index": index};
       final type = await channel.invokeMethod("getEntryType", arguments);
@@ -158,6 +170,27 @@ class _HomeState extends State<Home> {
     );
 
     return restorableDateTime;
+  }
+}
+
+class labelBox extends StatelessWidget {
+  const labelBox({
+    super.key, required this.label
+  });
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return ItemBox(
+      color: Palette.main,
+      child: Text(
+        label,
+        style: TextStyle(
+          color: Palette.accent
+        ),
+      ),
+    );
   }
 }
 
