@@ -1,6 +1,7 @@
 package com.example.money;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,6 +18,7 @@ import com.example.money.entry.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +33,12 @@ public class MainActivity extends FlutterActivity {
     private List<Account> accounts = new ArrayList<>();
     private  List<Entry> entries = new ArrayList<>();
 
+    private final Singleton singleton = Singleton.getInstance();
+
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
-
-        AppContextSingleton.setContext(getApplicationContext());
 
         //# YT
         AccountDatabase account_db = Room.databaseBuilder(
@@ -149,8 +151,9 @@ public class MainActivity extends FlutterActivity {
                                     //* account
                                     Account account = new Account("!!!", -1);
                                     for (Account ac : accounts)
-                                        if (ac.name == arguments.get("account"))
+                                        if (ac.name.equals(arguments.get("account")))
                                             account = ac;
+
 
                                     //*category
                                     Category category = Category.OTHER;
@@ -217,11 +220,10 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getEntryAccountName" :
-//!                                    String entryAccountName =
-//                                            entries.get((int) arguments.get("index"))
-//                                                    .account.name;
-//!                                    result.success(entryAccountName);
-                                    result.success("!!Account name!!");
+                                    String entryAccountName =
+                                            entries.get((int) arguments.get("index"))
+                                                    .account.name;
+                                    result.success(entryAccountName);
                                     break;
 
                                 case "getEntryDate" :
@@ -239,9 +241,10 @@ public class MainActivity extends FlutterActivity {
     private void reload(AccountDatabase account_db,
                         EntryDatabase entry_db) {
         accounts = account_db.accountDao().getAllAccounts();
+        singleton.allAccounts = accounts;
+
         entries = entry_db.entryDao().getAllEntries();
-        entries.add(new Entry("tytuł", Type.EXPENSE, 45.5, new Date(),
-                new Account("konto", 90), Category.TRANSPORT));
+        Collections.reverse(entries);
     }
 
     public static String toFirstLetterUpperCase(String input) {

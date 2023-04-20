@@ -72,10 +72,10 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          BalanceCard(),
+          const BalanceCard(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             child: Divider(
@@ -126,7 +126,7 @@ class _HomeState extends State<Home> {
             child: ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Palette.main2,
+                backgroundColor: Palette.accent,
               ),
               child: Text(
                 "See all",
@@ -153,7 +153,9 @@ class _HomeState extends State<Home> {
     int day = int.parse(dateParts[2]);
 
     // Create a RestorableDateTime object with the parsed year, month, and day
-    RestorableDateTime restorableDateTime = RestorableDateTime(DateTime(year, month, day));
+    RestorableDateTime restorableDateTime = RestorableDateTime(
+        DateTime(year, month, day)
+    );
 
     return restorableDateTime;
   }

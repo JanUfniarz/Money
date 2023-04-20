@@ -1,16 +1,14 @@
 package com.example.money.entry;
-import android.content.Context;
 
-import androidx.room.Room;
 import androidx.room.TypeConverter;
 
-import com.example.money.AppContextSingleton;
+import com.example.money.Singleton;
 import com.example.money.account.Account;
-import com.example.money.account.AccountDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class Converter {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -41,18 +39,20 @@ public class Converter {
     }
 
     //* Account
+    //! Not working
     @TypeConverter
     public static Account fromId(int id) {
+        Singleton singleton = Singleton.getInstance();
 
-        Context context = AppContextSingleton.getContext();
+        List<Account> allAccounts = singleton.allAccounts;
 
-        AccountDatabase db = Room.databaseBuilder(
-                        context,
-                        AccountDatabase.class,
-                        "Account_database")
-                .allowMainThreadQueries().build();
+        String size ="|" + id + "|";
 
-        return db.accountDao().getById(id);
+        //Account account = new Account("Not Found", -1);
+        for (Account it : allAccounts) if (it.id == id) return it;
+
+        //! return db.accountDao().getById(id);
+        return new Account(size, -1);
     }
 
     @TypeConverter
