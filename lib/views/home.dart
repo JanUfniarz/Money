@@ -199,6 +199,10 @@ class NewEntryButton extends StatelessWidget {
 
   final String type;
 
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -207,13 +211,22 @@ class NewEntryButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () async {
 
-          await Navigator.pushNamed(
-            context,
-            "/add_entry",
-            arguments: type,
-          );
+          int accountCount =
+            await channel.invokeMethod("getLength");
 
-          Navigator.pushReplacementNamed(context, "/home");
+          if (accountCount != 0) {
+            await Navigator.pushNamed(
+              context,
+              "/add_entry",
+              arguments: type,
+            );
+            Navigator.pushReplacementNamed(context, "/home");
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Add an account first"),
+            ));
+          }
+
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Palette.main2,

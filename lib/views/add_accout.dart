@@ -70,7 +70,7 @@ class _AddAccountState extends State<AddAccount> {
                     setState(() => alert = "Fields cannot be empty");
                   } else {
                     int accountCount =
-                    await channel.invokeMethod("getLength");
+                      await channel.invokeMethod("getLength");
                     bool isNameTaken = false;
 
                     for(int index = 0; index < accountCount; index++) {
