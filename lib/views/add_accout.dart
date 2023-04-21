@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:money/palette.dart';
 
-class AddAccount extends StatelessWidget {
+class AddAccount extends StatefulWidget {
 
+
+  const AddAccount({super.key});
+
+  @override
+  State<AddAccount> createState() => _AddAccountState();
+}
+
+class _AddAccountState extends State<AddAccount> {
   String? name;
+
   double? value;
 
-  AddAccount({super.key});
+  String alert = "";
+
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +65,29 @@ class AddAccount extends StatelessWidget {
               width: 90,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context, <String, dynamic>{
-                    "name": name,
-                    "value": value,
-                  });
+                onPressed: () async {
+                  if (name == null || value == null) {
+                    setState(() => alert = "Fields cannot be empty");
+                  } else {
+                    int accountCount =
+                    await channel.invokeMethod("getLength");
+                    bool isNameTaken = false;
+
+                    for(int index = 0; index < accountCount; index++) {
+                      String accName = await channel.invokeMethod(
+                          "getName", {"index": index}
+                      );
+                      if (accName == name) isNameTaken = true;
+                    }
+                    if (isNameTaken) {
+                      setState(() => alert = "This name is already used");
+                    } else {
+                      Navigator.pop(context, <String, dynamic>{
+                        "name": name,
+                        "value": value,
+                      });
+                    }
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.accent,
@@ -69,7 +101,16 @@ class AddAccount extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 80),
+            SizedBox(
+              height: 80,
+              child: Text(
+                alert,
+                style: TextStyle(
+                  color: Palette.delete,
+                  fontSize: 25,
+                ),
+              ),
+            ),
           ],
         ),
       ),

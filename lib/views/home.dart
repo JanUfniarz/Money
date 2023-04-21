@@ -36,11 +36,11 @@ class _HomeState extends State<Home> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
-        labelBox(label: "Amount"),
-        labelBox(label: "Date"),
-        labelBox(label: "Title"),
-        labelBox(label: "Account"),
-        labelBox(label: "Category"),
+        LabelBox(label: "Amount"),
+        LabelBox(label: "Date"),
+        LabelBox(label: "Title"),
+        LabelBox(label: "Account"),
+        LabelBox(label: "Category"),
       ],
     ));
 
@@ -173,8 +173,8 @@ class _HomeState extends State<Home> {
   }
 }
 
-class labelBox extends StatelessWidget {
-  const labelBox({
+class LabelBox extends StatelessWidget {
+  const LabelBox({
     super.key, required this.label
   });
 
