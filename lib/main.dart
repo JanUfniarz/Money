@@ -10,7 +10,7 @@ void main() => runApp(MaterialApp(
   initialRoute: "/home",
   routes: {
     "/home" : (context) => const Home(),
-    "/add_account" : (context) => AddAccount(),
+    "/add_account" : (context) => const AddAccount(),
     "/account_view" : (context) => const AccountView(),
     "/add_entry" : (context) => const AddEntry(),
     "/all_entries" : (context) => const AllEntries(),

@@ -76,7 +76,7 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
 
   String _dateToString(RestorableDateTime date) {
     String res = date.value.toString();
-    res = res.substring(0, res.length - 16);
+    res = res.substring(0, res.length - 13);
     return res.replaceAll("-", ".");
   }
 

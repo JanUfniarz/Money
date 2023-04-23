@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 
 import '../palette.dart';
 import '../widgets/entry_card.dart';
-//? import 'home.dart';
 
 class AllEntries extends StatefulWidget {
   const AllEntries({Key? key}) : super(key: key);
@@ -27,6 +26,12 @@ class _AllEntriesState extends State<AllEntries> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Row(
+
+              children: <Widget>[
+                // TODO tu skończyłem
+              ],
+            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: EntriesTable(),
@@ -92,13 +97,126 @@ class _EntriesTableState extends State<EntriesTable> {
       final accountName = await channel.invokeMethod("getEntryAccountName", arguments);
       final date = await channel.invokeMethod("getEntryDate", arguments);
 
-      cards.add(EntryCard(
-        type: type,
-        title: title,
-        amount: amount,
-        category: category,
-        accountName: accountName,
-        date: _convertStringToDate(date),
+      cards.add(GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Palette.main,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(25),
+                  topLeft: Radius.circular(25),
+                ),
+              ),
+              builder: (context) {
+                return SizedBox(
+                  height: 300,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 10),
+                        Text(
+                          "Delete Entry $title",
+                          style: TextStyle(
+                            color: Palette.font,
+                            fontSize: 30,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                            top: 10,
+                            bottom: 30,
+                          ),
+                          child: Divider(
+                            color: Palette.accent,
+                            thickness: 2,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 90,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    var argumentsToJava = <String, dynamic>{
+                                      "index" : index,
+                                    };
+
+                                    channel.invokeMethod(
+                                        "deleteEntry",
+                                        argumentsToJava
+                                    );
+
+                                    Navigator.pop(context);
+
+                                    //! Can not work with filters
+                                    setState(() {
+                                      entryCards.removeAt(index + 1);
+                                    });
+                                    //! ============
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Palette.delete,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Delete",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Palette.font,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 90,
+                                height: 50,
+                                child: ElevatedButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Palette.accent,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Cancel",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Palette.background,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+          );
+        },
+        child: EntryCard(
+          type: type,
+          title: title,
+          amount: amount,
+          category: category,
+          accountName: accountName,
+          date: _convertStringToDate(date),
+        ),
       ));
     }
 

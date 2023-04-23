@@ -39,7 +39,6 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-        //# YT
         AccountDatabase account_db = Room.databaseBuilder(
                 getApplicationContext(),
                 AccountDatabase.class,
@@ -106,6 +105,8 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "changeValue":
+                                    //! Not working
+                                    // TODO make reverse getValue
                                     Account toChangeV = accounts.get((int) arguments.get("index"));
                                     toChangeV.value = (double) arguments.get("newValue");
                                     account_db.accountDao().updateAccounts(toChangeV);
@@ -230,6 +231,13 @@ public class MainActivity extends FlutterActivity {
                                             entries.get((int) arguments.get("index"))
                                                     .date);
                                     result.success(entryDate);
+                                    break;
+
+                                case "deleteEntry" :
+                                    entry_db.entryDao()
+                                            .delete(entries.get(
+                                                    (int) arguments.get("index")
+                                            ));
                                     break;
                             }
                             reload(account_db, entry_db);
