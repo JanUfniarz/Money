@@ -1,7 +1,6 @@
 package com.example.money;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -75,7 +74,7 @@ public class MainActivity extends FlutterActivity {
 
                                 case "balanceSum":
                                     double sum = accounts.stream()
-                                            .map(account -> account.value)
+                                            .map(this::getValue)
                                             .reduce(Double::sum).orElseThrow();
                                     String res = String.valueOf(sum);
                                     result.success(res);
@@ -89,9 +88,9 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getValue":
-                                    double value = (accounts
-                                            .get((int) arguments.get("index")))
-                                            .value;
+                                    Account accountToGetValue = accounts
+                                            .get((int) arguments.get("index"));
+                                    double value = getValue(accountToGetValue);
                                     result.success(value);
                                     break;
 
@@ -247,7 +246,33 @@ public class MainActivity extends FlutterActivity {
         Collections.reverse(entries);
     }
 
-    public static String toFirstLetterUpperCase(String input) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private double getValue(Account account) {
+        final double[] value = {account.value};
+
+        entries.stream()
+                .filter(entry -> entry.account == account)
+                .forEach(entry -> {
+                    switch (entry.type) {
+                        case INCOME:
+                            value[0] += entry.amount;
+                            break;
+                        case EXPENSE:
+                            value[0] -= entry.amount;
+                            break;
+                        case TRANSFER:
+                            // TODO implement transfer
+                            break;
+                        default:
+                            throw new RuntimeException(
+                                    "Unknown entry type: " + entry.type
+                            );
+                    }
+                });
+        return value[0];
+    }
+
+    private static String toFirstLetterUpperCase(String input) {
         if (input == null || input.isEmpty()) return input;
 
         String lowerCaseInput = input.toLowerCase();
