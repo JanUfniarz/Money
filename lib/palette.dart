@@ -7,7 +7,7 @@ class Palette {
   static Color main = const Color(0xff183c28);
   static Color accent = const Color(0xffBDDE8F);
   static Color background = const Color(0xff262625);
-  static Color main2 = const Color(0xffF9A4AB);
+  static Color main2 = const Color(0xffe3bf0a);
 
   static Color textField = const Color(0xffAACFE2);
   static Color delete = const Color(0xffb03421);

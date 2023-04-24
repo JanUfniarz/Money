@@ -27,15 +27,139 @@ class _AllEntriesState extends State<AllEntries> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Row(
-
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                // TODO tu skończyłem
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Sort by",
+                        style: TextStyle(
+                          color: Palette.main2,
+                          fontSize: 30
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 30,
+                            width: 70,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Palette.accent,
+                              ),
+                              onPressed: () {
+                                // TODO implement
+                              },
+                              child: Text(
+                                "Amount",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Palette.background,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            height: 30,
+                            width: 70,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Palette.accent,
+                              ),
+                              onPressed: () {
+                                // TODO implement
+                              },
+                              child: Text(
+                                "Date",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Palette.background,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 70,
+                  child: VerticalDivider(
+                    thickness: 2,
+                    color: Palette.main2,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "Filter by",
+                        style: TextStyle(
+                            color: Palette.main2,
+                            fontSize: 30
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 30,
+                            width: 70,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Palette.accent,
+                              ),
+                              onPressed: () {
+                                // TODO implement
+                              },
+                              child: Text(
+                                "Type",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Palette.background,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            height: 30,
+                            width: 70,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Palette.accent,
+                              ),
+                              onPressed: () {
+                                // TODO implement
+                              },
+                              child: Text(
+                                "Category",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Palette.background,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: EntriesTable(),
-            ),
+            EntriesTable(),
           ],
         ),
       ),
