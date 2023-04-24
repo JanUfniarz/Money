@@ -72,8 +72,8 @@ class _HomeState extends State<Home> {
             behavior: HitTestBehavior.opaque,
             onTap: () async {
               await Navigator.pushNamed(
-                  context,
-                  "/all_entries",
+                context,
+                "/all_entries",
               );
               Navigator.pushReplacementNamed(context, "/home");
             },

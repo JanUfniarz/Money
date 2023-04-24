@@ -12,8 +12,12 @@ class AllEntries extends StatefulWidget {
 }
 
 class _AllEntriesState extends State<AllEntries> {
+
+  int filter = 0;
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
@@ -53,9 +57,7 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () {
-                                // TODO implement
-                              },
+                              onPressed: () => setState(() => filter = 1),
                               child: Text(
                                 "Amount",
                                 style: TextStyle(
@@ -73,9 +75,7 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () {
-                                // TODO implement
-                              },
+                              onPressed: () => setState(() => filter = 2),
                               child: Text(
                                 "Date",
                                 style: TextStyle(
@@ -120,9 +120,7 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () {
-                                // TODO implement
-                              },
+                              onPressed: () => setState(() => filter = 3),
                               child: Text(
                                 "Type",
                                 style: TextStyle(
@@ -140,9 +138,7 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () {
-                                // TODO implement
-                              },
+                              onPressed: () => setState(() => filter = 4),
                               child: Text(
                                 "Category",
                                 style: TextStyle(
@@ -159,7 +155,7 @@ class _AllEntriesState extends State<AllEntries> {
                 ),
               ],
             ),
-            EntriesTable(),
+            EntriesTable(filter: filter),
           ],
         ),
       ),
@@ -169,9 +165,16 @@ class _AllEntriesState extends State<AllEntries> {
 
 class EntriesTable extends StatefulWidget {
 
-  int? numberOfEntries;
-  EntriesTable({Key? key, this.numberOfEntries})
-      : super(key: key);
+  int numberOfEntries;
+  int filter;
+
+  EntriesTable({Key? key,
+    numberOfEntries,
+    filter})
+      : numberOfEntries = numberOfEntries ?? -1,
+        filter = filter ?? 0,
+        super(key: key);
+
 
   @override
   State<EntriesTable> createState() => _EntriesTableState();
@@ -179,8 +182,7 @@ class EntriesTable extends StatefulWidget {
 
 class _EntriesTableState extends State<EntriesTable> {
 
-  int entriesCount = 0;
-  List<Widget> entryCards = [];
+  List<EntryCard> entryCards = [];
 
   static const channel = MethodChannel(
       "com.flutter.balance_card/MainActivity"
@@ -194,10 +196,44 @@ class _EntriesTableState extends State<EntriesTable> {
   }
 
   Future<void> _loadData() async {
-    final count = await channel.invokeMethod<int>("getLengthOfEntries");
-    final cards = <Widget>[];
+    int count = await channel.invokeMethod("getLengthOfEntries");
+    final cards = <EntryCard>[];
 
-    cards.add(Row(
+    int numberOfEntries = widget.numberOfEntries;
+    if (numberOfEntries == -1) numberOfEntries = count;
+
+    for (
+    int index = 0;
+    index < count && index < numberOfEntries;
+    index++) {
+      final arguments = {"index": index};
+      final type = await channel.invokeMethod("getEntryType", arguments);
+      final title = await channel.invokeMethod("getEntryTitle", arguments);
+      final amount = await channel.invokeMethod("getEntryAmount", arguments);
+      final category = await channel.invokeMethod("getEntryCategory", arguments);
+      final accountName = await channel.invokeMethod("getEntryAccountName", arguments);
+      final date = await channel.invokeMethod("getEntryDate", arguments);
+      final indexInMA = index;
+
+      cards.add(EntryCard(
+        type: type,
+        title: title,
+        amount: amount,
+        category: category,
+        accountName: accountName,
+        date: _convertStringToDate(date),
+        index: indexInMA,
+      ));
+    }
+    setState(() => entryCards = cards);
+  }
+  @override
+  Widget build(BuildContext context) {
+
+    List<EntryCard> cards = entryCards;
+    List<Widget> finalCards = [];
+
+    List<Widget> labelRow = [Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: const <Widget>[
@@ -207,21 +243,18 @@ class _EntriesTableState extends State<EntriesTable> {
         LabelBox(label: "Account"),
         LabelBox(label: "Category"),
       ],
-    ));
+    )];
 
-    for (
+    if (widget.filter == 1) cards.sort((a, b) => b.amount.compareTo(a.amount));
+    if (widget.filter == 2) cards.sort((a, b) => b.date.value.compareTo(a.date.value));
+
+    List<Widget> filteredCards = [];
     int index = 0;
-    index < count! && index < (widget.numberOfEntries ?? count);
-    index++) {
-      final arguments = {"index": index};
-      final type = await channel.invokeMethod("getEntryType", arguments);
-      final title = await channel.invokeMethod("getEntryTitle", arguments);
-      final amount = await channel.invokeMethod("getEntryAmount", arguments);
-      final category = await channel.invokeMethod("getEntryCategory", arguments);
-      final accountName = await channel.invokeMethod("getEntryAccountName", arguments);
-      final date = await channel.invokeMethod("getEntryDate", arguments);
+    for (EntryCard card in cards) {
 
-      cards.add(GestureDetector(
+      int indexSave = index;
+
+      filteredCards.add(GestureDetector(
         onTap: () {
           showModalBottomSheet(
               context: context,
@@ -242,7 +275,7 @@ class _EntriesTableState extends State<EntriesTable> {
                       children: <Widget>[
                         const SizedBox(height: 10),
                         Text(
-                          "Delete Entry $title",
+                          "Delete Entry ${card.title}",
                           style: TextStyle(
                             color: Palette.font,
                             fontSize: 30,
@@ -272,7 +305,7 @@ class _EntriesTableState extends State<EntriesTable> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     var argumentsToJava = <String, dynamic>{
-                                      "index" : index,
+                                      "index" : card.index,
                                     };
 
                                     channel.invokeMethod(
@@ -284,7 +317,7 @@ class _EntriesTableState extends State<EntriesTable> {
 
                                     //! Can not work with filters
                                     setState(() {
-                                      entryCards.removeAt(index + 1);
+                                      entryCards.removeAt(indexSave);
                                     });
                                     //! ============
                                   },
@@ -333,30 +366,20 @@ class _EntriesTableState extends State<EntriesTable> {
               }
           );
         },
-        child: EntryCard(
-          type: type,
-          title: title,
-          amount: amount,
-          category: category,
-          accountName: accountName,
-          date: _convertStringToDate(date),
-        ),
+        child: card,
       ));
+
+      index++;
     }
 
-    setState(() {
-      entriesCount = count;
-      entryCards = cards;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
+    finalCards = labelRow + filteredCards;
+
     return Card(
         color: Palette.background,
         child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: entryCards,
+        children: finalCards,
         ),
     );
   }

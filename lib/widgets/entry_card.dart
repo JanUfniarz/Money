@@ -10,6 +10,8 @@ class EntryCard extends StatefulWidget {
   final String accountName;
   final RestorableDateTime date;
 
+  final int index;
+
   const EntryCard({Key? key,
     required this.type,
     required this.title,
@@ -17,6 +19,7 @@ class EntryCard extends StatefulWidget {
     required this.category,
     required this.accountName,
     required this.date,
+    required this.index,
   }) : super(key: key);
 
   @override
