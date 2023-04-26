@@ -14,9 +14,38 @@ class AllEntries extends StatefulWidget {
 class _AllEntriesState extends State<AllEntries> {
 
   int filter = 0;
+  String filterKey = "";
+
+  List<String> categories = [
+    "Basic expenditure",
+    "Enterprise",
+    "Travelling",
+    "House",
+    "Health and beauty",
+    "Transport",
+    "Other",
+  ];
+
+  List<String> types = [
+    "Income",
+    "Expense",
+    "Transfer",
+  ];
+
+  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
+    return list.map((String item) {
+      return DropdownMenuItem<dynamic>(
+        value: item,
+        child: Text(item),
+      );
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    List<DropdownMenuItem<dynamic>> categoriesDMI = _dmi(categories);
+    List<DropdownMenuItem<dynamic>> typesDMI = _dmi(types);
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -120,9 +149,75 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () => setState(() => filter = 3),
+                              onPressed: () {
+                                if (filterKey == "") { //! temporary
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    backgroundColor: Palette.main,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(25),
+                                        topLeft: Radius.circular(25),
+                                      ),
+                                    ),
+                                    builder: (context) {
+                                      return SizedBox(
+                                        height: 300,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                          child: Column(
+                                            children: <Widget>[
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                "Filter by category",
+                                                style: TextStyle(
+                                                  color: Palette.font,
+                                                  fontSize: 30,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 20,
+                                                  right: 20,
+                                                  top: 10,
+                                                  bottom: 30,
+                                                ),
+                                                child: Divider(
+                                                  color: Palette.accent,
+                                                  thickness: 2,
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                child: DropdownButton(
+                                                  dropdownColor: Palette.background,
+                                                  value: categoriesDMI.first.value,
+                                                  items: categoriesDMI,
+                                                  onChanged: (item) {
+                                                    setState(() {
+                                                      filter = 3;
+                                                      filterKey = item;
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  isExpanded: true,
+                                                  style: TextStyle(
+                                                      color: Palette.textField,
+                                                      fontSize: 25
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  );
+                                }
+                              },
                               child: Text(
-                                "Type",
+                                "Category",
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: Palette.background,
@@ -138,9 +233,75 @@ class _AllEntriesState extends State<AllEntries> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Palette.accent,
                               ),
-                              onPressed: () => setState(() => filter = 4),
+                              onPressed: () {
+                                if (filterKey == "") { //! temporary
+                                  showModalBottomSheet(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      backgroundColor: Palette.main,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topRight: Radius.circular(25),
+                                          topLeft: Radius.circular(25),
+                                        ),
+                                      ),
+                                      builder: (context) {
+                                        return SizedBox(
+                                          height: 300,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            child: Column(
+                                              children: <Widget>[
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  "Filter by type",
+                                                  style: TextStyle(
+                                                    color: Palette.font,
+                                                    fontSize: 30,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.only(
+                                                    left: 20,
+                                                    right: 20,
+                                                    top: 10,
+                                                    bottom: 30,
+                                                  ),
+                                                  child: Divider(
+                                                    color: Palette.accent,
+                                                    thickness: 2,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                  child: DropdownButton(
+                                                    dropdownColor: Palette.background,
+                                                    value: typesDMI.first.value,
+                                                    items: typesDMI,
+                                                    onChanged: (item) {
+                                                      setState(() {
+                                                        filter = 4;
+                                                        filterKey = item;
+                                                      });
+                                                      Navigator.pop(context);
+                                                    },
+                                                    isExpanded: true,
+                                                    style: TextStyle(
+                                                        color: Palette.textField,
+                                                        fontSize: 25
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                  );
+                                }
+                              },
                               child: Text(
-                                "Category",
+                                "Type",
                                 style: TextStyle(
                                   fontSize: 10,
                                   color: Palette.background,
@@ -155,7 +316,10 @@ class _AllEntriesState extends State<AllEntries> {
                 ),
               ],
             ),
-            EntriesTable(filter: filter),
+            EntriesTable(
+              filter: filter,
+              filterKey: filterKey,
+            ),
           ],
         ),
       ),
@@ -167,12 +331,15 @@ class EntriesTable extends StatefulWidget {
 
   int numberOfEntries;
   int filter;
+  String filterKey;
 
   EntriesTable({Key? key,
     numberOfEntries,
-    filter})
+    filter,
+    filterKey})
       : numberOfEntries = numberOfEntries ?? -1,
         filter = filter ?? 0,
+        filterKey = filterKey ?? "",
         super(key: key);
 
 
@@ -207,12 +374,18 @@ class _EntriesTableState extends State<EntriesTable> {
     index < count && index < numberOfEntries;
     index++) {
       final arguments = {"index": index};
-      final type = await channel.invokeMethod("getEntryType", arguments);
-      final title = await channel.invokeMethod("getEntryTitle", arguments);
-      final amount = await channel.invokeMethod("getEntryAmount", arguments);
-      final category = await channel.invokeMethod("getEntryCategory", arguments);
-      final accountName = await channel.invokeMethod("getEntryAccountName", arguments);
-      final date = await channel.invokeMethod("getEntryDate", arguments);
+      final type = await channel
+          .invokeMethod("getEntryType", arguments);
+      final title = await channel
+          .invokeMethod("getEntryTitle", arguments);
+      final amount = await channel
+          .invokeMethod("getEntryAmount", arguments);
+      final category = await channel
+          .invokeMethod("getEntryCategory", arguments);
+      final accountName = await channel
+          .invokeMethod("getEntryAccountName", arguments);
+      final date = await channel
+          .invokeMethod("getEntryDate", arguments);
       final indexInMA = index;
 
       cards.add(EntryCard(
@@ -245,15 +418,32 @@ class _EntriesTableState extends State<EntriesTable> {
       ],
     )];
 
-    if (widget.filter == 1) cards.sort((a, b) => b.amount.compareTo(a.amount));
-    if (widget.filter == 2) cards.sort((a, b) => b.date.value.compareTo(a.date.value));
+    if (widget.filter == 1) {
+      cards.sort(
+              (a, b) => b.amount.compareTo(a.amount)
+      );
+    }
+    if (widget.filter == 2) {
+      cards.sort(
+              (a, b) => b.date.value.compareTo(a.date.value)
+      );
+    }
+    if (widget.filter == 3) {
+      cards = cards.where(
+              (card) => card.category == widget.filterKey
+      ).toList();
+    }
+    if (widget.filter == 4) {
+      cards = cards.where(
+              (card) => card.type == widget.filterKey
+      ).toList();
+    }
 
     List<Widget> filteredCards = [];
     int index = 0;
     for (EntryCard card in cards) {
 
       int indexSave = index;
-
       filteredCards.add(GestureDetector(
         onTap: () {
           showModalBottomSheet(

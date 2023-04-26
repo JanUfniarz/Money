@@ -72,10 +72,10 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "balanceSum":
-                                    double sum = accounts.stream()
+                                    String res = String.valueOf(
+                                            accounts.stream()
                                             .map(this::getValue)
-                                            .reduce(Double::sum).orElseThrow();
-                                    String res = String.valueOf(sum);
+                                            .reduce(Double::sum).orElseThrow());
                                     result.success(res);
                                     break;
 
