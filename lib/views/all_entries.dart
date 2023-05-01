@@ -16,6 +16,9 @@ class _AllEntriesState extends State<AllEntries> {
   int filter = 0;
   String filterKey = "";
 
+  int? superFilter;
+  String? superFilterKey;
+
   List<String> categories = [
     "Basic expenditure",
     "Enterprise",
@@ -41,8 +44,28 @@ class _AllEntriesState extends State<AllEntries> {
     }).toList();
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (ModalRoute.of(context)!.settings.arguments != null) {
+  //     final arguments = ModalRoute.of(context)!
+  //         .settings.arguments as Map<String, dynamic>;
+  //
+  //     superFilter = arguments["filter"];
+  //     superFilterKey = arguments["filterKey"];
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
+
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      final arguments = ModalRoute.of(context)!
+          .settings.arguments as Map<String, dynamic>;
+
+      superFilter = arguments["filter"];
+      superFilterKey = arguments["filterKey"];
+    }
 
     List<DropdownMenuItem<dynamic>> categoriesDMI = _dmi(categories);
     List<DropdownMenuItem<dynamic>> typesDMI = _dmi(types);
@@ -52,7 +75,7 @@ class _AllEntriesState extends State<AllEntries> {
       appBar: AppBar(
         backgroundColor: Palette.main,
         centerTitle: true,
-        title: const Text("All Entries"),
+        title: Text("All ${superFilterKey ?? ""} Entries"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -319,6 +342,8 @@ class _AllEntriesState extends State<AllEntries> {
             EntriesTable(
               filter: filter,
               filterKey: filterKey,
+              superFilter: superFilter,
+              superFilterKey: superFilterKey,
             ),
           ],
         ),
@@ -332,14 +357,20 @@ class EntriesTable extends StatefulWidget {
   int numberOfEntries;
   int filter;
   String filterKey;
+  String superFilterKey;
+  int superFilter;
 
   EntriesTable({Key? key,
     numberOfEntries,
     filter,
-    filterKey})
+    filterKey,
+    superFilter,
+    superFilterKey})
       : numberOfEntries = numberOfEntries ?? -1,
         filter = filter ?? 0,
         filterKey = filterKey ?? "",
+        superFilter = superFilter ??  0,
+        superFilterKey = superFilterKey ?? "",
         super(key: key);
 
 
@@ -363,6 +394,9 @@ class _EntriesTableState extends State<EntriesTable> {
   }
 
   Future<void> _loadData() async {
+
+    print("superFilter: ${widget.superFilter}\nsuperFilterKey: ${widget.superFilterKey}");
+
     int count = await channel.invokeMethod("getLengthOfEntries");
     final cards = <EntryCard>[];
 
@@ -418,6 +452,14 @@ class _EntriesTableState extends State<EntriesTable> {
       ],
     )];
 
+    //* Super filers
+    if (widget.superFilter == 5) {
+      cards = cards.where(
+              (card) => card.accountName == widget.superFilterKey
+      ).toList();
+    }
+
+    //* Filters
     if (widget.filter == 1) {
       cards.sort(
               (a, b) => b.amount.compareTo(a.amount)
@@ -436,6 +478,11 @@ class _EntriesTableState extends State<EntriesTable> {
     if (widget.filter == 4) {
       cards = cards.where(
               (card) => card.type == widget.filterKey
+      ).toList();
+    }
+    if (widget.filter == 5) {
+      cards = cards.where(
+              (card) => card.accountName == widget.filterKey
       ).toList();
     }
 
