@@ -105,11 +105,11 @@ class NewEntryButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         onPressed: () async {
-
           int accountCount =
-            await channel.invokeMethod("getLength");
+          await channel.invokeMethod("getLength");
 
-          if (accountCount != 0) {
+          if (((type == "Expense" || type == "Income") && accountCount > 0)
+              || ((type == "Transfer") && accountCount > 1)) {
             await Navigator.pushNamed(
               context,
               "/add_entry",

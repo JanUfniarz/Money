@@ -46,11 +46,11 @@ public class Converter {
 
         List<Account> allAccounts = singleton.allAccounts;
 
-        String idStr ="|" + id + "|";
-
         for (Account it : allAccounts) if (it.id == id) return it;
 
-        return new Account(idStr, -1);
+        return new Account(
+                "Deleted",
+                -1);
     }
 
     @TypeConverter
