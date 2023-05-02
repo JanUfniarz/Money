@@ -27,7 +27,7 @@ class _AddEntryState extends State<AddEntry> {
 
   List<DropdownMenuItem<dynamic>> accountNames = [];
 
-  List<String> categories = [
+  List<String> exCategories = [
     "Basic expenditure",
     "Enterprise",
     "Travelling",
@@ -37,27 +37,41 @@ class _AddEntryState extends State<AddEntry> {
     "Other",
   ];
 
+  List<String> inCategories = [
+    "Full time job",
+    "Part time job",
+    "Workers exploitation",
+    "Passive income",
+    "Other",
+  ];
+
   @override
   void initState() {
     super.initState();
     _getAccNames();
   }
 
-  @override
-  Widget build(BuildContext context) {
-
-    List<DropdownMenuItem<dynamic>> categoriesDMI = categories
-        .map((String item) {
+  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
+    return list.map((String item) {
       return DropdownMenuItem<dynamic>(
         value: item,
         child: Text(item),
       );
     }).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    type = ModalRoute.of(context)!
+        .settings.arguments as String;
+
+    List<DropdownMenuItem<dynamic>> categoriesDMI = type == "Expense"
+                      ? _dmi(exCategories)
+                      : _dmi(inCategories);
 
     selectedAccount ??= accountNames.first.value;
     selectedCategory ??= categoriesDMI.first.value;
-    type = ModalRoute.of(context)!
-        .settings.arguments as String;
+
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

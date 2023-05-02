@@ -176,6 +176,20 @@ public class MainActivity extends FlutterActivity {
                                         case "Transport":
                                             category = Category.TRANSPORT;
                                             break;
+
+                                        case "Full time job":
+                                            category = Category.FULL_TIME_JOB;
+                                            break;
+                                        case "Part time job":
+                                            category = Category.PART_TIME_JOB;
+                                            break;
+                                        case "Workers exploitation":
+                                            category = Category.WORKERS_EXPLOITATION;
+                                            break;
+                                        case "Passive income":
+                                            category = Category.PASSIVE_INCOME;
+                                            break;
+
                                         case "Other":
                                             category = Category.OTHER;
                                             break;
