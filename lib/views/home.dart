@@ -77,7 +77,7 @@ class _HomeState extends State<Home> {
               );
               Navigator.pushReplacementNamed(context, "/home");
             },
-            child: IgnorePointer(
+            child: const IgnorePointer(
               child: EntriesTable(
                 numberOfEntries: 5,
               ),

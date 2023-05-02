@@ -346,13 +346,13 @@ class _AllEntriesState extends State<AllEntries> {
 
 class EntriesTable extends StatefulWidget {
 
-  int numberOfEntries;
-  int filter;
-  String filterKey;
-  String superFilterKey;
-  int superFilter;
+  final int numberOfEntries;
+  final int filter;
+  final String filterKey;
+  final String superFilterKey;
+  final int superFilter;
 
-  EntriesTable({Key? key,
+  const EntriesTable({Key? key,
     numberOfEntries,
     filter,
     filterKey,
@@ -448,7 +448,9 @@ class _EntriesTableState extends State<EntriesTable> {
     //* Super filers
     if (widget.superFilter == 5) {
       cards = cards.where(
-              (card) => card.accountName.contains(widget.superFilterKey)
+              (card) => (card.accountName.contains("${widget.superFilterKey} ->")
+                  || card.accountName.contains("-> ${widget.superFilterKey}"))
+                  || card.accountName == widget.superFilterKey
       ).toList();
     }
 
@@ -475,7 +477,9 @@ class _EntriesTableState extends State<EntriesTable> {
     }
     if (widget.filter == 5) {
       cards = cards.where(
-              (card) => card.accountName.contains(widget.filterKey)
+              (card) => (card.accountName.contains("${widget.filterKey} ->")
+                  || card.accountName.contains("-> ${widget.filterKey}"))
+                  || card.accountName == widget.filterKey
       ).toList();
     }
 
