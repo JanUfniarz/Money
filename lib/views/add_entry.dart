@@ -73,7 +73,9 @@ class _AddEntryState extends State<AddEntry> {
 
     selectedAccount ??= accountNames.first.value;
     selectedCategory ??= categoriesDMI.first.value;
-    accountToTransfer ??= accountNames.elementAt(1).value;
+    if (type == "transfer") {
+      accountToTransfer ??= accountNames.elementAt(1).value;
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: false,

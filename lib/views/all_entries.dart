@@ -448,7 +448,7 @@ class _EntriesTableState extends State<EntriesTable> {
     //* Super filers
     if (widget.superFilter == 5) {
       cards = cards.where(
-              (card) => card.accountName == widget.superFilterKey
+              (card) => card.accountName.contains(widget.superFilterKey)
       ).toList();
     }
 
@@ -475,7 +475,7 @@ class _EntriesTableState extends State<EntriesTable> {
     }
     if (widget.filter == 5) {
       cards = cards.where(
-              (card) => card.accountName == widget.filterKey
+              (card) => card.accountName.contains(widget.filterKey)
       ).toList();
     }
 
