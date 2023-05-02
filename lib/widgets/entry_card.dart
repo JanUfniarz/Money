@@ -27,6 +27,13 @@ class EntryCard extends StatefulWidget {
 }
 
 class _EntryCardState extends State<EntryCard> with RestorationMixin {
+
+  Color _entryColor(String type) {
+    if (type == "Expense") return Palette.delete;
+    if (type == "Income") return Palette.accent;
+    return Palette.textField;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,8 +41,7 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         ItemBox(
-          color: widget.type == "Expense"
-              ? Palette.delete : Palette.accent,
+          color: _entryColor(widget.type),
           child: Text(
             _amountToStr(widget.amount),
             style: TextStyle(
@@ -71,8 +77,14 @@ class _EntryCardState extends State<EntryCard> with RestorationMixin {
   }
 
   String _amountToStr(double amount) {
-    String res = widget.type == "Expense"
-        ? "-" : "+";
+    String res;
+    if (widget.type == "Expense") {
+      res = "-";
+    } else if (widget.type == "Income") {
+      res = "+";
+    } else {
+      res = "";
+    }
     String amountStr = amount.toString();
     return res + amountStr;
   }

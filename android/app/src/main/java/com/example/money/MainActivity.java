@@ -154,6 +154,12 @@ public class MainActivity extends FlutterActivity {
                                         if (ac.name.equals(arguments.get("account")))
                                             account = ac;
 
+                                    //* account2
+                                    Account account2 = new Account("!!!", -1);
+                                    for (Account ac : accounts)
+                                        if (ac.name.equals(arguments.get("account2")))
+                                            account2 = ac;
+                                    if (arguments.get("account2").equals("#")) account2.name = "#";
 
                                     //*category
                                     Category category = Category.OTHER;
@@ -196,7 +202,8 @@ public class MainActivity extends FlutterActivity {
                                     }
 
                                     entry_db.entryDao().InsertAll(
-                                            new Entry(title, type, amount, date, account, category));
+                                            new Entry(title, type, amount, date,
+                                                    account, account2, category));
 
                                     break;
 
@@ -240,6 +247,13 @@ public class MainActivity extends FlutterActivity {
                                     result.success(entryAccountName);
                                     break;
 
+                                case "getEntryAccount2Name" :
+                                    String entryAccount2Name =
+                                            entries.get((int) arguments.get("index"))
+                                                    .account2.name;
+                                    result.success(entryAccount2Name);
+                                    break;
+
                                 case "getEntryDate" :
                                     String entryDate = Converter.dateToTimestamp(
                                             entries.get((int) arguments.get("index"))
@@ -280,10 +294,8 @@ public class MainActivity extends FlutterActivity {
                             value[0] += entry.amount;
                             break;
                         case EXPENSE:
-                            value[0] -= entry.amount;
-                            break;
                         case TRANSFER:
-                            // TODO implement transfer
+                            value[0] -= entry.amount;
                             break;
                         default:
                             throw new RuntimeException(
@@ -291,6 +303,9 @@ public class MainActivity extends FlutterActivity {
                             );
                     }
                 });
+        entries.stream()
+                .filter(entry -> entry.account2 == account)
+                .forEach(entry -> value[0] += entry.amount);
         return value[0];
     }
 

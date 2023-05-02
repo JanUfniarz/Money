@@ -35,6 +35,9 @@ public class Entry {
     @ColumnInfo(name = "account")
     public Account account;
 
+    @ColumnInfo(name = "account2")
+    public Account account2;
+
     @ColumnInfo(name = "category")
     public Category category;
 
@@ -43,6 +46,7 @@ public class Entry {
                  double amount,
                  Date date,
                  Account account,
+                 Account account2,
                  Category category
     ) {
         this.title = title;
@@ -50,6 +54,7 @@ public class Entry {
         this.amount = amount;
         this.date = date;
         this.account = account;
+        this.account2 = account2;
         this.category = category;
     }
 }

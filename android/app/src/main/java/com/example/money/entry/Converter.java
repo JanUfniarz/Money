@@ -39,24 +39,23 @@ public class Converter {
     }
 
     //* Account
-    //! Not working
     @TypeConverter
     public static Account fromId(int id) {
+        if (id == -1) return new Account("#", -1);
         Singleton singleton = Singleton.getInstance();
 
         List<Account> allAccounts = singleton.allAccounts;
 
-        String size ="|" + id + "|";
+        String idStr ="|" + id + "|";
 
-        //Account account = new Account("Not Found", -1);
         for (Account it : allAccounts) if (it.id == id) return it;
 
-        //! return db.accountDao().getById(id);
-        return new Account(size, -1);
+        return new Account(idStr, -1);
     }
 
     @TypeConverter
     public static int accountToId(Account account) {
+        if (account.name == "#") return -1;
         return account.id;
     }
 }

@@ -25,6 +25,8 @@ class _AddEntryState extends State<AddEntry> {
   String? selectedAccount;
   String? selectedCategory;
 
+  String? accountToTransfer;
+
   List<DropdownMenuItem<dynamic>> accountNames = [];
 
   List<String> exCategories = [
@@ -71,7 +73,7 @@ class _AddEntryState extends State<AddEntry> {
 
     selectedAccount ??= accountNames.first.value;
     selectedCategory ??= categoriesDMI.first.value;
-
+    accountToTransfer ??= accountNames.elementAt(1).value;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -109,27 +111,73 @@ class _AddEntryState extends State<AddEntry> {
               keyboardType: TextInputType.number,
               onChanged: (text) => amount = double.parse(text),
             ),
-            DropdownButton(
-              dropdownColor: Palette.background,
-              value: selectedAccount,
-              items: accountNames,
-              onChanged: (item) => setState(() => selectedAccount = item),
-              isExpanded: true,
-              style: TextStyle(
-                color: Palette.textField,
-                fontSize: 25
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  type == "Transfer" ? "From:" : "Account:",
+                  style: TextStyle(
+                    color: Palette.accent
+                  ),
+                ),
+                DropdownButton(
+                  dropdownColor: Palette.background,
+                  value: selectedAccount,
+                  items: accountNames,
+                  onChanged: (item) => setState(() => selectedAccount = item),
+                  isExpanded: true,
+                  style: TextStyle(
+                    color: Palette.textField,
+                    fontSize: 25
+                  ),
+                ),
+              ],
             ),
-            DropdownButton(
-              dropdownColor: Palette.background,
-              value: selectedCategory,
-              items: categoriesDMI,
-              onChanged: (item) => setState(() => selectedCategory = item),
-              isExpanded: true,
-              style: TextStyle(
-                color: Palette.textField,
-                fontSize: 25
-              ),
+            type == "Transfer"
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "to:",
+                      style: TextStyle(
+                          color: Palette.accent
+                      ),
+                    ),
+                    DropdownButton(
+                      dropdownColor: Palette.background,
+                      value: accountToTransfer,
+                      items: accountNames,
+                      onChanged: (item) => setState(() => accountToTransfer = item),
+                      isExpanded: true,
+                      style: TextStyle(
+                          color: Palette.textField,
+                          fontSize: 25
+                      ),
+                    ),
+                  ],
+                )
+                : const SizedBox(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Category:",
+                  style: TextStyle(
+                      color: Palette.accent
+                  ),
+                ),
+                DropdownButton(
+                  dropdownColor: Palette.background,
+                  value: selectedCategory,
+                  items: categoriesDMI,
+                  onChanged: (item) => setState(() => selectedCategory = item),
+                  isExpanded: true,
+                  style: TextStyle(
+                    color: Palette.textField,
+                    fontSize: 25
+                  ),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -161,6 +209,7 @@ class _AddEntryState extends State<AddEntry> {
                     "account" : selectedAccount,
                     "category" : selectedCategory,
                     "date" : _dateToString(selectedDate),
+                    "account2" : type == "Transfer" ? accountToTransfer : "#",
                   };
 
                   channel.invokeMethod("addEntry", arguments);
@@ -205,7 +254,6 @@ class _AddEntryState extends State<AddEntry> {
       index++;
     }
 
-    //# GPT
     setState(() {
       accountNames = temp.map((String item) {
         return DropdownMenuItem<dynamic>(

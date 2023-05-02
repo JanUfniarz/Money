@@ -26,6 +26,10 @@ class _AllEntriesState extends State<AllEntries> {
     "House",
     "Health and beauty",
     "Transport",
+    "Full time job",
+    "Part time job",
+    "Workers exploitation",
+    "Passive income",
     "Other",
   ];
 
@@ -43,18 +47,6 @@ class _AllEntriesState extends State<AllEntries> {
       );
     }).toList();
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   if (ModalRoute.of(context)!.settings.arguments != null) {
-  //     final arguments = ModalRoute.of(context)!
-  //         .settings.arguments as Map<String, dynamic>;
-  //
-  //     superFilter = arguments["filter"];
-  //     superFilterKey = arguments["filterKey"];
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -394,9 +386,6 @@ class _EntriesTableState extends State<EntriesTable> {
   }
 
   Future<void> _loadData() async {
-
-    print("superFilter: ${widget.superFilter}\nsuperFilterKey: ${widget.superFilterKey}");
-
     int count = await channel.invokeMethod("getLengthOfEntries");
     final cards = <EntryCard>[];
 
@@ -407,20 +396,24 @@ class _EntriesTableState extends State<EntriesTable> {
     int index = 0;
     index < count && index < numberOfEntries;
     index++) {
-      final arguments = {"index": index};
-      final type = await channel
+      Map<String, dynamic> arguments = {"index": index};
+      String type = await channel
           .invokeMethod("getEntryType", arguments);
-      final title = await channel
+      String title = await channel
           .invokeMethod("getEntryTitle", arguments);
-      final amount = await channel
+      double amount = await channel
           .invokeMethod("getEntryAmount", arguments);
-      final category = await channel
+      String category = await channel
           .invokeMethod("getEntryCategory", arguments);
-      final accountName = await channel
+      String accountName = await channel
           .invokeMethod("getEntryAccountName", arguments);
-      final date = await channel
+      String date = await channel
           .invokeMethod("getEntryDate", arguments);
-      final indexInMA = index;
+      int indexInMA = index;
+      String account2Name = await channel
+          .invokeMethod("getEntryAccount2Name", arguments);
+
+      if (account2Name != "#") accountName = "$accountName -> $account2Name";
 
       cards.add(EntryCard(
         type: type,
