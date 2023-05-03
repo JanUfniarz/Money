@@ -105,10 +105,9 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "changeValue":
-                                    //! Not working
-                                    // TODO make reverse getValue
                                     Account toChangeV = accounts.get((int) arguments.get("index"));
-                                    toChangeV.value = (double) arguments.get("newValue");
+                                    setValue(toChangeV,
+                                            (double) arguments.get("newValue"));
                                     account_db.accountDao().updateAccounts(toChangeV);
                                     break;
 
@@ -307,6 +306,32 @@ public class MainActivity extends FlutterActivity {
                 .filter(entry -> entry.account2 == account)
                 .forEach(entry -> value[0] += entry.amount);
         return value[0];
+    }
+
+    private void setValue(Account account, double finalValue) {
+        final double[] value = {finalValue};
+
+        entries.stream()
+                .filter(entry -> entry.account == account)
+                .forEach(entry -> {
+                    switch (entry.type) {
+                        case INCOME:
+                            value[0] -= entry.amount;
+                            break;
+                        case EXPENSE:
+                        case TRANSFER:
+                            value[0] += entry.amount;
+                            break;
+                        default:
+                            throw new RuntimeException(
+                                    "Unknown entry type: " + entry.type
+                            );
+                    }
+                });
+        entries.stream()
+                .filter(entry -> entry.account2 == account)
+                .forEach(entry -> value[0] -= entry.amount);
+        account.value = value[0];
     }
 
     private static String toFirstLetterUpperCase(String input) {
