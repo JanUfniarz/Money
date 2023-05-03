@@ -11,4 +11,6 @@ class Palette {
 
   static Color textField = const Color(0xffAACFE2);
   static Color delete = const Color(0xffb03421);
+
+  static Color main2Clicked = const Color(0xff88771a);
 }

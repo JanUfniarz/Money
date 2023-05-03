@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/widgets/graph_circular.dart';
 
 import '../palette.dart';
 import '../widgets/balance_card.dart';
@@ -27,63 +28,76 @@ class _HomeState extends State<Home> {
         ),
         centerTitle: true,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          const BalanceCard(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-            child: Divider(
-              color: Palette.accent,
-              thickness: 2,
-            ),
-          ),
-          Center(
-            child: Text(
-              "Add new:",
-              style: TextStyle(
-                color: Palette.font,
-                fontSize: 25,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            const BalanceCard(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: Divider(
+                color: Palette.accent,
+                thickness: 2,
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const <Widget>[
-                NewEntryButton(type: "Income"),
-                NewEntryButton(type: "Expense"),
-                NewEntryButton(type: "Transfer")
-              ],
-            ),
-          ),
-          Center(
-            child: Text(
-              "Entries:",
-              style: TextStyle(
-                color: Palette.font,
-                fontSize: 25,
+            Center(
+              child: Text(
+                "Add new:",
+                style: TextStyle(
+                  color: Palette.font,
+                  fontSize: 25,
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              await Navigator.pushNamed(
-                context,
-                "/all_entries",
-              );
-              Navigator.pushReplacementNamed(context, "/home");
-            },
-            child: const IgnorePointer(
-              child: EntriesTable(
-                numberOfEntries: 5,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const <Widget>[
+                  NewEntryButton(type: "Income"),
+                  NewEntryButton(type: "Expense"),
+                  NewEntryButton(type: "Transfer")
+                ],
               ),
             ),
-          ),
-        ],
+            Center(
+              child: Text(
+                "Entries:",
+                style: TextStyle(
+                  color: Palette.font,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  "/all_entries",
+                );
+                Navigator.pushReplacementNamed(context, "/home");
+              },
+              child: const IgnorePointer(
+                child: EntriesTable(
+                  numberOfEntries: 5,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+              child: Divider(
+                color: Palette.accent,
+                thickness: 2,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(10),
+              child: CircularGraph(),
+            ),
+          ],
+        ),
       ),
     );
   }

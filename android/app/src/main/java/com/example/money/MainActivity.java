@@ -121,18 +121,8 @@ public class MainActivity extends FlutterActivity {
                                     String title = (String) arguments.get("title");
 
                                     //* type
-                                    Type type = Type.INCOME;
-                                    switch ((String) arguments.get("type")) {
-                                        case "Income":
-                                            type = Type.INCOME;
-                                            break;
-                                        case "Expense":
-                                            type = Type.EXPENSE;
-                                            break;
-                                        case "Transfer":
-                                            type = Type.TRANSFER;
-                                            break;
-                                    }
+                                    Type type = strToType(
+                                            (String) arguments.get("type"));
 
                                     //* amount
                                     double amount = (double) arguments.get("amount");
@@ -161,44 +151,8 @@ public class MainActivity extends FlutterActivity {
                                     if (arguments.get("account2").equals("#")) account2.name = "#";
 
                                     //*category
-                                    Category category = Category.OTHER;
-                                    switch ((String) arguments.get("category")) {
-                                        case "Basic expenditure":
-                                            category = Category.BASIC_EXPENDITURE;
-                                            break;
-                                        case "Enterprise":
-                                            category = Category.ENTERPRISE;
-                                            break;
-                                        case "Travelling":
-                                            category = Category.TRAVELLING;
-                                            break;
-                                        case "House":
-                                            category = Category.HOUSE;
-                                            break;
-                                        case "Health and beauty":
-                                            category = Category.HEALTH_AND_BEAUTY;
-                                            break;
-                                        case "Transport":
-                                            category = Category.TRANSPORT;
-                                            break;
-
-                                        case "Full time job":
-                                            category = Category.FULL_TIME_JOB;
-                                            break;
-                                        case "Part time job":
-                                            category = Category.PART_TIME_JOB;
-                                            break;
-                                        case "Workers exploitation":
-                                            category = Category.WORKERS_EXPLOITATION;
-                                            break;
-                                        case "Passive income":
-                                            category = Category.PASSIVE_INCOME;
-                                            break;
-
-                                        case "Other":
-                                            category = Category.OTHER;
-                                            break;
-                                    }
+                                    Category category = strToCategory(
+                                            (String) arguments.get("category"));
 
                                     entry_db.entryDao().InsertAll(
                                             new Entry(title, type, amount, date,
@@ -266,10 +220,80 @@ public class MainActivity extends FlutterActivity {
                                                     (int) arguments.get("index")
                                             ));
                                     break;
+
+                                case "categorySum" :
+                                    double categorySum = entries.stream()
+                                            .filter(entry -> entry.category == strToCategory(
+                                                    (String) arguments.get("category")))
+                                            .filter(entry -> entry.type == strToType(
+                                                    (String) arguments.get("type")))
+                                            .map(entry -> entry.amount)
+                                            .reduce(Double::sum)
+                                            .orElse(0.0);
+                                    result.success(categorySum);
+                                    break;
                             }
                             reload(account_db, entry_db);
                         }
                 );
+    }
+
+    private Type strToType(String typeStr) {
+        Type type = Type.INCOME;
+        switch (typeStr) {
+            case "Income":
+                type = Type.INCOME;
+                break;
+            case "Expense":
+                type = Type.EXPENSE;
+                break;
+            case "Transfer":
+                type = Type.TRANSFER;
+                break;
+        }
+        return type;
+    }
+
+    private Category strToCategory(String categoryStr) {
+        Category category = Category.OTHER;
+        switch (categoryStr) {
+            case "Basic expenditure":
+                category = Category.BASIC_EXPENDITURE;
+                break;
+            case "Enterprise":
+                category = Category.ENTERPRISE;
+                break;
+            case "Travelling":
+                category = Category.TRAVELLING;
+                break;
+            case "House":
+                category = Category.HOUSE;
+                break;
+            case "Health and beauty":
+                category = Category.HEALTH_AND_BEAUTY;
+                break;
+            case "Transport":
+                category = Category.TRANSPORT;
+                break;
+
+            case "Full time job":
+                category = Category.FULL_TIME_JOB;
+                break;
+            case "Part time job":
+                category = Category.PART_TIME_JOB;
+                break;
+            case "Workers exploitation":
+                category = Category.WORKERS_EXPLOITATION;
+                break;
+            case "Passive income":
+                category = Category.PASSIVE_INCOME;
+                break;
+
+            case "Other":
+                category = Category.OTHER;
+                break;
+        }
+        return category;
     }
 
     private void reload(AccountDatabase account_db,
@@ -308,6 +332,7 @@ public class MainActivity extends FlutterActivity {
         return value[0];
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setValue(Account account, double finalValue) {
         final double[] value = {finalValue};
 
@@ -334,6 +359,7 @@ public class MainActivity extends FlutterActivity {
         account.value = value[0];
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private static String toFirstLetterUpperCase(String input) {
         if (input == null || input.isEmpty()) return input;
 
