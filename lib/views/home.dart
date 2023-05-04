@@ -4,6 +4,7 @@ import 'package:money/widgets/graph_circular.dart';
 
 import '../palette.dart';
 import '../widgets/balance_card.dart';
+import '../widgets/graph_linear.dart';
 import 'all_entries.dart';
 
 class Home extends StatefulWidget {
@@ -96,6 +97,13 @@ class _HomeState extends State<Home> {
               padding: EdgeInsets.all(10),
               child: CircularGraph(),
             ),
+            BaseLinearGraph(
+                data: [
+                  ChartData(xValue: "2023.05.01", yValue: 760),
+                  ChartData(xValue: "2023.05.02", yValue: 700),
+                  ChartData(xValue: "2023.05.03", yValue: 750),
+                ]
+            )
           ],
         ),
       ),
