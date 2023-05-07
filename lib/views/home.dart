@@ -35,13 +35,9 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const BalanceCard(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Divider(
-                color: Palette.accent,
-                thickness: 2,
-              ),
-            ),
+            const MyDivider(),
+            const LinearGraph(),
+            const MyDivider(),
             Center(
               child: Text(
                 "Add new:",
@@ -64,7 +60,7 @@ class _HomeState extends State<Home> {
             ),
             Center(
               child: Text(
-                "Entries:",
+                "Entries",
                 style: TextStyle(
                   color: Palette.font,
                   fontSize: 25,
@@ -86,26 +82,30 @@ class _HomeState extends State<Home> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-              child: Divider(
-                color: Palette.accent,
-                thickness: 2,
-              ),
-            ),
+            const MyDivider(),
             const Padding(
               padding: EdgeInsets.all(10),
               child: CircularGraph(),
             ),
-            BaseLinearGraph(
-                data: [
-                  ChartData(xValue: "2023.05.01", yValue: 760),
-                  ChartData(xValue: "2023.05.02", yValue: 700),
-                  ChartData(xValue: "2023.05.03", yValue: 750),
-                ]
-            )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MyDivider extends StatelessWidget {
+  const MyDivider({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+      child: Divider(
+        color: Palette.accent,
+        thickness: 2,
       ),
     );
   }

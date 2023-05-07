@@ -232,6 +232,14 @@ public class MainActivity extends FlutterActivity {
                                             .orElse(0.0);
                                     result.success(categorySum);
                                     break;
+
+                                case "getInitValueSum" :
+                                    double initValueSum = accounts.stream()
+                                            .map(a -> a.value)
+                                            .reduce(Double::sum)
+                                            .orElse(0.0);
+                                    result.success(initValueSum);
+                                    break;
                             }
                             reload(account_db, entry_db);
                         }
