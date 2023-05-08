@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             const BalanceCard(),
             const MyDivider(),
-            const LinearGraph(account: "jeden"),
+            const LinearGraph(),
             const MyDivider(),
             Center(
               child: Text(

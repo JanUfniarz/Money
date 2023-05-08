@@ -30,7 +30,9 @@ public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.flutter.balance_card/MainActivity";
 
     private List<Account> accounts = new ArrayList<>();
+    private AccountDatabase account_db;
     private  List<Entry> entries = new ArrayList<>();
+    private EntryDatabase entry_db;
 
     private final Singleton singleton = Singleton.getInstance();
 
@@ -39,19 +41,19 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-        AccountDatabase account_db = Room.databaseBuilder(
+        account_db = Room.databaseBuilder(
                 getApplicationContext(),
                 AccountDatabase.class,
                 "Account_database")
                 .allowMainThreadQueries().build();
 
-        EntryDatabase entry_db = Room.databaseBuilder(
+        entry_db = Room.databaseBuilder(
                         getApplicationContext(),
                         EntryDatabase.class,
                         "Entry_database")
                 .allowMainThreadQueries().build();
 
-        reload(account_db, entry_db);
+        reload();
 
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
@@ -72,30 +74,26 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "balanceSum":
-                                    String res = String.valueOf(
+                                    result.success(String.valueOf(
                                             accounts.stream()
-                                            .map(this::getValue)
-                                            .reduce(Double::sum).orElseThrow());
-                                    result.success(res);
+                                                    .map(this::getValue)
+                                                    .reduce(Double::sum)
+                                                    .orElseThrow()));
                                     break;
 
                                 case "getName":
-                                    String name = (accounts
+                                    result.success((accounts
                                             .get((int) arguments.get("index")))
-                                            .name;
-                                    result.success(name);
+                                            .name);
                                     break;
 
                                 case "getValue":
-                                    Account accountToGetValue = accounts
-                                            .get((int) arguments.get("index"));
-                                    double value = getValue(accountToGetValue);
-                                    result.success(value);
+                                    result.success(getValue(accounts
+                                            .get((int) arguments.get("index"))));
                                     break;
 
                                 case "getLength":
-                                    int len = accounts.size();
-                                    result.success(len);
+                                    result.success(accounts.size());
                                     break;
 
                                 case "changeName":
@@ -117,95 +115,53 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addEntry":
-                                    //* title
-                                    String title = (String) arguments.get("title");
-
-                                    //* type
-                                    Type type = strToType(
-                                            (String) arguments.get("type"));
-
-                                    //* amount
-                                    double amount = (double) arguments.get("amount");
-
-                                    //* date
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                                    Date date;
-
-                                    try {
-                                        date = sdf.parse((String) arguments.get("date"));
-                                    } catch (ParseException e) {
-                                        throw new RuntimeException(e);
-                                    }
-
-                                    //* account
-                                    Account account = accByName((String) arguments.get("account"));
-
-                                    //* account2
-                                    Account account2 = accByName((String) arguments.get("account2"));
-                                    if (arguments.get("account2").equals("#")) account2.name = "#";
-
-                                    //*category
-                                    Category category = strToCategory(
-                                            (String) arguments.get("category"));
-
-                                    entry_db.entryDao().InsertAll(
-                                            new Entry(title, type, amount, date,
-                                                    account, account2, category));
-
+                                    addEntry(arguments);
                                     break;
 
                                 case "getLengthOfEntries" :
-                                    int len2 = entries.size();
-                                    result.success(len2);
+                                    result.success(entries.size());
                                     break;
 
                                 case "getEntryType" :
-                                    String entryType = toFirstLetterUpperCase(
+                                    result.success(toFirstLetterUpperCase(
                                             entries.get((int) arguments.get("index"))
-                                                    .type.toString());
-                                    result.success(entryType);
+                                                    .type.toString()));
                                     break;
 
                                 case "getEntryTitle" :
-                                    String entryTitle =
-                                            entries.get((int) arguments.get("index"))
-                                                    .title;
-                                    result.success(entryTitle);
+                                    result.success(entries.get(
+                                            (int) arguments.get("index"))
+                                            .title);
                                     break;
 
                                 case "getEntryAmount" :
-                                    double entryAmount =
-                                            entries.get((int) arguments.get("index"))
-                                                    .amount;
-                                    result.success(entryAmount);
+                                    result.success(entries.get(
+                                            (int) arguments.get("index"))
+                                            .amount);
                                     break;
 
                                 case "getEntryCategory" :
-                                    String entryCategory = toFirstLetterUpperCase(
+                                    result.success(toFirstLetterUpperCase(
                                             entries.get((int) arguments.get("index"))
-                                                    .category.toString());
-                                    result.success(entryCategory);
+                                                    .category.toString()));
                                     break;
 
                                 case "getEntryAccountName" :
-                                    String entryAccountName =
-                                            entries.get((int) arguments.get("index"))
-                                                    .account.name;
-                                    result.success(entryAccountName);
+                                    result.success(entries.get(
+                                            (int) arguments.get("index"))
+                                            .account.name);
                                     break;
 
                                 case "getEntryAccount2Name" :
-                                    String entryAccount2Name =
-                                            entries.get((int) arguments.get("index"))
-                                                    .account2.name;
-                                    result.success(entryAccount2Name);
+                                    result.success(entries.get(
+                                            (int) arguments.get("index"))
+                                            .account2.name);
                                     break;
 
                                 case "getEntryDate" :
-                                    String entryDate = Converter.dateToTimestamp(
+                                    result.success(Converter.dateToTimestamp(
                                             entries.get((int) arguments.get("index"))
-                                                    .date);
-                                    result.success(entryDate);
+                                                    .date));
                                     break;
 
                                 case "deleteEntry" :
@@ -216,35 +172,69 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "categorySum" :
-                                    double categorySum = entries.stream()
+                                    result.success(entries.stream()
                                             .filter(entry -> entry.category == strToCategory(
                                                     (String) arguments.get("category")))
                                             .filter(entry -> entry.type == strToType(
                                                     (String) arguments.get("type")))
                                             .map(entry -> entry.amount)
                                             .reduce(Double::sum)
-                                            .orElse(0.0);
-                                    result.success(categorySum);
+                                            .orElse(0.0));
                                     break;
 
                                 case "getInitValueSum" :
-                                    double initValueSum = accounts.stream()
+                                    result.success(accounts.stream()
                                             .map(a -> a.value)
                                             .reduce(Double::sum)
-                                            .orElse(0.0);
-                                    result.success(initValueSum);
+                                            .orElse(0.0));
                                     break;
 
                                 case "getInitialValue" :
-//                                    double initValue = accByName((String) arguments.get("account"))
-//                                            .value;
-                                    result.success(accByName((String) arguments.get("account"))
+                                    result.success(accByName(
+                                            (String) arguments.get("account"))
                                             .value);
                                     break;
                             }
-                            reload(account_db, entry_db);
+                            reload();
                         }
                 );
+    }
+
+    private void addEntry(Map<String, Object> arguments) {
+        //* title
+        String title = (String) arguments.get("title");
+
+        //* type
+        Type type = strToType(
+                (String) arguments.get("type"));
+
+        //* amount
+        double amount = (double) arguments.get("amount");
+
+        //* date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date;
+
+        try {
+            date = sdf.parse((String) arguments.get("date"));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
+        //* account
+        Account account = accByName((String) arguments.get("account"));
+
+        //* account2
+        Account account2 = accByName((String) arguments.get("account2"));
+        if (arguments.get("account2").equals("#")) account2.name = "#";
+
+        //*category
+        Category category = strToCategory(
+                (String) arguments.get("category"));
+
+        entry_db.entryDao().InsertAll(
+                new Entry(title, type, amount, date,
+                        account, account2, category));
     }
 
     private Account accByName(String name) {
@@ -312,8 +302,7 @@ public class MainActivity extends FlutterActivity {
         return category;
     }
 
-    private void reload(AccountDatabase account_db,
-                        EntryDatabase entry_db) {
+    private void reload() {
         accounts = account_db.accountDao().getAllAccounts();
         singleton.allAccounts = accounts;
 
