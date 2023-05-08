@@ -31,10 +31,12 @@ class _LinearGraphState extends State<LinearGraph> {
     List<ChartData> data = [];
 
     double initialValue = await channel.invokeMethod("getInitValueSum");
+    print("Initial value: $initialValue");
     if(widget.account != null) {
       initialValue = await channel
           .invokeMethod("getInitialValue", {"account" : widget.account});
     }
+    print("Initial value jeden: $initialValue");
 
     data.add(ChartData(date: "0", value: initialValue));
 

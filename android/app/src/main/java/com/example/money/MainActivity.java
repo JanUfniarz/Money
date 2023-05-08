@@ -138,16 +138,10 @@ public class MainActivity extends FlutterActivity {
                                     }
 
                                     //* account
-                                    Account account = new Account("!!!", -1);
-                                    for (Account ac : accounts)
-                                        if (ac.name.equals(arguments.get("account")))
-                                            account = ac;
+                                    Account account = accByName((String) arguments.get("account"));
 
                                     //* account2
-                                    Account account2 = new Account("!!!", -1);
-                                    for (Account ac : accounts)
-                                        if (ac.name.equals(arguments.get("account2")))
-                                            account2 = ac;
+                                    Account account2 = accByName((String) arguments.get("account2"));
                                     if (arguments.get("account2").equals("#")) account2.name = "#";
 
                                     //*category
@@ -240,10 +234,24 @@ public class MainActivity extends FlutterActivity {
                                             .orElse(0.0);
                                     result.success(initValueSum);
                                     break;
+
+                                case "getInitialValue" :
+//                                    double initValue = accByName((String) arguments.get("account"))
+//                                            .value;
+                                    result.success(accByName((String) arguments.get("account"))
+                                            .value);
+                                    break;
                             }
                             reload(account_db, entry_db);
                         }
                 );
+    }
+
+    private Account accByName(String name) {
+        for (Account ac : accounts)
+            if (ac.name.equals(name))
+                return ac;
+        return new Account("!!!", -1);
     }
 
     private Type strToType(String typeStr) {
