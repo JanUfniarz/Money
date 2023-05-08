@@ -3,6 +3,7 @@ import 'package:money/palette.dart';
 
 import 'package:flutter/services.dart';
 
+import '../widgets/graph_linear.dart';
 import 'all_entries.dart';
 
 class AccountView extends StatefulWidget {
@@ -436,6 +437,7 @@ class _AccountViewState extends State<AccountView> {
                 ),
               ),
             ),
+            LinearGraph(account: name),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () async {
