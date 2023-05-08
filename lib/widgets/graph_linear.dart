@@ -5,62 +5,39 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../palette.dart';
 
 class LinearGraph extends StatefulWidget {
-  const LinearGraph({Key? key}) : super(key: key);
+
+  final String? account;
+
+  const LinearGraph({this.account, Key? key}) : super(key: key);
 
   @override
   State<LinearGraph> createState() => _LinearGraphState();
 }
 
 class _LinearGraphState extends State<LinearGraph> {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Palette.background,
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Balance over time",
-            style: TextStyle(
-              fontSize: 25,
-              color: Palette.font,
-            ),
-          ),
-          EnLinearGraph(),
-        ],
-      ),
-    );
-  }
-}
-
-
-class EnLinearGraph extends StatefulWidget {
-  const EnLinearGraph({Key? key}) : super(key: key);
-
-  @override
-  State<EnLinearGraph> createState() => _EnLinearGraphState();
-}
-
-class _EnLinearGraphState extends State<EnLinearGraph> {
-
   static const channel = MethodChannel(
       "com.flutter.balance_card/MainActivity"
   );
 
   List<ChartData> data = [];
-  
+
   @override
   void initState() {
     super.initState();
     _loadData();
   }
-  
+
   Future<void> _loadData() async {
     List<ChartData> data = [];
 
     double initialValue = await channel.invokeMethod("getInitValueSum");
+    if(widget.account != null) {
+      initialValue = await channel
+          .invokeMethod("getInitialValue", {"account" : widget.account});
+    }
 
     data.add(ChartData(date: "0", value: initialValue));
-    
+
     int entriesSize = await channel.invokeMethod("getLengthOfEntries");
     double value = initialValue;
     for (int it = entriesSize - 1; it >= 0; it--) {
@@ -77,27 +54,35 @@ class _EnLinearGraphState extends State<EnLinearGraph> {
       if (type == "Expense") amount -= 2 * amount;
       value += amount;
 
-      //? if (type == "Expense") {
-      //   value -= amount;
-      // } else if (type == "Income") {
-      //   value += amount;
-      //? }
-
-      if (type != "Transfer" && account != "Deleted") {
+      if ((type != "Transfer" && account != "Deleted")
+          && ((widget.account == null) || (account == widget.account))) {
         data.add(ChartData(date: date, value: value));
       }
-
     }
 
-      data.sort((a, b) => int.parse(a.date.replaceAll(".", ""))
-          .compareTo(int.parse(b.date.replaceAll(".", ""))));
+    data.sort((a, b) => int.parse(a.date.replaceAll(".", ""))
+        .compareTo(int.parse(b.date.replaceAll(".", ""))));
 
     setState(() => this.data = data);
   }
-  
   @override
   Widget build(BuildContext context) {
-    return BaseLinearGraph(data: data);
+    return Card(
+      shadowColor: Palette.background,
+      color: Palette.background,
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Balance over time",
+            style: TextStyle(
+              fontSize: 25,
+              color: Palette.font,
+            ),
+          ),
+          BaseLinearGraph(data: data),
+        ],
+      ),
+    );
   }
 }
 
