@@ -42,7 +42,7 @@ class _AddEntryState extends State<AddEntry> {
   List<String> inCategories = [
     "Full time job",
     "Part time job",
-    "Workers exploitation",
+    "Exploitation",
     "Passive income",
     "Other",
   ];

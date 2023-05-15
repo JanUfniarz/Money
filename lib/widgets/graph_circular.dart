@@ -111,7 +111,7 @@ class _EnCircularGraphState extends State<EnCircularGraph> {
     List<String> inCategories = [
       "Full time job",
       "Part time job",
-      "Workers exploitation",
+      "Exploitation",
       "Passive income",
       "Other",
     ];

@@ -14,6 +14,6 @@ public enum Category {
     //* Income categories
     FULL_TIME_JOB,
     PART_TIME_JOB,
-    WORKERS_EXPLOITATION,
+    EXPLOITATION,
     PASSIVE_INCOME,
 }

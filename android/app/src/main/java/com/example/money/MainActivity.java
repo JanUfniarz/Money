@@ -288,8 +288,8 @@ public class MainActivity extends FlutterActivity {
             case "Part time job":
                 category = Category.PART_TIME_JOB;
                 break;
-            case "Workers exploitation":
-                category = Category.WORKERS_EXPLOITATION;
+            case "Exploitation":
+                category = Category.EXPLOITATION;
                 break;
             case "Passive income":
                 category = Category.PASSIVE_INCOME;

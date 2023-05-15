@@ -28,7 +28,7 @@ class _AllEntriesState extends State<AllEntries> {
     "Transport",
     "Full time job",
     "Part time job",
-    "Workers exploitation",
+    "Exploitation",
     "Passive income",
     "Other",
   ];
@@ -410,6 +410,8 @@ class _EntriesTableState extends State<EntriesTable> {
       String account2Name = await channel
           .invokeMethod("getEntryAccount2Name", arguments);
 
+      date = date.replaceAll("-", ".");
+
       if (account2Name != "#") accountName = "$accountName -> $account2Name";
 
       cards.add(EntryCard(
@@ -418,7 +420,7 @@ class _EntriesTableState extends State<EntriesTable> {
         amount: amount,
         category: category,
         accountName: accountName,
-        date: _convertStringToDate(date),
+        date: date,
         index: indexInMA,
       ));
     }
@@ -428,19 +430,7 @@ class _EntriesTableState extends State<EntriesTable> {
   Widget build(BuildContext context) {
 
     List<EntryCard> cards = entryCards;
-    //? List<Widget> finalCards = [];
-
-    //? List<Widget> labelRow = [Row(
-    //   mainAxisAlignment: MainAxisAlignment.center,
-    //   crossAxisAlignment: CrossAxisAlignment.center,
-    //   children: const <Widget>[
-    //     LabelBox(label: "Amount"),
-    //     LabelBox(label: "Date"),
-    //     LabelBox(label: "Title"),
-    //     LabelBox(label: "Account"),
-    //     LabelBox(label: "Category"),
-    //   ],
-    //? )];
+    List<Widget> finalCards = [];
 
     //* Super filers
     if (widget.superFilter == 5) {
@@ -459,7 +449,8 @@ class _EntriesTableState extends State<EntriesTable> {
     }
     if (widget.filter == 2) {
       cards.sort(
-              (a, b) => b.date.value.compareTo(a.date.value)
+              (a, b) => int.parse(b.date.replaceAll(".", ""))
+                  .compareTo(int.parse(a.date.replaceAll(".", "")))
       );
     }
     if (widget.filter == 3) {
@@ -480,177 +471,251 @@ class _EntriesTableState extends State<EntriesTable> {
       ).toList();
     }
 
-    List<Widget> filteredCards = [];
+    List<_DateKeeper> filteredCards = [];
     int index = 0;
     for (EntryCard card in cards) {
       if (index < (widget.numberOfEntries == -1
           ? cards.length : widget.numberOfEntries)) {
         int indexSave = index;
-        filteredCards.add(GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                backgroundColor: Palette.main,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(25),
-                    topLeft: Radius.circular(25),
-                  ),
-                ),
-                builder: (context) {
-                  return SizedBox(
-                    height: 300,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 10),
-                          Text(
-                            "Delete Entry ${card.title}",
-                            style: TextStyle(
-                              color: Palette.font,
-                              fontSize: 30,
+        filteredCards.add(_DateKeeper(
+          date: card.date,
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                flex: 4,
+                child: card
+              ),
+              Flexible(
+                  flex: 1,
+                  child: SizedBox(
+                    height: 69,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Palette.delete,
+                      ),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Palette.main,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(25),
+                                topLeft: Radius.circular(25),
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                              right: 20,
-                              top: 10,
-                              bottom: 30,
-                            ),
-                            child: Divider(
-                              color: Palette.accent,
-                              thickness: 2,
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 90,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      var argumentsToJava = <String, dynamic>{
-                                        "index": card.index,
-                                      };
-
-                                      channel.invokeMethod(
-                                          "deleteEntry",
-                                          argumentsToJava
-                                      );
-
-                                      Navigator.pop(context);
-
-                                      //! Can not work with filters
-                                      setState(() {
-                                        entryCards.removeAt(indexSave);
-                                      });
-                                      //! ============
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Palette.delete,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Delete",
-                                        textAlign: TextAlign.center,
+                            builder: (context) {
+                              return SizedBox(
+                                height: 300,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        "Delete Entry ${card.title}",
                                         style: TextStyle(
                                           color: Palette.font,
-                                          fontSize: 15,
+                                          fontSize: 30,
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 90,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Palette.accent,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Cancel",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Palette.background,
-                                          fontSize: 15,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                          top: 10,
+                                          bottom: 30,
+                                        ),
+                                        child: Divider(
+                                          color: Palette.accent,
+                                          thickness: 2,
                                         ),
                                       ),
-                                    ),
+                                      const SizedBox(height: 30),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: <Widget>[
+                                            SizedBox(
+                                              width: 90,
+                                              height: 50,
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  var argumentsToJava = <String, dynamic>{
+                                                    "index": card.index,
+                                                  };
+
+                                                  channel.invokeMethod(
+                                                      "deleteEntry",
+                                                      argumentsToJava
+                                                  );
+
+                                                  Navigator.pop(context);
+
+                                                  setState(() {
+                                                    entryCards.removeAt(indexSave);
+                                                  });
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Palette.delete,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Delete",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Palette.font,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 90,
+                                              height: 50,
+                                              child: ElevatedButton(
+                                                onPressed: () => Navigator.pop(context),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Palette.accent,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Cancel",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Palette.background,
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ],
+                              );
+                            }
+                        );
+                      },
+                      child: const Icon(
+                        Icons.delete
                       ),
                     ),
-                  );
-                }
-            );
-          },
-          child: card,
+                  ),
+              ),
+            ],
+          ),
         ));
       }
       index++;
     }
 
-    //? finalCards = labelRow + filteredCards;
+    for (int it = filteredCards.length - 1; it > 0; it--) {
+      _DateKeeper card = filteredCards[it];
+      if (card.date == filteredCards[it - 1].date) {
+        finalCards.add(card);
+      } else {
+        finalCards.add(card);
+        finalCards.add(DateBar(date: card.date));
+      }
+    }
+    finalCards.add(filteredCards[0]);
+    finalCards.add(DateBar(date: filteredCards[0].date));
+
+    finalCards = finalCards.reversed.toList();
 
     return Card(
         color: Palette.background,
         child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: filteredCards, //?finalCards,
+        children: finalCards,
         ),
     );
   }
+}
 
-  RestorableDateTime _convertStringToDate(String dateString) {
-    // Split the date string by "-" to get year, month, and day
-    List<String> dateParts = dateString.split("-");
+class _DateKeeper extends StatefulWidget  {
 
-    // Extract year, month, and day from dateParts
-    int year = int.parse(dateParts[0]);
-    int month = int.parse(dateParts[1]);
-    int day = int.parse(dateParts[2]);
+  final Widget child;
+  final String date;
 
-    // Create a RestorableDateTime object with the parsed year, month, and day
-    RestorableDateTime restorableDateTime = RestorableDateTime(
-        DateTime(year, month, day)
-    );
+  const _DateKeeper({Key? key,
+    required this.date,
+    required this.child,
+  }) : super(key: key);
 
-    return restorableDateTime;
+  @override
+  State<_DateKeeper> createState() => _DateKeeperState();
+}
+
+class _DateKeeperState extends State<_DateKeeper> {
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 }
 
-//? class LabelBox extends StatelessWidget {
-//   const LabelBox({
-//     super.key, required this.label
-//   });
-//
-//   final String label;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return ItemBox(
-//       color: Palette.main,
-//       child: Text(
-//         label,
-//         style: TextStyle(
-//             color: Palette.accent
-//         ),
-//       ),
-//     );
-//   }
-//? }
+
+class DateBar extends StatefulWidget {
+
+  final String date;
+
+  const DateBar({Key? key, required this.date}) : super(key: key);
+
+  @override
+  State<DateBar> createState() => _DateBarState();
+}
+
+class _DateBarState extends State<DateBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Flexible(
+          flex: 1,
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Divider(
+                color: Palette.main2,
+                thickness: 2,
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(
+            child: Text(
+              widget.date,
+              style: TextStyle(
+                color: Palette.main2,
+                fontSize: 20,
+              ),
+            ),
+          ),
+        ),
+        Flexible(
+          flex: 1,
+          child: SizedBox(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Divider(
+                color: Palette.main2,
+                thickness: 2,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

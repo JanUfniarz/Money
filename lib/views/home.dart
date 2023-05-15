@@ -68,7 +68,6 @@ class _HomeState extends State<Home> {
               ),
             ),
             GestureDetector(
-              behavior: HitTestBehavior.opaque,
               onTap: () async {
                 await Navigator.pushNamed(
                   context,
@@ -76,10 +75,8 @@ class _HomeState extends State<Home> {
                 );
                 Navigator.pushReplacementNamed(context, "/home");
               },
-              child: const IgnorePointer(
-                child: EntriesTable(
-                  numberOfEntries: 5,
-                ),
+              child: const EntriesTable(
+                numberOfEntries: 5,
               ),
             ),
             const MyDivider(),
