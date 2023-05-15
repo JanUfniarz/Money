@@ -13,4 +13,6 @@ class Palette {
   static Color delete = const Color(0xffb03421);
 
   static Color main2Clicked = const Color(0xff88771a);
+
+  static Color expense = const Color(0xffba6356);
 }

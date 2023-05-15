@@ -389,12 +389,9 @@ class _EntriesTableState extends State<EntriesTable> {
     int count = await channel.invokeMethod("getLengthOfEntries");
     final cards = <EntryCard>[];
 
-    //? int numberOfEntries = widget.numberOfEntries;
-    //? if (numberOfEntries == -1) numberOfEntries = count;
-
     for (
     int index = 0;
-    index < count; //?&& index < numberOfEntries;
+    index < count;
     index++) {
       Map<String, dynamic> arguments = {"index": index};
       String type = await channel
@@ -431,19 +428,19 @@ class _EntriesTableState extends State<EntriesTable> {
   Widget build(BuildContext context) {
 
     List<EntryCard> cards = entryCards;
-    List<Widget> finalCards = [];
+    //? List<Widget> finalCards = [];
 
-    List<Widget> labelRow = [Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: const <Widget>[
-        LabelBox(label: "Amount"),
-        LabelBox(label: "Date"),
-        LabelBox(label: "Title"),
-        LabelBox(label: "Account"),
-        LabelBox(label: "Category"),
-      ],
-    )];
+    //? List<Widget> labelRow = [Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: const <Widget>[
+    //     LabelBox(label: "Amount"),
+    //     LabelBox(label: "Date"),
+    //     LabelBox(label: "Title"),
+    //     LabelBox(label: "Account"),
+    //     LabelBox(label: "Category"),
+    //   ],
+    //? )];
 
     //* Super filers
     if (widget.superFilter == 5) {
@@ -486,7 +483,8 @@ class _EntriesTableState extends State<EntriesTable> {
     List<Widget> filteredCards = [];
     int index = 0;
     for (EntryCard card in cards) {
-      if (index < widget.numberOfEntries) {
+      if (index < (widget.numberOfEntries == -1
+          ? cards.length : widget.numberOfEntries)) {
         int indexSave = index;
         filteredCards.add(GestureDetector(
           onTap: () {
@@ -606,14 +604,14 @@ class _EntriesTableState extends State<EntriesTable> {
       index++;
     }
 
-    finalCards = labelRow + filteredCards;
+    //? finalCards = labelRow + filteredCards;
 
     return Card(
         color: Palette.background,
         child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: finalCards,
+        children: filteredCards, //?finalCards,
         ),
     );
   }
@@ -636,23 +634,23 @@ class _EntriesTableState extends State<EntriesTable> {
   }
 }
 
-class LabelBox extends StatelessWidget {
-  const LabelBox({
-    super.key, required this.label
-  });
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return ItemBox(
-      color: Palette.main,
-      child: Text(
-        label,
-        style: TextStyle(
-            color: Palette.accent
-        ),
-      ),
-    );
-  }
-}
+//? class LabelBox extends StatelessWidget {
+//   const LabelBox({
+//     super.key, required this.label
+//   });
+//
+//   final String label;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ItemBox(
+//       color: Palette.main,
+//       child: Text(
+//         label,
+//         style: TextStyle(
+//             color: Palette.accent
+//         ),
+//       ),
+//     );
+//   }
+//? }
