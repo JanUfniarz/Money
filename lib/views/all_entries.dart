@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/widgets/navigation_bar.dart';
 
 import '../palette.dart';
 import '../widgets/entry_card.dart';
@@ -68,6 +69,9 @@ class _AllEntriesState extends State<AllEntries> {
         backgroundColor: Palette.main,
         centerTitle: true,
         title: Text("All ${superFilterKey ?? ""} Entries"),
+      ),
+      bottomNavigationBar: const MyNavigationBar(
+        picked: 2,
       ),
       body: SingleChildScrollView(
         child: Column(

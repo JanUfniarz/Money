@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money/widgets/graph_circular.dart';
+import 'package:money/widgets/navigation_bar.dart';
 
 import '../palette.dart';
 import '../widgets/balance_card.dart';
@@ -28,6 +29,9 @@ class _HomeState extends State<Home> {
           ),
         ),
         centerTitle: true,
+      ),
+      bottomNavigationBar: const MyNavigationBar(
+        picked: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
