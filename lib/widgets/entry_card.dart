@@ -102,6 +102,7 @@ class _NewEntryCardState extends State<NewEntryCard> {
   }
 }
 
+// Adapter class
 class EntryCard extends StatefulWidget {
 
   final String type;

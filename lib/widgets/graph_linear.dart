@@ -24,10 +24,14 @@ class _LinearGraphState extends State<LinearGraph> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadData().then((data) {
+      setState(() {
+        this.data = data;
+      });
+    });
   }
 
-  Future<void> _loadData() async {
+  Future<List<ChartData>> _loadData() async {
     List<ChartData> data = [];
 
     double initialValue = await channel.invokeMethod("getInitValueSum");
@@ -63,26 +67,34 @@ class _LinearGraphState extends State<LinearGraph> {
     data.sort((a, b) => int.parse(a.date.replaceAll(".", ""))
         .compareTo(int.parse(b.date.replaceAll(".", ""))));
 
-    setState(() => this.data = data);
+    //? setState(() => this.data = data);
+    return data;
   }
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shadowColor: Palette.background,
-      color: Palette.background,
-      child: Column(
-        children: <Widget>[
-          Text(
-            "Balance over time",
-            style: TextStyle(
-              fontSize: 25,
-              color: Palette.font,
+
+    if (data.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return Card(
+        shadowColor: Palette.background,
+        color: Palette.background,
+        child: Column(
+          children: <Widget>[
+            Text(
+              "Balance over time",
+              style: TextStyle(
+                fontSize: 25,
+                color: Palette.font,
+              ),
             ),
-          ),
-          BaseLinearGraph(data: data),
-        ],
-      ),
-    );
+            BaseLinearGraph(data: data),
+          ],
+        ),
+      );
+    }
   }
 }
 
