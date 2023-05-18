@@ -67,7 +67,6 @@ class _LinearGraphState extends State<LinearGraph> {
     data.sort((a, b) => int.parse(a.date.replaceAll(".", ""))
         .compareTo(int.parse(b.date.replaceAll(".", ""))));
 
-    //? setState(() => this.data = data);
     return data;
   }
   @override

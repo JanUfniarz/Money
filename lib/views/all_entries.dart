@@ -427,7 +427,6 @@ class _EntriesTableState extends State<EntriesTable> {
         index: indexInMA,
       ));
     }
-    //? setState(() => entryCards = cards);
     return cards;
   }
 

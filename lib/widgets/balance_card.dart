@@ -20,6 +20,66 @@ class _BalanceCardState extends State<BalanceCard> {
     getLength();
   }
 
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
+
+  Future<String> balanceSum() async {
+    String res = "0.00";
+    try {
+      res = await channel.invokeMethod("balanceSum");
+    } catch (e) {
+      print(e);
+    }
+    return res;
+  }
+
+  void getLength() async {
+    accountCount = await channel.invokeMethod("getLength");
+    _buildAccountCards();
+  }
+
+  List<Widget> _upList() {
+    List<Widget> res = [];
+    int index = 0;
+    while (index < accountCount) {
+      res.add(AccountCard(index: index));
+      index++;
+    }
+    res.add(
+        GestureDetector(
+          onTap: () async {
+            dynamic result = await Navigator
+                .pushNamed(context, "/add_account");
+            Map<String, dynamic> arguments = result;
+            channel.invokeMethod("addAccount", arguments);
+            getLength();
+          },
+          child: SizedBox(
+            width: 150,
+            height: 80,
+            child: Card(
+              color: Palette.main,
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  size: 60,
+                  color: Palette.accent,
+                ),
+              ),
+            ),
+          ),
+        )
+    );
+    return res;
+  }
+
+  void _buildAccountCards() {
+    setState(() {
+      accountCards = _upList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -70,66 +130,6 @@ class _BalanceCardState extends State<BalanceCard> {
         ],
       ),
     );
-  }
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
-  Future<String> balanceSum() async {
-    String res = "0.00";
-    try {
-      res = await channel.invokeMethod("balanceSum");
-    } catch (e) {
-      print(e);
-    }
-    return res;
-  }
-
-  void getLength() async {
-    accountCount = await channel.invokeMethod("getLength");
-    _buildAccountCards();
-  }
-
-  List<Widget> _upList() {
-    List<Widget> res = [];
-    int index = 0;
-    while (index < accountCount) {
-      res.add(AccountCard(index: index));
-      index++;
-    }
-    res.add(
-      GestureDetector(
-        onTap: () async {
-          dynamic result = await Navigator
-              .pushNamed(context, "/add_account");
-          Map<String, dynamic> arguments = result;
-          channel.invokeMethod("addAccount", arguments);
-          getLength();
-        },
-        child: SizedBox(
-          width: 150,
-          height: 80,
-          child: Card(
-            color: Palette.main,
-            child: Center(
-              child: Icon(
-                Icons.add,
-                size: 60,
-                color: Palette.accent,
-              ),
-            ),
-          ),
-        ),
-      )
-    );
-    return res;
-  }
-
-  void _buildAccountCards() {
-    setState(() {
-      accountCards = _upList();
-    });
   }
 }
 

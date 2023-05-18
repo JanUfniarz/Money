@@ -76,15 +76,6 @@ class _AddEntryState extends State<AddEntry> {
       index++;
     }
 
-    //? setState(() {
-    //   accountNames = temp.map((String item) {
-    //     return DropdownMenuItem<dynamic>(
-    //       value: item,
-    //       child: Text(item),
-    //     );
-    //   }).toList();
-    //? });
-
     return temp.map((String item) {
       return DropdownMenuItem<dynamic>(
         value: item,
