@@ -50,7 +50,52 @@ class _AddEntryState extends State<AddEntry> {
   @override
   void initState() {
     super.initState();
-    _getAccNames();
+    _loadData().then((res) {
+      setState(() {
+        accountNames = res;
+      });
+    });
+  }
+
+  Future<List<DropdownMenuItem<dynamic>>> _loadData() async {
+    int length = await channel.invokeMethod("getLength");
+    List<String> temp = [];
+
+    int index = 0;
+    while (index < length) {
+      var arguments = <String, dynamic>{
+        "index" : index
+      };
+
+      String name = await channel.invokeMethod(
+          "getName",
+          arguments
+      );
+
+      temp.add(name);
+      index++;
+    }
+
+    //? setState(() {
+    //   accountNames = temp.map((String item) {
+    //     return DropdownMenuItem<dynamic>(
+    //       value: item,
+    //       child: Text(item),
+    //     );
+    //   }).toList();
+    //? });
+
+    return temp.map((String item) {
+      return DropdownMenuItem<dynamic>(
+        value: item,
+        child: Text(item),
+      );
+    }).toList();
+  }
+
+  String _dateToString(RestorableDateTime date) {
+    String res = date.value.toString();
+    return res.substring(0, res.length - 13);
   }
 
   List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
@@ -64,6 +109,13 @@ class _AddEntryState extends State<AddEntry> {
 
   @override
   Widget build(BuildContext context) {
+
+    if (accountNames.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
     type = ModalRoute.of(context)!
         .settings.arguments as String;
 
@@ -235,39 +287,5 @@ class _AddEntryState extends State<AddEntry> {
         ),
       ),
     );
-  }
-
-  void _getAccNames() async {
-    int length = await channel.invokeMethod("getLength");
-    List<String> temp = [];
-
-    int index = 0;
-    while (index < length) {
-      var arguments = <String, dynamic>{
-        "index" : index
-      };
-
-      String name = await channel.invokeMethod(
-          "getName",
-          arguments
-      );
-
-      temp.add(name);
-      index++;
-    }
-
-    setState(() {
-      accountNames = temp.map((String item) {
-        return DropdownMenuItem<dynamic>(
-          value: item,
-          child: Text(item),
-        );
-      }).toList();
-    });
-  }
-
-  String _dateToString(RestorableDateTime date) {
-    String res = date.value.toString();
-    return res.substring(0, res.length - 13);
   }
 }
