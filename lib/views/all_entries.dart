@@ -381,11 +381,14 @@ class _EntriesTableState extends State<EntriesTable> {
   @override
   void initState() {
     super.initState();
-
-    _loadData();
+    _loadData().then((cards) {
+      setState(() {
+        entryCards = cards;
+      });
+    });
   }
 
-  Future<void> _loadData() async {
+  Future<List<EntryCard>> _loadData() async {
     int count = await channel.invokeMethod("getLengthOfEntries");
     final cards = <EntryCard>[];
 
@@ -424,10 +427,18 @@ class _EntriesTableState extends State<EntriesTable> {
         index: indexInMA,
       ));
     }
-    setState(() => entryCards = cards);
+    //? setState(() => entryCards = cards);
+    return cards;
   }
+
   @override
   Widget build(BuildContext context) {
+
+    if (entryCards.isEmpty) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
     List<EntryCard> cards = entryCards;
     List<Widget> finalCards = [];
