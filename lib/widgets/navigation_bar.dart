@@ -20,28 +20,21 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
       selectedItemColor: Palette.main2,
       unselectedItemColor: Palette.font,
       onTap: (int index) {
+
+        String route = "";
+
         switch (index) {
-
-          case 0:
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/home',
-                  (Route<dynamic> route) => false,
-            );
-            break;
-
-          case 1:
-            // TODO connect all accounts view
-            break;
-
-          case 2:
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/all_entries',
-                  (Route<dynamic> route) => false,
-            );
-            break;
+          case 0 : route = "/home"; break;
+          case 1 : route = "/all_accounts"; break;
+          case 2 : route = "/all_entries"; break;
         }
+
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          route,
+              (Route<dynamic> route) => false,
+        );
+
       },
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(

@@ -88,8 +88,9 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getValue":
-                                    result.success(getValue(accounts
-                                            .get((int) arguments.get("index"))));
+                                    result.success(getValue(arguments.get("index") != null
+                                            ? accounts.get((int) arguments.get("index"))
+                                            : accByName((String) arguments.get("name"))));
                                     break;
 
                                 case "getLength":
@@ -193,6 +194,16 @@ public class MainActivity extends FlutterActivity {
                                     result.success(accByName(
                                             (String) arguments.get("account"))
                                             .value);
+                                    break;
+
+                                case "getLastEntryIndex" :
+                                    for (int it = 0; it < entries.size(); it++)
+                                        if (entries.get(it).account.name.equals(
+                                                (String) arguments.get("name"))
+                                                || entries.get(it).account2.name.equals(
+                                                        (String) arguments.get("name")))
+                                            result.success(it);
+                                    result.success(-1);
                                     break;
                             }
                             reload();

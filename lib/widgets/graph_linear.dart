@@ -78,6 +78,7 @@ class _LinearGraphState extends State<LinearGraph> {
       );
     } else {
       return Card(
+        elevation: 0,
         shadowColor: Palette.background,
         color: Palette.background,
         child: Column(
@@ -113,6 +114,7 @@ class _BaseLinearGraphState extends State<BaseLinearGraph> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0,
       shadowColor: Colors.transparent,
       color: Palette.background,
       child: Center(

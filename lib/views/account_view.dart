@@ -437,6 +437,33 @@ class _AccountViewState extends State<AccountView> {
                 ),
               ),
             ),
+            SizedBox(
+              width: 90,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    "/all_accounts",
+                        (Route<dynamic> route) => false,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Palette.main2,
+                ),
+                child: Center(
+                  child: Text(
+                    "All\nAccounts",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Palette.background,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             LinearGraph(account: name),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
