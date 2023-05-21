@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money/widgets/graph_circular.dart';
-import 'package:money/widgets/navigation_bar.dart';
+import 'package:money/widgets/my_scaffold.dart';
 
 import '../palette.dart';
 import '../widgets/balance_card.dart';
@@ -18,21 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main,
-        title: Text(
-          "Money",
-          style: TextStyle(
-            color: Palette.font,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      bottomNavigationBar: const MyNavigationBar(
-        picked: 0,
-      ),
+    return MyScaffold(
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

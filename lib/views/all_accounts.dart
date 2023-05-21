@@ -5,7 +5,7 @@ import 'package:money/widgets/entry_card.dart';
 
 import '../palette.dart';
 import '../widgets/graph_linear.dart';
-import '../widgets/navigation_bar.dart';
+import '../widgets/my_scaffold.dart';
 import 'home.dart';
 
 class AllAccounts extends StatefulWidget {
@@ -79,6 +79,7 @@ class _AllAccountsState extends State<AllAccounts> {
     }
 
     cards.add(GestureDetector(
+      //? behavior: HitTestBehavior.opaque,
       onTap: () async {
         dynamic result = await Navigator
             .pushNamed(context, "/add_account");
@@ -114,16 +115,9 @@ class _AllAccountsState extends State<AllAccounts> {
       ),
     ));
 
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main,
-        centerTitle: true,
-        title: const Text("All Accounts"),
-      ),
-      bottomNavigationBar: const MyNavigationBar(
-        picked: 1,
-      ),
+    return MyScaffold(
+      picked: 1,
+      title: "All Accounts",
       body: ListView.builder(
         itemCount: cards.length,
         itemBuilder: (context, index) {
@@ -170,13 +164,12 @@ class _BigAccountCardState extends State<BigAccountCard> {
     int index = await channel
         .invokeMethod("getLastEntryIndex", {"name" : name});
 
-    if (index < 0) {
-      data.addAll({
-        "name" : name,
-        "value" : value,
-      });
-      return data;
-    }
+    data.addAll({
+      "name" : name,
+      "value" : value,
+    });
+
+    if (index < 0) return data;
 
     String type = await channel
         .invokeMethod("getEntryType", {"index" : index});
@@ -197,8 +190,6 @@ class _BigAccountCardState extends State<BigAccountCard> {
     if (account2Name != "#") accountName = "$accountName -> $account2Name";
 
     data.addAll({
-      "name" : name,
-      "value" : value,
       "type" : type,
       "title" : title,
       "amount" : amount,
@@ -286,7 +277,9 @@ class _BigAccountCardState extends State<BigAccountCard> {
                   ),
                 ),
                 const MyDivider(),
-                LinearGraph(account: dataMap["name"]),
+                IgnorePointer(
+                  child: LinearGraph(account: dataMap["name"])
+                ),
                 Text(
                   "Last Entry",
                   style: TextStyle(

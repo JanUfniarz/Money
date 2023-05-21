@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:money/widgets/navigation_bar.dart';
+import 'package:money/widgets/my_scaffold.dart';
 
 import '../palette.dart';
 import '../widgets/entry_card.dart';
@@ -63,16 +63,9 @@ class _AllEntriesState extends State<AllEntries> {
     List<DropdownMenuItem<dynamic>> categoriesDMI = _dmi(categories);
     List<DropdownMenuItem<dynamic>> typesDMI = _dmi(types);
 
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main,
-        centerTitle: true,
-        title: Text("All ${superFilterKey ?? ""} Entries"),
-      ),
-      bottomNavigationBar: const MyNavigationBar(
-        picked: 2,
-      ),
+    return MyScaffold(
+      title: "All ${superFilterKey ?? ""} Entries",
+      picked: 2,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
