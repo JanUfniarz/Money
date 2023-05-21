@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money/palette.dart';
 
 class MyScaffold extends StatefulWidget {
@@ -42,20 +44,95 @@ class _MyScaffoldState extends State<MyScaffold> {
 }
 
 
-class MyFAB extends StatelessWidget {
+class MyFAB extends StatefulWidget {
   const MyFAB({Key? key}) : super(key: key);
 
   @override
+  State<MyFAB> createState() => _MyFABState();
+}
+
+class _MyFABState extends State<MyFAB> {
+  late ValueNotifier<bool> _isOpen;
+
+  static const channel = MethodChannel(
+      "com.flutter.balance_card/MainActivity"
+  );
+
+  @override
+  void initState() {
+    _isOpen = ValueNotifier<bool>(false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _isOpen.dispose();
+    super.dispose();
+  }
+
+  void _onTap(String type) async {
+    int accountCount =
+    await channel.invokeMethod("getLength");
+
+    if (((type == "Expense" || type == "Income") && accountCount > 0)
+        || ((type == "Transfer") && accountCount > 1)) {
+      await Navigator.pushNamed(
+        context,
+        "/add_entry",
+        arguments: type,
+      );
+      Navigator.pushReplacementNamed(
+        context,
+        (ModalRoute.of(context)?.settings)?.name ?? ""
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Add an account first"),
+      ));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-        // TODO implement
-      },
+    return SpeedDial(
       backgroundColor: Palette.accent,
-      child: Icon(
-        Icons.add,
-        color: Palette.background,
-      ),
+      foregroundColor: Palette.background,
+      icon: Icons.add,
+      activeIcon: Icons.close,
+      spacing: 30,
+      openCloseDial: _isOpen,
+      overlayColor: Colors.transparent,
+      children: [
+        SpeedDialChild(
+          child: Icon(
+            Icons.arrow_right_alt_outlined,
+            color: Palette.background,
+          ),
+          label: "Transfer",
+          backgroundColor: Palette.accent,
+          onTap: () => _onTap("Transfer"),
+        ),
+        SpeedDialChild(
+          child: Icon(
+            Icons.trending_down,
+            color: Palette.background,
+          ),
+          label: "Expense",
+          backgroundColor: Palette.accent,
+          onTap: () => _onTap("Expense"),
+        ),
+        SpeedDialChild(
+          child: Icon(
+            Icons.trending_up,
+            color: Palette.background,
+          ),
+          label: "Income",
+          backgroundColor: Palette.accent,
+          onTap: () => _onTap("Income"),
+        ),
+      ],
+      onOpen: () => _isOpen.value = true,
+      onClose: () => _isOpen.value = false,
     );
   }
 }
@@ -87,7 +164,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Palette.main, // Set your desired background color here
+      color: Palette.main,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(
@@ -110,7 +187,11 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
               );
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: (index == _icons.length ~/ 2 - 1)
+                    || (index == _icons.length ~/ 2) ? 15 : 0,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
