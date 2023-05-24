@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
 import 'package:flutter/services.dart';
@@ -154,7 +155,7 @@ class _AccountViewState extends State<AccountView> {
                                                   );
 
                                                   setState(() => name = newName);
-                                                  Navigator.pop(context);
+                                                  NavDirector.back(context);
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Palette.accent,
@@ -269,7 +270,7 @@ class _AccountViewState extends State<AccountView> {
                                                     );
 
                                                     setState(() => value = newValue);
-                                                    Navigator.pop(context);
+                                                    NavDirector.back(context);
                                                   },
                                                   style: ElevatedButton.styleFrom(
                                                     backgroundColor: Palette.accent,
@@ -372,9 +373,8 @@ class _AccountViewState extends State<AccountView> {
                                                           "deleteAccount",
                                                           argumentsToJava
                                                         );
-
-                                                        Navigator.popUntil(context, (route) => route.isFirst);
-                                                      },
+                                                        NavDirector.backToBottom(context);
+                                                        },
                                                       style: ElevatedButton.styleFrom(
                                                         backgroundColor: Palette.delete,
                                                       ),
@@ -394,7 +394,7 @@ class _AccountViewState extends State<AccountView> {
                                                     width: 90,
                                                     height: 50,
                                                     child: ElevatedButton(
-                                                      onPressed: () => Navigator.pop(context),
+                                                      onPressed: () => NavDirector.back(context),
                                                       style: ElevatedButton.styleFrom(
                                                         backgroundColor: Palette.accent,
                                                       ),
@@ -441,13 +441,7 @@ class _AccountViewState extends State<AccountView> {
               width: 90,
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    "/all_accounts",
-                        (Route<dynamic> route) => false,
-                  );
-                },
+                onPressed: () => NavDirector.goAllAccounts(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.main2,
                 ),
@@ -472,13 +466,8 @@ class _AccountViewState extends State<AccountView> {
                   "filter" : 5,
                   "filterKey" : name
                 };
-
-                await Navigator.pushNamed(
-                  context,
-                  "/all_entries",
-                  arguments: argsToAE,
-                );
-                Navigator.pop(context);
+                await NavDirector.goAllEntries(context, arguments: argsToAE);
+                NavDirector.back(context);
               },
               child: IgnorePointer(
                 child: EntriesTable(

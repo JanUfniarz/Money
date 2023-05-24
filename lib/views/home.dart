@@ -102,10 +102,10 @@ class NewEntryButton extends StatelessWidget {
   const NewEntryButton({Key? key, required this.type}) : super(key: key);
 
   final String type;
-
   static const channel = MethodChannel(
       "com.flutter.balance_card/MainActivity"
   );
+
 
   @override
   Widget build(BuildContext context) {

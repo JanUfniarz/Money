@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/views/all_entries.dart';
 import 'package:money/widgets/entry_card.dart';
 
@@ -66,12 +67,8 @@ class _AllAccountsState extends State<AllAccounts> {
             "value" : value,
             "index" : index,
           };
-          await Navigator.pushNamed(
-            context,
-            "/account_view",
-            arguments: arguments,
-          );
-          Navigator.pushReplacementNamed(context, "/all_accounts");
+          await NavDirector.pushAccountView(context, arguments: arguments);
+          NavDirector.goAllAccounts(context);
         },
         child: card,
       ));
@@ -81,8 +78,7 @@ class _AllAccountsState extends State<AllAccounts> {
     cards.add(GestureDetector(
       //? behavior: HitTestBehavior.opaque,
       onTap: () async {
-        dynamic result = await Navigator
-            .pushNamed(context, "/add_account");
+        dynamic result = await NavDirector.pushAddAccount(context);
         Map<String, dynamic> arguments = result;
         channel.invokeMethod("addAccount", arguments);
         _loadData().then((data) {

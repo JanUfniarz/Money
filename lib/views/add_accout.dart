@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
 class AddAccount extends StatefulWidget {
@@ -82,7 +83,7 @@ class _AddAccountState extends State<AddAccount> {
                     if (isNameTaken) {
                       setState(() => alert = "This name is already used");
                     } else {
-                      Navigator.pop(context, <String, dynamic>{
+                      NavDirector.back(context, arguments: <String, dynamic>{
                         "name": name,
                         "value": value,
                       });

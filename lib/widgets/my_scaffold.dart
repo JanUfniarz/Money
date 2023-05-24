@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money/palette.dart';
 
+import '../nav_director.dart';
+
 class MyScaffold extends StatefulWidget {
 
   final String title;
@@ -76,15 +78,8 @@ class _MyFABState extends State<MyFAB> {
 
     if (((type == "Expense" || type == "Income") && accountCount > 0)
         || ((type == "Transfer") && accountCount > 1)) {
-      await Navigator.pushNamed(
-        context,
-        "/add_entry",
-        arguments: type,
-      );
-      Navigator.pushReplacementNamed(
-        context,
-        (ModalRoute.of(context)?.settings)?.name ?? ""
-      );
+      await NavDirector.pushAddEntry(context, arguments: type);
+      NavDirector.goHere(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Add an account first"),
@@ -147,6 +142,8 @@ class MyNavigationBar extends StatefulWidget {
 }
 
 class _MyNavigationBarState extends State<MyNavigationBar> {
+  final double FAB_SPACE = 30;
+
   final List<IconData> _icons = [
     Icons.home,
     Icons.account_balance,
@@ -171,26 +168,19 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           _icons.length,
               (index) => InkWell(
             onTap: () {
-              String route = "";
-
               switch (index) {
-                case 0: route = "/home"; break;
-                case 1: route = "/all_accounts"; break;
-                case 2: route = "/all_entries"; break;
+                case 0: NavDirector.goHome(context); break;
+                case 1: NavDirector.goAllAccounts(context); break;
+                case 2: NavDirector.goAllEntries(context); break;
                 case 3: /* TODO connect budgets route */ break;
               }
-
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                route,
-                    (Route<dynamic> route) => false,
-              );
             },
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: (index == _icons.length ~/ 2 - 1)
-                    || (index == _icons.length ~/ 2) ? 15 : 0,
+              padding: EdgeInsets.only(
+                top: 8,
+                bottom: 8,
+                left: (index == _icons.length ~/ 2) ? (FAB_SPACE / 2) : 0,
+                right: (index == _icons.length ~/ 2 - 1) ? (FAB_SPACE / 2) : 0,
               ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,

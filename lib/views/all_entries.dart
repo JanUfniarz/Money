@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/widgets/my_scaffold.dart';
 
 import '../palette.dart';
@@ -211,7 +212,7 @@ class _AllEntriesState extends State<AllEntries> {
                                                       filter = 3;
                                                       filterKey = item;
                                                     });
-                                                    Navigator.pop(context);
+                                                    NavDirector.back(context);
                                                   },
                                                   isExpanded: true,
                                                   style: TextStyle(
@@ -295,7 +296,7 @@ class _AllEntriesState extends State<AllEntries> {
                                                         filter = 4;
                                                         filterKey = item;
                                                       });
-                                                      Navigator.pop(context);
+                                                      NavDirector.back(context);
                                                     },
                                                     isExpanded: true,
                                                     style: TextStyle(
@@ -558,7 +559,7 @@ class _EntriesTableState extends State<EntriesTable> {
                                                       argumentsToJava
                                                   );
 
-                                                  Navigator.pop(context);
+                                                  NavDirector.back(context);
 
                                                   setState(() {
                                                     entryCards.removeAt(indexSave);
@@ -583,7 +584,7 @@ class _EntriesTableState extends State<EntriesTable> {
                                               width: 90,
                                               height: 50,
                                               child: ElevatedButton(
-                                                onPressed: () => Navigator.pop(context),
+                                                onPressed: () => NavDirector.back(context),
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Palette.accent,
                                                 ),

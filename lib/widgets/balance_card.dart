@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
 class BalanceCard extends StatefulWidget {
@@ -49,8 +50,7 @@ class _BalanceCardState extends State<BalanceCard> {
     res.add(
         GestureDetector(
           onTap: () async {
-            dynamic result = await Navigator
-                .pushNamed(context, "/add_account");
+            dynamic result = await NavDirector.pushAddAccount(context);
             Map<String, dynamic> arguments = result;
             channel.invokeMethod("addAccount", arguments);
             getLength();
@@ -176,12 +176,8 @@ class _AccountCardState extends State<AccountCard> {
           "value" : double.parse(await value()),
           "index" : widget.index,
         };
-        await Navigator.pushNamed(
-          context,
-          "/account_view",
-          arguments: arguments,
-        );
-        Navigator.pushReplacementNamed(context, "/home");
+        await NavDirector.pushAccountView(context, arguments: arguments);
+        NavDirector.goHere(context);
       },
       child: SizedBox(
         width: 150,
