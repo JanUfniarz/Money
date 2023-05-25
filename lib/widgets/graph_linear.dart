@@ -19,12 +19,14 @@ class _LinearGraphState extends State<LinearGraph> {
 
   @override
   void initState() {
-    super.initState();
     _loadData().then((data) {
-      setState(() {
+      if (mounted) {
+        setState(() {
         this.data = data;
       });
+      }
     });
+    super.initState();
   }
 
   Future<List<ChartData>> _loadData() async {

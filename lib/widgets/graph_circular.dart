@@ -85,8 +85,8 @@ class _EnCircularGraphState extends State<EnCircularGraph> {
 
   @override
   void initState() {
-    super.initState();
     _loadData();
+    super.initState();
   }
 
   Future<void> _loadData() async {
@@ -121,10 +121,12 @@ class _EnCircularGraphState extends State<EnCircularGraph> {
       inValues.addAll({category : value});
     }
 
-    setState(() {
-      this.exValues = exValues;
-      this.inValues = inValues;
-    });
+    if (mounted) {
+      setState(() {
+        this.exValues = exValues;
+        this.inValues = inValues;
+      });
+    }
   }
 
   @override

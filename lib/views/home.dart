@@ -3,6 +3,7 @@ import 'package:money/invoker.dart';
 import 'package:money/widgets/graph_circular.dart';
 import 'package:money/widgets/my_scaffold.dart';
 
+import '../nav_director.dart';
 import '../palette.dart';
 import '../widgets/balance_card.dart';
 import '../widgets/graph_linear.dart';
@@ -58,13 +59,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             GestureDetector(
-              onTap: () async {
-                await Navigator.pushNamed(
-                  context,
-                  "/all_entries",
-                );
-                Navigator.pushReplacementNamed(context, "/home");
-              },
+              onTap: () => NavDirector.goAllEntries(context),
               child: const EntriesTable(
                 numberOfEntries: 5,
               ),
@@ -114,12 +109,8 @@ class NewEntryButton extends StatelessWidget {
 
           if (((type == "Expense" || type == "Income") && accountCount > 0)
               || ((type == "Transfer") && accountCount > 1)) {
-            await Navigator.pushNamed(
-              context,
-              "/add_entry",
-              arguments: type,
-            );
-            Navigator.pushReplacementNamed(context, "/home");
+            await NavDirector.pushAddEntry(context, arguments: type);
+            NavDirector.goHere(context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Add an account first"),

@@ -374,12 +374,14 @@ class _EntriesTableState extends State<EntriesTable> {
 
   @override
   void initState() {
-    super.initState();
     _loadData().then((cards) {
-      setState(() {
+      if (mounted) {
+        setState(() {
         entryCards = cards;
       });
+      }
     });
+    super.initState();
   }
 
   Future<List<EntryCard>> _loadData() async {

@@ -21,12 +21,12 @@ class _AllAccountsState extends State<AllAccounts> {
 
   @override
   void initState() {
-    super.initState();
     _loadData().then((data) {
       setState(() {
         cards = data;
       });
     });
+    super.initState();
   }
 
   Future<List<BigAccountCard>> _loadData() async {
