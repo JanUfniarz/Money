@@ -27,7 +27,7 @@ import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
 
 public class MainActivity extends FlutterActivity {
-    private static final String CHANNEL = "com.flutter.balance_card/MainActivity";
+    private static final String CHANNEL = "com.flutter.Invoker/MainActivity";
 
     private List<Account> accounts = new ArrayList<>();
     private AccountDatabase account_db;
@@ -201,13 +201,14 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getLastEntryIndex" :
+                                    int lastEntryIndex = -1;
                                     for (int it = 0; it < entries.size(); it++)
                                         if (entries.get(it).account.name.equals(
                                                 (String) arguments.get("name"))
                                                 || entries.get(it).account2.name.equals(
                                                         (String) arguments.get("name")))
-                                            result.success(it);
-                                    result.success(-1);
+                                            lastEntryIndex = it;
+                                    result.success(lastEntryIndex);
                                     break;
                             }
                             reload();

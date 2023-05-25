@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../invoker.dart';
 import '../palette.dart';
 
 class CircularGraph extends StatefulWidget {
@@ -80,11 +80,6 @@ class EnCircularGraph extends StatefulWidget {
 }
 
 class _EnCircularGraphState extends State<EnCircularGraph> {
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   Map<String, double> exValues = {};
   Map<String, double> inValues = {};
 
@@ -117,22 +112,12 @@ class _EnCircularGraphState extends State<EnCircularGraph> {
     ];
 
     for (String category in exCategories) {
-      Map<String, dynamic> arguments = {
-        "category" : category,
-        "type" : "Expense",
-      };
-      double value = await channel.invokeMethod(
-        "categorySum", arguments);
+      double value = await Invoker.categorySum(category, "Expense");
       exValues.addAll({category : value});
     }
 
     for (String category in inCategories) {
-      Map<String, dynamic> arguments = {
-        "category" : category,
-        "type" : "Income",
-      };
-      double value = await channel.invokeMethod(
-          "categorySum", arguments);
+      double value = await Invoker.categorySum(category, "Income");
       inValues.addAll({category : value});
     }
 

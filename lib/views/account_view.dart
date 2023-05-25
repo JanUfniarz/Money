@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
-import 'package:flutter/services.dart';
-
+import '../invoker.dart';
 import '../widgets/graph_linear.dart';
 import 'all_entries.dart';
 
@@ -22,10 +21,6 @@ class _AccountViewState extends State<AccountView> {
 
   String? newName;
   double? newValue;
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -144,15 +139,7 @@ class _AccountViewState extends State<AccountView> {
                                               height: 50,
                                               child: ElevatedButton(
                                                 onPressed: () {
-                                                  var argumentsToJava = <String, dynamic>{
-                                                  "index" : index,
-                                                  "newName" : newName,
-                                                  };
-
-                                                  channel.invokeMethod(
-                                                    "changeName",
-                                                    argumentsToJava,
-                                                  );
+                                                  Invoker.changeName(index, newName);
 
                                                   setState(() => name = newName);
                                                   NavDirector.back(context);
@@ -259,15 +246,7 @@ class _AccountViewState extends State<AccountView> {
                                                 height: 50,
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    var argumentsToJava = <String, dynamic>{
-                                                      "index" : index,
-                                                      "newValue" : newValue,
-                                                    };
-
-                                                    channel.invokeMethod(
-                                                      "changeValue",
-                                                      argumentsToJava,
-                                                    );
+                                                    Invoker.changeValue(index, newValue);
 
                                                     setState(() => value = newValue);
                                                     NavDirector.back(context);
@@ -364,15 +343,7 @@ class _AccountViewState extends State<AccountView> {
                                                     height: 50,
                                                     child: ElevatedButton(
                                                       onPressed: () {
-
-                                                        var argumentsToJava = <String, dynamic>{
-                                                          "index" : index,
-                                                        };
-
-                                                        channel.invokeMethod(
-                                                          "deleteAccount",
-                                                          argumentsToJava
-                                                        );
+                                                        Invoker.deleteAccount(index);
                                                         NavDirector.backToBottom(context);
                                                         },
                                                       style: ElevatedButton.styleFrom(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/widgets/my_scaffold.dart';
 
+import '../invoker.dart';
 import '../palette.dart';
 import '../widgets/entry_card.dart';
 
@@ -372,10 +372,6 @@ class _EntriesTableState extends State<EntriesTable> {
 
   List<EntryCard> entryCards = [];
 
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   @override
   void initState() {
     super.initState();
@@ -387,29 +383,22 @@ class _EntriesTableState extends State<EntriesTable> {
   }
 
   Future<List<EntryCard>> _loadData() async {
-    int count = await channel.invokeMethod("getLengthOfEntries");
+    int count = await Invoker.lengthOfEntries();
     final cards = <EntryCard>[];
 
     for (
     int index = 0;
     index < count;
     index++) {
-      Map<String, dynamic> arguments = {"index": index};
-      String type = await channel
-          .invokeMethod("getEntryType", arguments);
-      String title = await channel
-          .invokeMethod("getEntryTitle", arguments);
-      double amount = await channel
-          .invokeMethod("getEntryAmount", arguments);
-      String category = await channel
-          .invokeMethod("getEntryCategory", arguments);
-      String accountName = await channel
-          .invokeMethod("getEntryAccountName", arguments);
-      String date = await channel
-          .invokeMethod("getEntryDate", arguments);
+      String type = await Invoker.entryType(index);
+      String title = await Invoker.entryTitle(index);
+      double amount = await Invoker.entryAmount(index);
+      String category = await Invoker.entryCategory(index);
+      String accountName = await Invoker.entryAccountName(index);
+      String date = await Invoker.entryDate(index);
+      String account2Name = await Invoker.entryAccount2Name(index);
+
       int indexInMA = index;
-      String account2Name = await channel
-          .invokeMethod("getEntryAccount2Name", arguments);
 
       date = date.replaceAll("-", ".");
 
@@ -550,14 +539,7 @@ class _EntriesTableState extends State<EntriesTable> {
                                               height: 50,
                                               child: ElevatedButton(
                                                 onPressed: () {
-                                                  var argumentsToJava = <String, dynamic>{
-                                                    "index": card.index,
-                                                  };
-
-                                                  channel.invokeMethod(
-                                                      "deleteEntry",
-                                                      argumentsToJava
-                                                  );
+                                                  Invoker.deleteEntry(card.index);
 
                                                   NavDirector.back(context);
 

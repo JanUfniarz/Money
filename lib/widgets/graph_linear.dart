@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../invoker.dart';
 import '../palette.dart';
 
 class LinearGraph extends StatefulWidget {
@@ -15,10 +15,6 @@ class LinearGraph extends StatefulWidget {
 }
 
 class _LinearGraphState extends State<LinearGraph> {
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   List<ChartData> data = [];
 
   @override
@@ -34,26 +30,22 @@ class _LinearGraphState extends State<LinearGraph> {
   Future<List<ChartData>> _loadData() async {
     List<ChartData> data = [];
 
-    double initialValue = await channel.invokeMethod("getInitValueSum");
+    double initialValue = await Invoker.initValueSum();
     if(widget.account != null) {
-      initialValue = await channel
-          .invokeMethod("getInitialValue", {"account" : widget.account});
+      initialValue = await Invoker.initValue(widget.account);
     }
 
     data.add(ChartData(date: "0", value: initialValue));
 
-    int entriesSize = await channel.invokeMethod("getLengthOfEntries");
+    int entriesSize = await Invoker.lengthOfEntries();
     double value = initialValue;
     for (int it = entriesSize - 1; it >= 0; it--) {
-      Map<String, dynamic> arguments = {"index" : it};
-      double amount = await channel.invokeMethod("getEntryAmount", arguments);
-      String date = (await channel
-          .invokeMethod("getEntryDate", arguments) as String)
+      double amount = await Invoker.entryAmount(it);
+      String date = (await Invoker.entryDate(it) as String)
           .replaceAll("-", ".")
           .substring(2);
-      String type = await channel.invokeMethod("getEntryType", arguments);
-      String account = await channel
-          .invokeMethod("getEntryAccountName", arguments);
+      String type = await Invoker.entryType(it);
+      String account = await Invoker.entryAccountName(it);
 
       if (type == "Expense") amount -= 2 * amount;
       value += amount;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
+
+import '../invoker.dart';
 
 class AddAccount extends StatefulWidget {
 
@@ -18,10 +19,6 @@ class _AddAccountState extends State<AddAccount> {
   double? value;
 
   String alert = "";
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +67,11 @@ class _AddAccountState extends State<AddAccount> {
                   if (name == null || value == null) {
                     setState(() => alert = "Fields cannot be empty");
                   } else {
-                    int accountCount =
-                      await channel.invokeMethod("getLength");
+                    int accountCount = await Invoker.length();
                     bool isNameTaken = false;
 
                     for(int index = 0; index < accountCount; index++) {
-                      String accName = await channel.invokeMethod(
-                          "getName", {"index": index}
-                      );
+                      String accName = await Invoker.name(index);
                       if (accName == name) isNameTaken = true;
                     }
                     if (isNameTaken) {

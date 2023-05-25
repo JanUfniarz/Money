@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
+
+import '../invoker.dart';
 
 class BalanceCard extends StatefulWidget {
 
@@ -21,14 +22,10 @@ class _BalanceCardState extends State<BalanceCard> {
     getLength();
   }
 
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   Future<String> balanceSum() async {
     String res = "0.00";
     try {
-      res = await channel.invokeMethod("balanceSum");
+      res = await Invoker.balanceSum();
     } catch (e) {
       print(e);
     }
@@ -36,7 +33,7 @@ class _BalanceCardState extends State<BalanceCard> {
   }
 
   void getLength() async {
-    accountCount = await channel.invokeMethod("getLength");
+    accountCount = await Invoker.length();
     _buildAccountCards();
   }
 
@@ -50,9 +47,8 @@ class _BalanceCardState extends State<BalanceCard> {
     res.add(
         GestureDetector(
           onTap: () async {
-            dynamic result = await NavDirector.pushAddAccount(context);
-            Map<String, dynamic> arguments = result;
-            channel.invokeMethod("addAccount", arguments);
+            Map<String, dynamic> result = await NavDirector.pushAddAccount(context);
+            Invoker.addAccount(result["name"], result["value"]);
             getLength();
           },
           child: SizedBox(
@@ -134,11 +130,6 @@ class _BalanceCardState extends State<BalanceCard> {
 }
 
 class AccountCard extends StatefulWidget {
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   final int index;
 
   const AccountCard({super.key, required this.index});
@@ -150,20 +141,12 @@ class AccountCard extends StatefulWidget {
 class _AccountCardState extends State<AccountCard> {
 
   Future<String> name() async {
-    String name = "";
-    var arguments = <String, dynamic>{
-      "index" : widget.index
-    };
-    name = await AccountCard.channel.invokeMethod("getName", arguments);
+    String name = await Invoker.name(widget.index);
     return name;
   }
 
   Future<String> value() async {
-    double value = 0.00;
-    var arguments = <String, dynamic>{
-      "index" : widget.index
-    };
-    value = await AccountCard.channel.invokeMethod("getValue", arguments);
+    double value = await Invoker.value(index: widget.index);
     return value.toString();
   }
 

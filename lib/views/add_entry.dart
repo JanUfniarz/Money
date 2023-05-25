@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:money/widgets/date_picker.dart';
+import '../invoker.dart';
 import '../palette.dart';
 
 class AddEntry extends StatefulWidget {
@@ -12,10 +12,6 @@ class AddEntry extends StatefulWidget {
 }
 
 class _AddEntryState extends State<AddEntry> {
-
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
 
   // values to send
   String? title;
@@ -58,19 +54,12 @@ class _AddEntryState extends State<AddEntry> {
   }
 
   Future<List<DropdownMenuItem<dynamic>>> _loadData() async {
-    int length = await channel.invokeMethod("getLength");
+    int length = await Invoker.length();
     List<String> temp = [];
 
     int index = 0;
     while (index < length) {
-      var arguments = <String, dynamic>{
-        "index" : index
-      };
-
-      String name = await channel.invokeMethod(
-          "getName",
-          arguments
-      );
+      String name = await Invoker.name(index);
 
       temp.add(name);
       index++;
@@ -247,17 +236,10 @@ class _AddEntryState extends State<AddEntry> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  Map<String, dynamic> arguments = {
-                    "type" : type,
-                    "title" : title,
-                    "amount" : amount,
-                    "account" : selectedAccount,
-                    "category" : selectedCategory,
-                    "date" : _dateToString(selectedDate),
-                    "account2" : type == "Transfer" ? accountToTransfer : "#",
-                  };
-
-                  channel.invokeMethod("addEntry", arguments);
+                  Invoker.addEntry(type, title, amount,
+                      selectedAccount, selectedCategory,
+                      _dateToString(selectedDate),
+                      type == "Transfer" ? accountToTransfer : "#");
 
                   Navigator.pop(context);
                 },

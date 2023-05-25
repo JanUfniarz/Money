@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/views/all_entries.dart';
 import 'package:money/widgets/entry_card.dart';
 
+import '../invoker.dart';
 import '../palette.dart';
 import '../widgets/graph_linear.dart';
 import '../widgets/my_scaffold.dart';
@@ -17,10 +17,6 @@ class AllAccounts extends StatefulWidget {
 }
 
 class _AllAccountsState extends State<AllAccounts> {
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   List<BigAccountCard> cards = [];
 
   @override
@@ -36,10 +32,10 @@ class _AllAccountsState extends State<AllAccounts> {
   Future<List<BigAccountCard>> _loadData() async {
     List<BigAccountCard> data = [];
 
-    int length = await channel.invokeMethod("getLength");
+    int length = await Invoker.length();
 
     for (int it = 0; it < length; it++) {
-      String name = await channel.invokeMethod("getName", {"index" : it});
+      String name = await Invoker.name(it);
       data.add(BigAccountCard(name: name));
     }
     return data;
@@ -59,8 +55,7 @@ class _AllAccountsState extends State<AllAccounts> {
     for (BigAccountCard card in this.cards) {
       cards.add(GestureDetector(
         onTap: () async {
-
-          double value = await channel.invokeMethod("getValue", {"name" : card.name});
+          double value = await Invoker.value(name: card.name);
 
           var arguments = <String, dynamic>{
             "name" : card.name,
@@ -78,9 +73,8 @@ class _AllAccountsState extends State<AllAccounts> {
     cards.add(GestureDetector(
       //? behavior: HitTestBehavior.opaque,
       onTap: () async {
-        dynamic result = await NavDirector.pushAddAccount(context);
-        Map<String, dynamic> arguments = result;
-        channel.invokeMethod("addAccount", arguments);
+        Map<String, dynamic> result = await NavDirector.pushAddAccount(context);
+        Invoker.addAccount(result["name"], result["value"]);
         _loadData().then((data) {
           setState(() {
             cards = data;
@@ -135,9 +129,6 @@ class BigAccountCard extends StatefulWidget {
 }
 
 class _BigAccountCardState extends State<BigAccountCard> {
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
 
   Map<String, dynamic> dataMap = {};
 
@@ -155,11 +146,10 @@ class _BigAccountCardState extends State<BigAccountCard> {
     Map<String, dynamic> data = {};
 
     String name = widget.name;
-    double value = await channel.invokeMethod("getValue", {"name" : name});
+    double value = await Invoker.value(name: name);
 
-    int index = await channel
-        .invokeMethod("getLastEntryIndex", {"name" : name});
-
+    int index = await Invoker.lastEntryIndex(name);
+    
     data.addAll({
       "name" : name,
       "value" : value,
@@ -167,20 +157,13 @@ class _BigAccountCardState extends State<BigAccountCard> {
 
     if (index < 0) return data;
 
-    String type = await channel
-        .invokeMethod("getEntryType", {"index" : index});
-    String title = await channel
-        .invokeMethod("getEntryTitle", {"index" : index});
-    double amount = await channel
-        .invokeMethod("getEntryAmount", {"index" : index});
-    String category = await channel
-        .invokeMethod("getEntryCategory", {"index" : index});
-    String accountName = await channel
-        .invokeMethod("getEntryAccountName", {"index" : index});
-    String date = await channel
-        .invokeMethod("getEntryDate", {"index" : index});
-    String account2Name = await channel
-        .invokeMethod("getEntryAccount2Name", {"index" : index});
+    String type = await Invoker.entryType(index);
+    String title = await Invoker.entryTitle(index);
+    double amount = await Invoker.entryAmount(index);
+    String category = await Invoker.entryCategory(index);
+    String accountName = await Invoker.entryAccountName(index);
+    String date = await Invoker.entryDate(index);
+    String account2Name = await Invoker.entryAccount2Name(index);
 
     date = date.replaceAll("-", ".");
     if (account2Name != "#") accountName = "$accountName -> $account2Name";

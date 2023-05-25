@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:money/invoker.dart';
 import 'package:money/widgets/graph_circular.dart';
 import 'package:money/widgets/my_scaffold.dart';
 
@@ -102,10 +102,6 @@ class NewEntryButton extends StatelessWidget {
   const NewEntryButton({Key? key, required this.type}) : super(key: key);
 
   final String type;
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
 
   @override
   Widget build(BuildContext context) {
@@ -114,8 +110,7 @@ class NewEntryButton extends StatelessWidget {
       height: 50,
       child: ElevatedButton(
         onPressed: () async {
-          int accountCount =
-          await channel.invokeMethod("getLength");
+          int accountCount = await Invoker.length();
 
           if (((type == "Expense" || type == "Income") && accountCount > 0)
               || ((type == "Transfer") && accountCount > 1)) {

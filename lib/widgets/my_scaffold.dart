@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money/palette.dart';
 
+import '../invoker.dart';
 import '../nav_director.dart';
 
 class MyScaffold extends StatefulWidget {
@@ -56,10 +56,6 @@ class MyFAB extends StatefulWidget {
 class _MyFABState extends State<MyFAB> {
   late ValueNotifier<bool> _isOpen;
 
-  static const channel = MethodChannel(
-      "com.flutter.balance_card/MainActivity"
-  );
-
   @override
   void initState() {
     _isOpen = ValueNotifier<bool>(false);
@@ -74,7 +70,7 @@ class _MyFABState extends State<MyFAB> {
 
   void _onTap(String type) async {
     int accountCount =
-    await channel.invokeMethod("getLength");
+    await Invoker.length();
 
     if (((type == "Expense" || type == "Income") && accountCount > 0)
         || ((type == "Transfer") && accountCount > 1)) {
