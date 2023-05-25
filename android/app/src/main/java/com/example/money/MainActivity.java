@@ -8,6 +8,9 @@ import androidx.room.Room;
 
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
+import com.example.money.budget.Budget;
+import com.example.money.budget.BudgetDatabase;
+import com.example.money.budget.Interval;
 import com.example.money.entry.Category;
 import com.example.money.entry.Converter;
 import com.example.money.entry.Entry;
@@ -33,6 +36,8 @@ public class MainActivity extends FlutterActivity {
     private AccountDatabase account_db;
     private  List<Entry> entries = new ArrayList<>();
     private EntryDatabase entry_db;
+    private List<Budget> budgets = new ArrayList<>();
+    private BudgetDatabase budget_db;
 
     private final Singleton singleton = Singleton.getInstance();
 
@@ -51,6 +56,12 @@ public class MainActivity extends FlutterActivity {
                         getApplicationContext(),
                         EntryDatabase.class,
                         "Entry_database")
+                .allowMainThreadQueries().build();
+
+        budget_db = Room.databaseBuilder(
+                        getApplicationContext(),
+                        BudgetDatabase.class,
+                        "Budget_database")
                 .allowMainThreadQueries().build();
 
         reload();
@@ -210,6 +221,23 @@ public class MainActivity extends FlutterActivity {
                                             lastEntryIndex = it;
                                     result.success(lastEntryIndex);
                                     break;
+
+                                case "addBudget":
+                                    budget_db.budgetDao().InsertAll(new Budget(
+                                            (String) arguments.get("title"),
+                                            (double) arguments.get("amount"),
+                                            Category.valueOf(
+                                                    ((String) arguments.get("category"))
+                                                            .toUpperCase()
+                                                            .replaceAll(" ", "_")
+                                            ),
+                                            Interval.valueOf(
+                                                    ((String) arguments.get("interval"))
+                                                            .toUpperCase()
+                                                            .replaceAll(" ", "_")
+                                            )
+                                    ));
+                                    break;
                             }
                             reload();
                         }
@@ -268,6 +296,8 @@ public class MainActivity extends FlutterActivity {
 
         entries = entry_db.entryDao().getAllEntries();
         Collections.reverse(entries);
+
+        budgets = budget_db.budgetDao().getAllBudgets();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

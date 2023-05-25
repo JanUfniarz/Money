@@ -124,4 +124,14 @@ class Invoker {
 
   static Future<dynamic> lengthOfEntries() =>
       _channel.invokeMethod("getLengthOfEntries");
+
+  static Future<dynamic> addBudget(
+      String title, double amount,
+      String category, String interval) =>
+      _channel.invokeMethod("addBudget", {
+        "title" : title,
+        "amount" : amount,
+        "category" : category,
+        "interval" : interval,
+      });
 }

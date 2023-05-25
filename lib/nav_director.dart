@@ -7,6 +7,7 @@ class NavDirector {
   static const String _addEntry = "/add_entry";
   static const String _allEntries = "/all_entries";
   static const String _allAccounts = "/all_accounts";
+  static const String _budgets = "/budgets";
 
   static dynamic back(BuildContext context, {Object? arguments}) =>
       arguments != null ? Navigator.pop(context, arguments) : Navigator.pop(context);
@@ -16,10 +17,15 @@ class NavDirector {
 
   static Future<dynamic> goHome(BuildContext context) =>
       _go(context, _home);
+
   static Future<dynamic> goAllAccounts(BuildContext context) =>
       _go(context, _allAccounts);
+
   static Future<dynamic> goAllEntries(BuildContext context, {Object? arguments}) =>
       _go(context, _allEntries, arguments: arguments);
+
+  static Future<dynamic> goBudgets(BuildContext context, {Object? arguments}) =>
+      _go(context, _budgets, arguments: arguments);
 
   static Future<dynamic> goHere(BuildContext context) =>
       Navigator.pushReplacementNamed(

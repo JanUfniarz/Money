@@ -8,8 +8,6 @@ import com.example.money.account.Account;
 
 import java.util.Date;
 
-//! import java.time.LocalDateTime;
-
 @Entity(tableName = "entry")
 //? @TypeConverters(Converter.class)
 public class Entry {
@@ -25,10 +23,6 @@ public class Entry {
     @ColumnInfo(name = "amount")
     public double amount;
 
-    //! @ColumnInfo
-    //! public LocalDateTime date;
-
-    //? final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
     @ColumnInfo(name = "date")
     public Date date;
 

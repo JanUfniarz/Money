@@ -14,7 +14,6 @@ public class Converter {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
 
     //* Date
-    //# GPT
     @TypeConverter
     public static Date fromTimestamp(String value) {
         if (value != null) {
@@ -28,7 +27,6 @@ public class Converter {
         return null;
     }
 
-    //# GPT
     @TypeConverter
     public static String dateToTimestamp(Date date) {
         if (date != null) {

@@ -35,25 +35,25 @@ class _MyScaffoldState extends State<MyScaffold> {
         ),
         centerTitle: true,
       ),
-      bottomNavigationBar: MyNavigationBar(
+      bottomNavigationBar: _MyNavigationBar(
         picked: widget.picked,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const MyFAB(),
+      floatingActionButton: const _MyFAB(),
       body: widget.body,
     );
   }
 }
 
 
-class MyFAB extends StatefulWidget {
-  const MyFAB({Key? key}) : super(key: key);
+class _MyFAB extends StatefulWidget {
+  const _MyFAB({Key? key}) : super(key: key);
 
   @override
-  State<MyFAB> createState() => _MyFABState();
+  State<_MyFAB> createState() => _MyFABState();
 }
 
-class _MyFABState extends State<MyFAB> {
+class _MyFABState extends State<_MyFAB> {
   late ValueNotifier<bool> _isOpen;
 
   @override
@@ -128,16 +128,16 @@ class _MyFABState extends State<MyFAB> {
   }
 }
 
-class MyNavigationBar extends StatefulWidget {
+class _MyNavigationBar extends StatefulWidget {
   final int picked;
 
-  const MyNavigationBar({Key? key, required this.picked}) : super(key: key);
+  const _MyNavigationBar({Key? key, required this.picked}) : super(key: key);
 
   @override
-  State<MyNavigationBar> createState() => _MyNavigationBarState();
+  State<_MyNavigationBar> createState() => _MyNavigationBarState();
 }
 
-class _MyNavigationBarState extends State<MyNavigationBar> {
+class _MyNavigationBarState extends State<_MyNavigationBar> {
   final double FAB_SPACE = 30;
 
   final List<IconData> _icons = [
@@ -168,7 +168,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                 case 0: NavDirector.goHome(context); break;
                 case 1: NavDirector.goAllAccounts(context); break;
                 case 2: NavDirector.goAllEntries(context); break;
-                case 3: /* TODO connect budgets route */ break;
+                case 3: NavDirector.goBudgets(context); break;
               }
             },
             child: Padding(
