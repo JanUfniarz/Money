@@ -73,10 +73,10 @@ class _AddEntryState extends State<AddEntry> {
     }).toList();
   }
 
-  String _dateToString(RestorableDateTime date) {
-    String res = date.value.toString();
-    return res.substring(0, res.length - 13);
-  }
+  //? String _dateToString(RestorableDateTime date) {
+  //   String res = date.value.toString();
+  //   return res.substring(0, res.length - 13);
+  //? }
 
   List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
     return list.map((String item) {
@@ -238,7 +238,7 @@ class _AddEntryState extends State<AddEntry> {
                 onPressed: () {
                   Invoker.addEntry(type, title, amount,
                       selectedAccount, selectedCategory,
-                      _dateToString(selectedDate),
+                      selectedDate,
                       type == "Transfer" ? accountToTransfer : "#");
 
                   Navigator.pop(context);

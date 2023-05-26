@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Invoker {
@@ -50,7 +51,7 @@ class Invoker {
       double? amount,
       String? account,
       String? category,
-      String? date,
+      RestorableDateTime? date,
       String? account2,
       ) => _channel.invokeMethod("addEntry", {
     "type" : type,
@@ -58,7 +59,9 @@ class Invoker {
     "amount" : amount,
     "account" : account,
     "category" : category,
-    "date" : date,
+    "date" : date?.value
+        .toString()
+        .substring(0, -13),
     "account2" : account2,
   });
 
@@ -126,12 +129,16 @@ class Invoker {
       _channel.invokeMethod("getLengthOfEntries");
 
   static Future<dynamic> addBudget(
-      String title, double amount,
-      String category, String interval) =>
+      String? title, double? amount,
+      String? category, String? interval,
+      RestorableDateTime? date) =>
       _channel.invokeMethod("addBudget", {
         "title" : title,
         "amount" : amount,
         "category" : category,
         "interval" : interval,
+        "date" : date?.value
+            .toString()
+            .substring(0, -13),
       });
 }

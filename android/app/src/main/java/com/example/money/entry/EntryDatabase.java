@@ -3,6 +3,9 @@ package com.example.money.entry;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
+
+import com.example.money.Converter;
+
 @Database(
         entities = {Entry.class},
         version = 2,

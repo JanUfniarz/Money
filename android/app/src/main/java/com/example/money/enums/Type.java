@@ -1,4 +1,4 @@
-package com.example.money.entry;
+package com.example.money.enums;
 
 public enum Type {
     INCOME,

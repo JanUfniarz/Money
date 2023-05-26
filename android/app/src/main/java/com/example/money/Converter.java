@@ -1,4 +1,4 @@
-package com.example.money.entry;
+package com.example.money;
 
 import androidx.room.TypeConverter;
 

@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.example.money.account.Account;
+import com.example.money.enums.Category;
+import com.example.money.enums.Type;
 
 import java.util.Date;
 

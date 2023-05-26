@@ -1,4 +1,4 @@
-package com.example.money.budget;
+package com.example.money.enums;
 
 public enum Interval {
     NONE,
