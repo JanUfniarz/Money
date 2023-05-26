@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/nav_director.dart';
 
 import 'package:money/widgets/date_picker.dart';
 import '../invoker.dart';
@@ -241,7 +242,7 @@ class _AddEntryState extends State<AddEntry> {
                       selectedDate,
                       type == "Transfer" ? accountToTransfer : "#");
 
-                  Navigator.pop(context);
+                  NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.accent,
