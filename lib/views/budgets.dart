@@ -14,7 +14,13 @@ class _BudgetsState extends State<Budgets> {
     return MyScaffold(
       title: "Budgets",
       picked: 3,
-      body: Placeholder()
+      body: ListView(
+        children: <Widget>[
+
+        ],
+      )
     );
   }
 }
+
+

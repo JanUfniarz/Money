@@ -39,7 +39,7 @@ class _MyScaffoldState extends State<MyScaffold> {
         picked: widget.picked,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: const _MyFAB(),
+      floatingActionButton: _MyFAB(picked: widget.picked),
       body: widget.body,
     );
   }
@@ -47,7 +47,10 @@ class _MyScaffoldState extends State<MyScaffold> {
 
 
 class _MyFAB extends StatefulWidget {
-  const _MyFAB({Key? key}) : super(key: key);
+
+  final int picked;
+
+  const _MyFAB({required this.picked, Key? key}) : super(key: key);
 
   @override
   State<_MyFAB> createState() => _MyFABState();
@@ -56,9 +59,76 @@ class _MyFAB extends StatefulWidget {
 class _MyFABState extends State<_MyFAB> {
   late ValueNotifier<bool> _isOpen;
 
+  List<SpeedDialChild> speedDialChildren = [];
+
   @override
   void initState() {
     _isOpen = ValueNotifier<bool>(false);
+
+    switch (widget.picked) {
+
+      case 0 :
+      case 2 :
+        speedDialChildren = [
+          SpeedDialChild(
+            child: Icon(
+              Icons.arrow_right_alt_outlined,
+              color: Palette.background,
+            ),
+            label: "Transfer",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("Transfer"),
+          ),
+          SpeedDialChild(
+            child: Icon(
+              Icons.trending_down,
+              color: Palette.background,
+            ),
+            label: "Expense",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("Expense"),
+          ),
+          SpeedDialChild(
+            child: Icon(
+              Icons.trending_up,
+              color: Palette.background,
+            ),
+            label: "Income",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("Income"),
+          ),
+        ];
+        break;
+
+      case 1 :
+        speedDialChildren = [
+          SpeedDialChild(
+            child: Icon(
+              Icons.account_balance,
+              color: Palette.background,
+            ),
+            label: "Account",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("Account"),
+          ),
+        ];
+        break;
+
+      case 3 :
+        speedDialChildren = [
+          SpeedDialChild(
+            child: Icon(
+              Icons.savings,
+              color: Palette.background,
+            ),
+            label: "Budget",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("Budget"),
+          ),
+        ];
+        break;
+    }
+
     super.initState();
   }
 
@@ -69,8 +139,35 @@ class _MyFABState extends State<_MyFAB> {
   }
 
   void _onTap(String type) async {
-    int accountCount =
-    await Invoker.length();
+    int accountCount = await Invoker.length();
+
+    switch (type) {
+
+      case "Expense" :
+      case "Income" :
+        if (accountCount > 0) {
+          await NavDirector.pushAddEntry(context, arguments: type);
+          NavDirector.goHere(context);
+        }
+        break;
+
+      case "Transfer" :
+        if (accountCount > 1) {
+          await NavDirector.pushAddEntry(context, arguments: type);
+          NavDirector.goHere(context);
+        }
+        break;
+
+      case "Account" :
+        Map<String, dynamic> result = await NavDirector.pushAddAccount(context);
+        Invoker.addAccount(result["name"], result["value"]);
+        NavDirector.goHere(context);
+        break;
+
+      case "Budget" :
+        // TODO IMPLEMENT
+        break;
+    }
 
     if (((type == "Expense" || type == "Income") && accountCount > 0)
         || ((type == "Transfer") && accountCount > 1)) {
@@ -93,35 +190,7 @@ class _MyFABState extends State<_MyFAB> {
       spacing: 30,
       openCloseDial: _isOpen,
       overlayColor: Colors.transparent,
-      children: [
-        SpeedDialChild(
-          child: Icon(
-            Icons.arrow_right_alt_outlined,
-            color: Palette.background,
-          ),
-          label: "Transfer",
-          backgroundColor: Palette.accent,
-          onTap: () => _onTap("Transfer"),
-        ),
-        SpeedDialChild(
-          child: Icon(
-            Icons.trending_down,
-            color: Palette.background,
-          ),
-          label: "Expense",
-          backgroundColor: Palette.accent,
-          onTap: () => _onTap("Expense"),
-        ),
-        SpeedDialChild(
-          child: Icon(
-            Icons.trending_up,
-            color: Palette.background,
-          ),
-          label: "Income",
-          backgroundColor: Palette.accent,
-          onTap: () => _onTap("Income"),
-        ),
-      ],
+      children: speedDialChildren,
       onOpen: () => _isOpen.value = true,
       onClose: () => _isOpen.value = false,
     );
