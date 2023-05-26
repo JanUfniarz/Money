@@ -10,12 +10,11 @@ import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
 import com.example.money.budget.Budget;
 import com.example.money.budget.BudgetDatabase;
-import com.example.money.budget.Interval;
-import com.example.money.entry.Category;
-import com.example.money.entry.Converter;
+import com.example.money.enums.Interval;
+import com.example.money.enums.Category;
 import com.example.money.entry.Entry;
 import com.example.money.entry.EntryDatabase;
-import com.example.money.entry.Type;
+import com.example.money.enums.Type;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -127,7 +126,29 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addEntry":
-                                    addEntry(arguments);
+                                    try {
+                                        entry_db.entryDao().InsertAll(
+                                                new Entry(
+                                                        (String) arguments.get("title"),
+                                                        Type.valueOf(
+                                                                ((String) arguments.get("type"))
+                                                                        .toUpperCase()
+                                                                        .replaceAll(" ", "_")),
+                                                        (double) arguments.get("amount"),
+                                                        new SimpleDateFormat("yyyy-MM-dd")
+                                                                .parse((String) arguments.get("date")),
+                                                        accByName((String) arguments.get("account")),
+                                                        arguments.get("account2").equals("#")
+                                                                ? new Account("#", -1)
+                                                                : accByName((String) arguments.get("account2")),
+                                                        Category.valueOf(
+                                                                ((String) arguments.get("category"))
+                                                                        .toUpperCase()
+                                                                        .replaceAll(" ", "_"))
+                                                ));
+                                    } catch (ParseException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                     break;
 
                                 case "getLengthOfEntries" :
@@ -223,20 +244,26 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addBudget":
-                                    budget_db.budgetDao().InsertAll(new Budget(
-                                            (String) arguments.get("title"),
-                                            (double) arguments.get("amount"),
-                                            Category.valueOf(
-                                                    ((String) arguments.get("category"))
-                                                            .toUpperCase()
-                                                            .replaceAll(" ", "_")
-                                            ),
-                                            Interval.valueOf(
-                                                    ((String) arguments.get("interval"))
-                                                            .toUpperCase()
-                                                            .replaceAll(" ", "_")
-                                            )
-                                    ));
+                                    try {
+                                        budget_db.budgetDao().InsertAll(new Budget(
+                                                (String) arguments.get("title"),
+                                                (double) arguments.get("amount"),
+                                                Category.valueOf(
+                                                        ((String) arguments.get("category"))
+                                                                .toUpperCase()
+                                                                .replaceAll(" ", "_")
+                                                ),
+                                                Interval.valueOf(
+                                                        ((String) arguments.get("interval"))
+                                                                .toUpperCase()
+                                                                .replaceAll(" ", "_")
+                                                ),
+                                                new SimpleDateFormat("yyyy-MM-dd")
+                                                        .parse((String) arguments.get("date"))
+                                        ));
+                                    } catch (ParseException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                     break;
                             }
                             reload();
@@ -244,50 +271,11 @@ public class MainActivity extends FlutterActivity {
                 );
     }
 
-    private void addEntry(Map<String, Object> arguments) {
-        //* title
-        String title = (String) arguments.get("title");
-
-        //* type
-        Type type = Type.valueOf(
-                ((String) arguments.get("type"))
-                        .toUpperCase().replaceAll(" ", "_"));
-
-        //* amount
-        double amount = (double) arguments.get("amount");
-
-        //* date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date;
-
-        try {
-            date = sdf.parse((String) arguments.get("date"));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
-        //* account
-        Account account = accByName((String) arguments.get("account"));
-
-        //* account2
-        Account account2 = accByName((String) arguments.get("account2"));
-        if (arguments.get("account2").equals("#")) account2.name = "#";
-
-        //*category
-        Category category = Category.valueOf(
-                ((String) arguments.get("category"))
-                        .toUpperCase().replaceAll(" ", "_"));
-
-        entry_db.entryDao().InsertAll(
-                new Entry(title, type, amount, date,
-                        account, account2, category));
-    }
-
     private Account accByName(String name) {
-        for (Account ac : accounts)
-            if (ac.name.equals(name))
-                return ac;
-        return new Account("!!!", -1);
+        return accounts.stream()
+                .filter(ac -> ac.name.equals(name))
+                .findFirst()
+                .orElse(new Account("!!!", -1));
     }
 
     private void reload() {
@@ -356,12 +344,17 @@ public class MainActivity extends FlutterActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private static String toFirstLetterUpperCase(String input) {
-        if (input == null || input.isEmpty()) return input;
+//?        if (input == null || input.isEmpty()) return input;
+//
+//        String lowerCaseInput = input.toLowerCase();
+//        String firstLetterUpperCase = lowerCaseInput.substring(0, 1).toUpperCase();
+//        String restOfString = lowerCaseInput.substring(1);
+//        String connected = firstLetterUpperCase + restOfString;
+//?        return connected.replaceAll("_", " ");
 
-        String lowerCaseInput = input.toLowerCase();
-        String firstLetterUpperCase = lowerCaseInput.substring(0, 1).toUpperCase();
-        String restOfString = lowerCaseInput.substring(1);
-        String connected = firstLetterUpperCase + restOfString;
-        return connected.replaceAll("_", " ");
+        return input == null || input.isEmpty() ? input
+                : (input.substring(0, 1).toUpperCase()
+                    + input.substring(1).toLowerCase())
+                    .replaceAll("_", " ");
     }
 }
