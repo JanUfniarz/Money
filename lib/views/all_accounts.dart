@@ -57,12 +57,12 @@ class _AllAccountsState extends State<AllAccounts> {
         onTap: () async {
           double value = await Invoker.value(name: card.name);
 
-          var arguments = <String, dynamic>{
-            "name" : card.name,
-            "value" : value,
-            "index" : index,
-          };
-          await NavDirector.pushAccountView(context, arguments: arguments);
+          await NavDirector.pushAccountView(
+            context,
+            name: card.name,
+            value: value,
+            index: index,
+          );
           NavDirector.goAllAccounts(context);
         },
         child: card,

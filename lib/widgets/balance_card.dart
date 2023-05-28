@@ -154,12 +154,12 @@ class _AccountCardState extends State<AccountCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        var arguments = <String, dynamic>{
-          "name" : await name(),
-          "value" : double.parse(await value()),
-          "index" : widget.index,
-        };
-        await NavDirector.pushAccountView(context, arguments: arguments);
+        await NavDirector.pushAccountView(
+          context,
+          name: await name(),
+          value: double.parse(await value()),
+          index: widget.index,
+        );
         NavDirector.goHere(context);
       },
       child: SizedBox(

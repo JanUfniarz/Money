@@ -53,12 +53,9 @@ class _AllEntriesState extends State<AllEntries> {
   @override
   Widget build(BuildContext context) {
 
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      final arguments = ModalRoute.of(context)!
-          .settings.arguments as Map<String, dynamic>;
-
-      superFilter = arguments["filter"];
-      superFilterKey = arguments["filterKey"];
+    if (NavDirector.argumentsAreAvailable(context)) {
+      superFilter = NavDirector.fromRoute(context)["filter"];
+      superFilterKey = NavDirector.fromRoute(context)["filterKey"];
     }
 
     List<DropdownMenuItem<dynamic>> categoriesDMI = _dmi(categories);

@@ -25,11 +25,9 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
 
-    final arguments = NavDirector.fromRoute(context) as Map<String, dynamic>;
-
-    name ??= arguments['name'];
-    value ??= arguments['value'];
-    index = arguments['index'];
+    name ??= NavDirector.fromRoute(context)['name'];
+    value ??= NavDirector.fromRoute(context)['value'];
+    index = NavDirector.fromRoute(context)['index'];
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -432,11 +430,11 @@ class _AccountViewState extends State<AccountView> {
             GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: () async {
-                Map<String, dynamic> argsToAE = {
-                  "filter" : 5,
-                  "filterKey" : name
-                };
-                await NavDirector.goAllEntries(context, arguments: argsToAE);
+                await NavDirector.goAllEntries(
+                  context,
+                  filter: 5,
+                  filterKey: name,
+                );
                 NavDirector.back(context);
               },
               child: IgnorePointer(

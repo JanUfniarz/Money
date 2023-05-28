@@ -22,11 +22,16 @@ class NavDirector {
   static Future<dynamic> goAllAccounts(BuildContext context) =>
       _go(context, _allAccounts);
 
-  static Future<dynamic> goAllEntries(BuildContext context, {Object? arguments}) =>
-      _go(context, _allEntries, arguments: arguments);
+  static Future<dynamic> goAllEntries(BuildContext context,
+      {int? filter, String? filterKey}
+      ) =>
+      _go(context, _allEntries, arguments: {
+        "filter" : filter,
+        "filterKey" : filterKey,
+      });
 
-  static Future<dynamic> goBudgets(BuildContext context, {Object? arguments}) =>
-      _go(context, _budgets, arguments: arguments);
+  static Future<dynamic> goBudgets(BuildContext context) =>
+      _go(context, _budgets);
 
   static Future<dynamic> goHere(BuildContext context) =>
       Navigator.pushReplacementNamed(
@@ -36,22 +41,27 @@ class NavDirector {
 
   static Future<dynamic> pushAddEntry(
       BuildContext context, 
-      {Object? arguments}
-      ) => _push(context, _addEntry, arguments: arguments);
+      {required String type}
+      ) => _push(context, _addEntry, arguments: {"type": type});
   
   static Future<dynamic> pushAccountView(
       BuildContext context, 
-      {Object? arguments}
-      ) => _push(context, _accountView, arguments: arguments);
+      {required String name, required double value, required int index}
+      ) =>
+      _push(context, _accountView, arguments: {
+        "name": name,
+        "value": value,
+        "index": index
+      });
 
   static Future<dynamic> pushAddAccount(BuildContext context) => 
       _push(context, _addAccount);
 
   static Future<dynamic> pushAddBudget(
       BuildContext context,
-      {Object? arguments}
+      {bool? periodic}
       ) =>
-      _push(context, _addBudget, arguments: arguments);
+      _push(context, _addBudget, arguments: {"periodic" : periodic});
 
   static Future<dynamic> _go(
       BuildContext context,
@@ -72,6 +82,14 @@ class NavDirector {
     arguments: arguments,
   );
 
-  static Object? fromRoute(BuildContext context) =>
-      ModalRoute.of(context)!.settings.arguments;
+  static Map<String, dynamic> fromRoute(BuildContext context) =>
+      ModalRoute.of(context)!
+          .settings.arguments as Map<String, dynamic>;
+
+  static bool argumentsAreAvailable(BuildContext context) {
+    // This line protects from back() error
+    if (ModalRoute.of(context)!
+        .settings.arguments == null) return false;
+    return fromRoute(context).values.any((val) => val != null);
+  }
 }

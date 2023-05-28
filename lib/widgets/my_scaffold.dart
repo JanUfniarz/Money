@@ -154,7 +154,7 @@ class _MyFABState extends State<_MyFAB> {
       case "Expense" :
       case "Income" :
         if (accountCount > 0) {
-          await NavDirector.pushAddEntry(context, arguments: type);
+          await NavDirector.pushAddEntry(context, type: type);
           NavDirector.goHere(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -165,7 +165,7 @@ class _MyFABState extends State<_MyFAB> {
 
       case "Transfer" :
         if (accountCount > 1) {
-          await NavDirector.pushAddEntry(context, arguments: type);
+          await NavDirector.pushAddEntry(context, type: type);
           NavDirector.goHere(context);
         } else {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -182,7 +182,7 @@ class _MyFABState extends State<_MyFAB> {
 
       case "Periodic" :
       case "One Time" :
-        await NavDirector.pushAddBudget(context, arguments: (type == "Periodic"));
+        await NavDirector.pushAddBudget(context, periodic: (type == "Periodic"));
         NavDirector.goHere(context);
         break;
     }

@@ -92,8 +92,7 @@ class _AddEntryState extends State<AddEntry> {
       );
     }
 
-    type = ModalRoute.of(context)!
-        .settings.arguments as String;
+    type = NavDirector.fromRoute(context)["type"];
 
     List<DropdownMenuItem<dynamic>> categoriesDMI = type == "Expense"
                       ? _dmi(exCategories)

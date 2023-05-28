@@ -51,7 +51,7 @@ class _AddBudgetState extends State<AddBudget> {
   @override
   Widget build(BuildContext context) {
 
-    periodic = NavDirector.fromRoute(context) as bool;
+    periodic = NavDirector.fromRoute(context)["periodic"];
 
     category ??= _dmi(categories).first.value;
     interval ??= _dmi(intervals).first.value;

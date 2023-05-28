@@ -109,7 +109,7 @@ class NewEntryButton extends StatelessWidget {
 
           if (((type == "Expense" || type == "Income") && accountCount > 0)
               || ((type == "Transfer") && accountCount > 1)) {
-            await NavDirector.pushAddEntry(context, arguments: type);
+            await NavDirector.pushAddEntry(context, type: type);
             NavDirector.goHere(context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
