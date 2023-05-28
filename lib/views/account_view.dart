@@ -25,8 +25,7 @@ class _AccountViewState extends State<AccountView> {
   @override
   Widget build(BuildContext context) {
 
-    final arguments = ModalRoute.of(context)!
-        .settings.arguments as Map<String, dynamic>;
+    final arguments = NavDirector.fromRoute(context) as Map<String, dynamic>;
 
     name ??= arguments['name'];
     value ??= arguments['value'];

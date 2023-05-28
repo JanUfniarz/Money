@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
 import '../widgets/date_picker.dart';
@@ -11,6 +12,8 @@ class AddBudget extends StatefulWidget {
 }
 
 class _AddBudgetState extends State<AddBudget> {
+
+  bool periodic = true;
 
   // Values to be send
   String? title;
@@ -30,7 +33,7 @@ class _AddBudgetState extends State<AddBudget> {
   ];
 
   List<String> intervals = [
-    "None",
+    //"None",
     "Week",
     "Month",
     "Year",
@@ -47,6 +50,8 @@ class _AddBudgetState extends State<AddBudget> {
 
   @override
   Widget build(BuildContext context) {
+
+    periodic = NavDirector.fromRoute(context) as bool;
 
     category ??= _dmi(categories).first.value;
     interval ??= _dmi(intervals).first.value;
@@ -109,7 +114,8 @@ class _AddBudgetState extends State<AddBudget> {
                 ),
               ],
             ),
-            Column(
+            periodic
+                ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
@@ -130,9 +136,8 @@ class _AddBudgetState extends State<AddBudget> {
                   ),
                 ),
               ],
-            ),
-            interval == "None"
-                ?  Row(
+            )
+                :  Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
@@ -148,8 +153,7 @@ class _AddBudgetState extends State<AddBudget> {
                   selectedDate: date!,
                 ),
               ],
-            )
-                : const SizedBox(),
+            ),
             SizedBox(
               width: 150,
               height: 50,

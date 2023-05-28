@@ -74,11 +74,6 @@ class _AddEntryState extends State<AddEntry> {
     }).toList();
   }
 
-  //? String _dateToString(RestorableDateTime date) {
-  //   String res = date.value.toString();
-  //   return res.substring(0, res.length - 13);
-  //? }
-
   List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
     return list.map((String item) {
       return DropdownMenuItem<dynamic>(

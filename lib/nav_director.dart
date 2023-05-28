@@ -47,8 +47,11 @@ class NavDirector {
   static Future<dynamic> pushAddAccount(BuildContext context) => 
       _push(context, _addAccount);
 
-  static Future<dynamic> pushAddBudget(BuildContext context) =>
-      _push(context, _addBudget);
+  static Future<dynamic> pushAddBudget(
+      BuildContext context,
+      {Object? arguments}
+      ) =>
+      _push(context, _addBudget, arguments: arguments);
 
   static Future<dynamic> _go(
       BuildContext context,
@@ -68,4 +71,7 @@ class NavDirector {
     route,
     arguments: arguments,
   );
+
+  static Object? fromRoute(BuildContext context) =>
+      ModalRoute.of(context)!.settings.arguments;
 }

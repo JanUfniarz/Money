@@ -118,12 +118,21 @@ class _MyFABState extends State<_MyFAB> {
         speedDialChildren = [
           SpeedDialChild(
             child: Icon(
-              Icons.savings,
+              Icons.refresh,
               color: Palette.background,
             ),
-            label: "Budget",
+            label: "Periodic",
             backgroundColor: Palette.accent,
-            onTap: () => _onTap("Budget"),
+            onTap: () => _onTap("Periodic"),
+          ),
+          SpeedDialChild(
+            child: Icon(
+              Icons.redo,
+              color: Palette.background,
+            ),
+            label: "One Time",
+            backgroundColor: Palette.accent,
+            onTap: () => _onTap("One Time"),
           ),
         ];
         break;
@@ -171,8 +180,9 @@ class _MyFABState extends State<_MyFAB> {
         NavDirector.goHere(context);
         break;
 
-      case "Budget" :
-        await NavDirector.pushAddBudget(context);
+      case "Periodic" :
+      case "One Time" :
+        await NavDirector.pushAddBudget(context, arguments: (type == "Periodic"));
         NavDirector.goHere(context);
         break;
     }
