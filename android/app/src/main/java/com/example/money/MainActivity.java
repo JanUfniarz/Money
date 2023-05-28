@@ -344,14 +344,6 @@ public class MainActivity extends FlutterActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     private static String toFirstLetterUpperCase(String input) {
-//?        if (input == null || input.isEmpty()) return input;
-//
-//        String lowerCaseInput = input.toLowerCase();
-//        String firstLetterUpperCase = lowerCaseInput.substring(0, 1).toUpperCase();
-//        String restOfString = lowerCaseInput.substring(1);
-//        String connected = firstLetterUpperCase + restOfString;
-//?        return connected.replaceAll("_", " ");
-
         return input == null || input.isEmpty() ? input
                 : (input.substring(0, 1).toUpperCase()
                     + input.substring(1).toLowerCase())

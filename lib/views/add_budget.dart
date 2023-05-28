@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
+import '../invoker.dart';
 import '../widgets/date_picker.dart';
 
 class AddBudget extends StatefulWidget {
@@ -39,14 +40,12 @@ class _AddBudgetState extends State<AddBudget> {
     "Year",
   ];
 
-  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
-    return list.map((String item) {
-      return DropdownMenuItem<dynamic>(
-        value: item,
-        child: Text(item),
-      );
-    }).toList();
-  }
+  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) =>
+      list.map((String item) =>
+        DropdownMenuItem<dynamic>(
+          value: item,
+          child: Text(item),
+      )).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,10 @@ class _AddBudgetState extends State<AddBudget> {
     periodic = NavDirector.fromRoute(context)["periodic"];
 
     category ??= _dmi(categories).first.value;
+
+    if (!periodic) interval = "None";
     interval ??= _dmi(intervals).first.value;
+
     date ??= RestorableDateTime(DateTime.now());
 
     return Scaffold(
@@ -151,6 +153,7 @@ class _AddBudgetState extends State<AddBudget> {
                 DatePicker(
                   restorationId: "main",
                   selectedDate: date!,
+                  toBudget: true,
                 ),
               ],
             ),
@@ -160,8 +163,11 @@ class _AddBudgetState extends State<AddBudget> {
               child: ElevatedButton(
                 onPressed: () {
                   print(
-                    "title: $title\nammount: $amount\ncategory: $category\ninterval: $interval\ndate: $date"
+                    "title: $title\namount: $amount\ncategory: "
+                        "$category\ninterval: $interval\ndate: $date"
                   );
+                  //Invoker.addBudget(title, amount, category, interval, date);
+                  NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.accent,

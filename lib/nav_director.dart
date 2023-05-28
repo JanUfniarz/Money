@@ -87,7 +87,7 @@ class NavDirector {
           .settings.arguments as Map<String, dynamic>;
 
   static bool argumentsAreAvailable(BuildContext context) {
-    // This line protects from back() error
+    /// This line protects from back() error
     if (ModalRoute.of(context)!
         .settings.arguments == null) return false;
     return fromRoute(context).values.any((val) => val != null);

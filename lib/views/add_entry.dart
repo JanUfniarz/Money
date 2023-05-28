@@ -74,14 +74,12 @@ class _AddEntryState extends State<AddEntry> {
     }).toList();
   }
 
-  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) {
-    return list.map((String item) {
-      return DropdownMenuItem<dynamic>(
-        value: item,
-        child: Text(item),
-      );
-    }).toList();
-  }
+  List<DropdownMenuItem<dynamic>> _dmi(List<String> list) =>
+      list.map((String item) =>
+        DropdownMenuItem<dynamic>(
+          value: item,
+          child: Text(item),
+      )).toList();
 
   @override
   Widget build(BuildContext context) {

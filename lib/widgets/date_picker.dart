@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:money/palette.dart';
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({super.key, this.restorationId, required this.selectedDate});
+  const DatePicker({super.key, this.restorationId,
+    required this.selectedDate, toBudget}):
+      toBudget = toBudget ?? false;
 
   final String? restorationId;
   final RestorableDateTime selectedDate;
+  final bool toBudget;
 
   @override
   State<DatePicker> createState() => _DatePickerState();
@@ -18,6 +21,8 @@ class _DatePickerState extends State<DatePicker>
   // the [StatefulWidget]'s constructor.
   @override
   String? get restorationId => widget.restorationId;
+
+  static late bool toBudget;
 
   //? final RestorableDateTime _selectedDate =
   //?   RestorableDateTime(DateTime(2021, 7, 25));
@@ -32,6 +37,12 @@ class _DatePickerState extends State<DatePicker>
         );
       },
     );
+
+  @override
+  void initState() {
+    toBudget = widget.toBudget;
+    super.initState();
+  }
 
   static Route<DateTime> _datePickerRoute(
       BuildContext context,
@@ -54,8 +65,8 @@ class _DatePickerState extends State<DatePicker>
             restorationId: 'date_picker_dialog',
             initialEntryMode: DatePickerEntryMode.calendarOnly,
             initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-            firstDate: DateTime(2021),
-            lastDate: DateTime.now(),
+            firstDate: toBudget ? DateTime.now() : DateTime(2021),
+            lastDate: toBudget ? DateTime(2027) : DateTime.now(),
           ),
         );
       },
