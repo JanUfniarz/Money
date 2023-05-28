@@ -8,6 +8,7 @@ class NavDirector {
   static const String _allEntries = "/all_entries";
   static const String _allAccounts = "/all_accounts";
   static const String _budgets = "/budgets";
+  static const String _addBudget = "/add_budget";
 
   static dynamic back(BuildContext context, {Object? arguments}) =>
       arguments != null ? Navigator.pop(context, arguments) : Navigator.pop(context);
@@ -45,6 +46,9 @@ class NavDirector {
 
   static Future<dynamic> pushAddAccount(BuildContext context) => 
       _push(context, _addAccount);
+
+  static Future<dynamic> pushAddBudget(BuildContext context) =>
+      _push(context, _addBudget);
 
   static Future<dynamic> _go(
       BuildContext context,

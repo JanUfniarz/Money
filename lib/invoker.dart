@@ -61,7 +61,7 @@ class Invoker {
     "category" : category,
     "date" : date?.value
         .toString()
-        .substring(0, -13),
+        .substring(0, date.value.toString().length - 13),
     "account2" : account2,
   });
 

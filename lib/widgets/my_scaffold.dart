@@ -142,12 +142,15 @@ class _MyFABState extends State<_MyFAB> {
     int accountCount = await Invoker.length();
 
     switch (type) {
-
       case "Expense" :
       case "Income" :
         if (accountCount > 0) {
           await NavDirector.pushAddEntry(context, arguments: type);
           NavDirector.goHere(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Add an account first"),
+          ));
         }
         break;
 
@@ -155,6 +158,10 @@ class _MyFABState extends State<_MyFAB> {
         if (accountCount > 1) {
           await NavDirector.pushAddEntry(context, arguments: type);
           NavDirector.goHere(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Add an account first"),
+          ));
         }
         break;
 
@@ -165,18 +172,9 @@ class _MyFABState extends State<_MyFAB> {
         break;
 
       case "Budget" :
-        // TODO IMPLEMENT
+        await NavDirector.pushAddBudget(context);
+        NavDirector.goHere(context);
         break;
-    }
-
-    if (((type == "Expense" || type == "Income") && accountCount > 0)
-        || ((type == "Transfer") && accountCount > 1)) {
-      await NavDirector.pushAddEntry(context, arguments: type);
-      NavDirector.goHere(context);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Add an account first"),
-      ));
     }
   }
 

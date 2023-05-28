@@ -47,6 +47,11 @@ class _AddBudgetState extends State<AddBudget> {
 
   @override
   Widget build(BuildContext context) {
+
+    category ??= _dmi(categories).first.value;
+    interval ??= _dmi(intervals).first.value;
+    date ??= RestorableDateTime(DateTime.now());
+
     return Scaffold(
       backgroundColor: Palette.background,
       appBar: AppBar(
@@ -82,33 +87,56 @@ class _AddBudgetState extends State<AddBudget> {
               keyboardType: TextInputType.number,
               onChanged: (text) => amount = double.parse(text),
             ),
-            DropdownButton(
-              dropdownColor: Palette.background,
-              value: category,
-              items: _dmi(categories),
-              onChanged: (item) => setState(() => category = item),
-              isExpanded: true,
-              style: TextStyle(
-                  color: Palette.textField,
-                  fontSize: 25
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Category:",
+                  style: TextStyle(
+                      color: Palette.accent
+                  ),
+                ),
+                DropdownButton(
+                  dropdownColor: Palette.background,
+                  value: category,
+                  items: _dmi(categories),
+                  onChanged: (item) => setState(() => category = item),
+                  isExpanded: true,
+                  style: TextStyle(
+                      color: Palette.textField,
+                      fontSize: 25
+                  ),
+                ),
+              ],
             ),
-            DropdownButton(
-              dropdownColor: Palette.background,
-              value: interval,
-              items: _dmi(intervals),
-              onChanged: (item) => setState(() => interval = item),
-              isExpanded: true,
-              style: TextStyle(
-                  color: Palette.textField,
-                  fontSize: 25
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Interval:",
+                  style: TextStyle(
+                      color: Palette.accent
+                  ),
+                ),
+                DropdownButton(
+                  dropdownColor: Palette.background,
+                  value: interval,
+                  items: _dmi(intervals),
+                  onChanged: (item) => setState(() => interval = item),
+                  isExpanded: true,
+                  style: TextStyle(
+                      color: Palette.textField,
+                      fontSize: 25
+                  ),
+                ),
+              ],
             ),
-            Row(
+            interval == "None"
+                ?  Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Date:",
+                  "Final date:",
                   style: TextStyle(
                       color: Palette.textField,
                       fontSize: 25
@@ -117,9 +145,31 @@ class _AddBudgetState extends State<AddBudget> {
                 const SizedBox(width: 10),
                 DatePicker(
                   restorationId: "main",
-                  selectedDate: date ?? RestorableDateTime(DateTime.now()),
+                  selectedDate: date!,
                 ),
               ],
+            )
+                : const SizedBox(),
+            SizedBox(
+              width: 150,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: () {
+                  print(
+                    "title: $title\nammount: $amount\ncategory: $category\ninterval: $interval\ndate: $date"
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Palette.accent,
+                ),
+                child: Text(
+                  "Add Budget",
+                  style: TextStyle(
+                    color: Palette.background,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
