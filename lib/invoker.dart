@@ -6,6 +6,11 @@ class Invoker {
       "com.flutter.Invoker/MainActivity"
   );
 
+  static String? _fromDate(RestorableDateTime? date) =>
+      date?.value
+      .toString()
+      .substring(0, date.value.toString().length - 13);
+
   static Future<dynamic> addAccount(String? name, double? value) =>
       _channel.invokeMethod("addAccount", {
         "name" : name,
@@ -59,9 +64,7 @@ class Invoker {
     "amount" : amount,
     "account" : account,
     "category" : category,
-    "date" : date?.value
-        .toString()
-        .substring(0, date.value.toString().length - 13),
+    "date" : _fromDate(date),
     "account2" : account2,
   });
 
@@ -131,15 +134,15 @@ class Invoker {
   static Future<dynamic> addBudget(
       String? title, double? amount,
       String? category, String? interval,
-      RestorableDateTime? date) =>
+      RestorableDateTime? startDate,
+      RestorableDateTime? endDate,) =>
       _channel.invokeMethod("addBudget", {
         "title" : title,
         "amount" : amount,
         "category" : category,
         "interval" : interval,
-        "date" : date?.value
-            .toString()
-            .substring(0, -13),
+        "startDate" : _fromDate(startDate),
+        "endDate" : _fromDate(endDate),
       });
 
   static Future<dynamic> lengthOfBudgets() =>
@@ -166,7 +169,7 @@ class Invoker {
       });
 
   static Future<dynamic> budgetDate(int index) =>
-      _channel.invokeMethod("getBudgetDate", {
+      _channel.invokeMethod("getBudgetEndDate", {
         "index" : index,
       });
 }

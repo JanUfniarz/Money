@@ -26,15 +26,20 @@ public class Budget {
     @ColumnInfo(name = "interval")
     public Interval interval;
 
-    @ColumnInfo(name = "date")
-    public Date date;
+    @ColumnInfo(name = "startDate")
+    public Date startDate;
+
+    @ColumnInfo(name = "endDate")
+    public Date endDate;
 
     public Budget(String title, double amount,
-                  Category category, Interval interval, Date date) {
+                  Category category, Interval interval,
+                  Date endDate, Date startDate) {
         this.title = title;
         this.amount = amount;
         this.category = category;
         this.interval = interval;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

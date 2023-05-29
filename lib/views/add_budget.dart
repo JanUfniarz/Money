@@ -21,7 +21,8 @@ class _AddBudgetState extends State<AddBudget> {
   double? amount;
   String? category;
   String? interval;
-  RestorableDateTime? date;
+  RestorableDateTime? endDate;
+  RestorableDateTime? startDate;
 
   List<String> categories = [
     "Basic expenditure",
@@ -57,7 +58,8 @@ class _AddBudgetState extends State<AddBudget> {
     if (!periodic) interval = "None";
     interval ??= _dmi(intervals).first.value;
 
-    date ??= RestorableDateTime(DateTime.now());
+    endDate ??= RestorableDateTime(DateTime.now());
+    startDate ??= RestorableDateTime(DateTime.now());
 
     return Scaffold(
       backgroundColor: Palette.background,
@@ -152,7 +154,7 @@ class _AddBudgetState extends State<AddBudget> {
                 const SizedBox(width: 10),
                 DatePicker(
                   restorationId: "main",
-                  selectedDate: date!,
+                  selectedDate: endDate!,
                   toBudget: true,
                 ),
               ],
@@ -164,9 +166,9 @@ class _AddBudgetState extends State<AddBudget> {
                 onPressed: () {
                   print(
                     "title: $title\namount: $amount\ncategory: "
-                        "$category\ninterval: $interval\ndate: $date"
+                        "$category\ninterval: $interval\ndate: $endDate"
                   );
-                  //Invoker.addBudget(title, amount, category, interval, date);
+                  //Invoker.addBudget(title, amount, category, interval,startDate, endDate);
                   NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(

@@ -259,7 +259,9 @@ public class MainActivity extends FlutterActivity {
                                                                 .replaceAll(" ", "_")
                                                 ),
                                                 new SimpleDateFormat("yyyy-MM-dd")
-                                                        .parse((String) arguments.get("date"))
+                                                        .parse((String) arguments.get("startDate")),
+                                                new SimpleDateFormat("yyyy-MM-dd")
+                                                        .parse((String) arguments.get("endDate"))
                                         ));
                                     } catch (ParseException e) {
                                         throw new RuntimeException(e);
@@ -287,10 +289,10 @@ public class MainActivity extends FlutterActivity {
                                     // TODO write it
                                     break;
 
-                                case "getBudgetDate" :
+                                case "getBudgetEndDate" :
                                     result.success(Converter.dateToTimestamp(
                                             budgets.get((int) arguments.get("index"))
-                                                    .date));
+                                                    .endDate));
                                     break;
                             }
                             reload();
