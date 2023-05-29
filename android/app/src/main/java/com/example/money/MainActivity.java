@@ -265,6 +265,33 @@ public class MainActivity extends FlutterActivity {
                                         throw new RuntimeException(e);
                                     }
                                     break;
+
+                                case "getLengthOfBudgets" :
+                                    result.success(budgets.size());
+                                    break;
+
+                                case "getBudgetTittle" :
+                                    result.success(budgets.get((int) arguments.get("index")).title);
+                                    break;
+
+                                case "getBudgetCategory" :
+                                    result.success(toFirstLetterUpperCase(budgets.get(
+                                            (int) arguments.get("index")).category.toString()));
+                                    break;
+
+                                case "getBudgetAmount" :
+                                    result.success(budgets.get((int) arguments.get("index")).amount);
+                                    break;
+
+                                case "getBudgetActualAmount" :
+                                    // TODO write it
+                                    break;
+
+                                case "getBudgetDate" :
+                                    result.success(Converter.dateToTimestamp(
+                                            budgets.get((int) arguments.get("index"))
+                                                    .date));
+                                    break;
                             }
                             reload();
                         }

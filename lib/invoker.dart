@@ -141,4 +141,32 @@ class Invoker {
             .toString()
             .substring(0, -13),
       });
+
+  static Future<dynamic> lengthOfBudgets() =>
+      _channel.invokeMethod("getLengthOfBudgets");
+
+  static Future<dynamic> budgetTittle(int? index) =>
+      _channel.invokeMethod("getBudgetTittle", {
+        "index" : index,
+      });
+
+  static Future<dynamic> budgetCategory(int? index) =>
+      _channel.invokeMethod("getBudgetCategory", {
+        "index" : index,
+      });
+
+  static Future<dynamic> budgetAmount(int index) =>
+      _channel.invokeMethod("getBudgetAmount", {
+        "index" : index,
+      });
+
+  static Future<dynamic> budgetActualAmount(int index) =>
+      _channel.invokeMethod("getBudgetActualAmount", {
+        "index" : index,
+      });
+
+  static Future<dynamic> budgetDate(int index) =>
+      _channel.invokeMethod("getBudgetDate", {
+        "index" : index,
+      });
 }

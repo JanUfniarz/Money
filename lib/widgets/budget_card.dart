@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../invoker.dart';
 import '../palette.dart';
+
 
 class BudgetCard extends StatefulWidget {
 
+  final int index;
 
-
-  const BudgetCard({Key? key}) : super(key: key);
+  const BudgetCard({Key? key, required this.index}) : super(key: key);
 
   @override
   State<BudgetCard> createState() => _BudgetCardState();
@@ -14,13 +16,66 @@ class BudgetCard extends StatefulWidget {
 
 class _BudgetCardState extends State<BudgetCard> {
 
-  final List<String> _list = [
-    "You have left:", "To be used until:",
-    "150.50", "23.05.2023", // TODO
-  ];
+  _BaseBudgetCard? card;
+
+  @override
+  void initState() {
+    _loadData().then((data) =>
+      setState(() =>
+        card = data));
+    super.initState();
+  }
+
+  Future<_BaseBudgetCard> _loadData() async =>
+    _BaseBudgetCard(
+      tittle: await Invoker.budgetTittle(widget.index),
+      category: await Invoker.budgetCategory(widget.index),
+      budgetAmount: await Invoker.budgetAmount(widget.index),
+      actualAmount: await Invoker.budgetActualAmount(widget.index),
+      date: await Invoker.budgetDate(widget.index),
+    );
+
+  @override
+  Widget build(BuildContext context) =>
+      card ?? const Center(
+        child: CircularProgressIndicator(),
+      );
+}
+
+
+
+class _BaseBudgetCard extends StatefulWidget {
+
+  final String tittle;
+  final String category;
+  final double budgetAmount;
+  final double actualAmount;
+  final String date;
+
+  const _BaseBudgetCard({Key? key,
+    required this.tittle,
+    required this.category,
+    required this.budgetAmount,
+    required this.actualAmount,
+    required this.date,
+  }) : super(key: key);
+
+  @override
+  State<_BaseBudgetCard> createState() => _BaseBudgetCardState();
+}
+
+class _BaseBudgetCardState extends State<_BaseBudgetCard> {
+
+  List<String> _list = [];
 
   @override
   Widget build(BuildContext context) {
+
+    _list = [
+      "You have left:", "To be used until:",
+      widget.actualAmount.toString(), widget.date,
+    ];
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -47,7 +102,7 @@ class _BudgetCardState extends State<BudgetCard> {
                     Padding(
                       padding: const EdgeInsets.only(top: 15),
                       child: Text(
-                        "Tittle", //TODO
+                        widget.tittle,
                         style: TextStyle(
                           color: Palette.font,
                           fontSize: 35
@@ -67,7 +122,7 @@ class _BudgetCardState extends State<BudgetCard> {
                   ],
                 ),
                 Text(
-                  "Category", //TODO
+                  widget.category,
                   style: TextStyle(
                     color: Palette.main2,
                     fontSize: 40,
@@ -118,7 +173,7 @@ class _BudgetCardState extends State<BudgetCard> {
                       width: 260,
                       height: 30,
                       child: LinearProgressIndicator(
-                        value: 0.75, // Wartość procentowa (0.0 - 1.0) TODO
+                        value: widget.actualAmount / widget.budgetAmount,
                         backgroundColor: Colors.grey,
                         valueColor: AlwaysStoppedAnimation<Color>(Palette.main),
                       ),

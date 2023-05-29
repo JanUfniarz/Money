@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money/widgets/my_scaffold.dart';
 
+import '../invoker.dart';
 import '../widgets/budget_card.dart';
 
 class Budgets extends StatefulWidget {
@@ -11,17 +12,35 @@ class Budgets extends StatefulWidget {
 }
 
 class _BudgetsState extends State<Budgets> {
+
+  List<BudgetCard> budgetCards = [];
+
+  @override
+  void initState() {
+    _loadData().then((data) {
+      setState(() {
+        budgetCards = data;
+      });
+    });
+    super.initState();
+  }
+
+  Future<List<BudgetCard>> _loadData() async =>
+      List.generate(
+          await Invoker.lengthOfBudgets(),
+              (index) => BudgetCard(index: index));
+
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
       title: "Budgets",
       picked: 3,
-      body: ListView(
-        children: <Widget>[
-          BudgetCard(
-
-          ),
-        ],
+      body: budgetCards.isEmpty
+          ?  const Center(
+        child: CircularProgressIndicator(),
+      )
+          : ListView(
+        children: budgetCards,
       )
     );
   }
