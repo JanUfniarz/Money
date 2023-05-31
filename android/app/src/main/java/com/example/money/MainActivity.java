@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -63,12 +64,19 @@ public class MainActivity extends FlutterActivity {
                         "Budget_database")
                 .allowMainThreadQueries().build();
 
-        reload();
-
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
                             final Map<String, Object> arguments = call.arguments();
+
+                            //* reloading databases
+                            accounts = account_db.accountDao().getAllAccounts();
+                            singleton.allAccounts = accounts;
+
+                            entries = entry_db.entryDao().getAllEntries();
+                            Collections.reverse(entries);
+
+                            budgets = budget_db.budgetDao().getAllBudgets();
 
                             switch (call.method) {
 
@@ -286,7 +294,12 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getBudgetActualAmount" :
-                                    // TODO write it
+                                    Budget budget = budgets.get((int) arguments.get("index"));
+                                    entries.stream()
+                                            .filter(e -> e.date.compareTo(budget.startDate) > 0)
+                                            .filter(e -> e.category == budget.category)
+                                            .forEach(e -> budget.amount -= e.amount);
+                                    result.success(budget.amount);
                                     break;
 
                                 case "getBudgetEndDate" :
@@ -295,7 +308,6 @@ public class MainActivity extends FlutterActivity {
                                                     .endDate));
                                     break;
                             }
-                            reload();
                         }
                 );
     }
@@ -305,16 +317,6 @@ public class MainActivity extends FlutterActivity {
                 .filter(ac -> ac.name.equals(name))
                 .findFirst()
                 .orElse(new Account("!!!", -1));
-    }
-
-    private void reload() {
-        accounts = account_db.accountDao().getAllAccounts();
-        singleton.allAccounts = accounts;
-
-        entries = entry_db.entryDao().getAllEntries();
-        Collections.reverse(entries);
-
-        budgets = budget_db.budgetDao().getAllBudgets();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
