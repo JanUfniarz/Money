@@ -6,10 +6,18 @@ class Invoker {
       "com.flutter.Invoker/MainActivity"
   );
 
-  static String? _fromDate(RestorableDateTime? date) =>
-      date?.value
-      .toString()
-      .substring(0, date.value.toString().length - 13);
+  static String? _fromDate(RestorableDateTime? date) {
+
+    //? final restorableDateTime = RestorableDateTime(DateTime.now());
+    //? restorableDateTime.registerRestoreInformation('main');
+
+
+    return date?.value
+        .toString()
+        .substring(0, date.value
+        .toString()
+        .length - 13);
+  }
 
   static Future<dynamic> addAccount(String? name, double? value) =>
       _channel.invokeMethod("addAccount", {
@@ -134,15 +142,15 @@ class Invoker {
   static Future<dynamic> addBudget(
       String? title, double? amount,
       String? category, String? interval,
-      RestorableDateTime? startDate,
-      RestorableDateTime? endDate,) =>
+      String? startDate,
+      String? endDate,) =>
       _channel.invokeMethod("addBudget", {
         "title" : title,
         "amount" : amount,
         "category" : category,
         "interval" : interval,
-        "startDate" : _fromDate(startDate),
-        "endDate" : _fromDate(endDate),
+        "startDate" : startDate,
+        "endDate" : endDate,
       });
 
   static Future<dynamic> lengthOfBudgets() =>
@@ -170,6 +178,21 @@ class Invoker {
 
   static Future<dynamic> budgetDate(int index) =>
       _channel.invokeMethod("getBudgetEndDate", {
+        "index" : index,
+      });
+
+  static Future<dynamic> pin(int index) =>
+      _channel.invokeMethod("pin", {
+        "index" : index,
+      });
+
+  static Future<dynamic> pinned(int index) =>
+      _channel.invokeMethod("getPinned", {
+        "index" : index,
+      });
+
+  static Future<dynamic> deleteBudget(int? index) =>
+      _channel.invokeMethod("deleteBudget", {
         "index" : index,
       });
 }

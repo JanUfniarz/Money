@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money/nav_director.dart';
-import 'package:money/widgets/my_scaffold.dart';
 
 import '../invoker.dart';
 import '../palette.dart';
@@ -61,107 +60,188 @@ class _AllEntriesState extends State<AllEntries> {
     List<DropdownMenuItem<dynamic>> categoriesDMI = _dmi(categories);
     List<DropdownMenuItem<dynamic>> typesDMI = _dmi(types);
 
-    return MyScaffold(
-      title: "All ${superFilterKey ?? ""} Entries",
-      picked: 2,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "Sort by",
-                        style: TextStyle(
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Sort by",
+                      style: TextStyle(
+                        color: Palette.main2,
+                        fontSize: 30
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Palette.accent,
+                            ),
+                            onPressed: () => setState(() => filter = 1),
+                            child: Text(
+                              "Amount",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Palette.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Palette.accent,
+                            ),
+                            onPressed: () => setState(() => filter = 2),
+                            child: Text(
+                              "Date",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Palette.background,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 70,
+                child: VerticalDivider(
+                  thickness: 2,
+                  color: Palette.main2,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      "Filter by",
+                      style: TextStyle(
                           color: Palette.main2,
                           fontSize: 30
-                        ),
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 30,
-                            width: 70,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Palette.accent,
-                              ),
-                              onPressed: () => setState(() => filter = 1),
-                              child: Text(
-                                "Amount",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Palette.background,
-                                ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Palette.accent,
+                            ),
+                            onPressed: () {
+                              if (filterKey == "") { //! temporary
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Palette.main,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(25),
+                                      topLeft: Radius.circular(25),
+                                    ),
+                                  ),
+                                  builder: (context) {
+                                    return SizedBox(
+                                      height: 300,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: Column(
+                                          children: <Widget>[
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              "Filter by category",
+                                              style: TextStyle(
+                                                color: Palette.font,
+                                                fontSize: 30,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
+                                                top: 10,
+                                                bottom: 30,
+                                              ),
+                                              child: Divider(
+                                                color: Palette.accent,
+                                                thickness: 2,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                              child: DropdownButton(
+                                                dropdownColor: Palette.background,
+                                                value: categoriesDMI.first.value,
+                                                items: categoriesDMI,
+                                                onChanged: (item) {
+                                                  setState(() {
+                                                    filter = 3;
+                                                    filterKey = item;
+                                                  });
+                                                  NavDirector.back(context);
+                                                },
+                                                isExpanded: true,
+                                                style: TextStyle(
+                                                    color: Palette.textField,
+                                                    fontSize: 25
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                );
+                              }
+                            },
+                            child: Text(
+                              "Category",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Palette.background,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            height: 30,
-                            width: 70,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Palette.accent,
-                              ),
-                              onPressed: () => setState(() => filter = 2),
-                              child: Text(
-                                "Date",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Palette.background,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 70,
-                  child: VerticalDivider(
-                    thickness: 2,
-                    color: Palette.main2,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "Filter by",
-                        style: TextStyle(
-                            color: Palette.main2,
-                            fontSize: 30
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          SizedBox(
-                            height: 30,
-                            width: 70,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Palette.accent,
-                              ),
-                              onPressed: () {
-                                if (filterKey == "") { //! temporary
-                                  showModalBottomSheet(
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          height: 30,
+                          width: 70,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Palette.accent,
+                            ),
+                            onPressed: () {
+                              if (filterKey == "") { //! temporary
+                                showModalBottomSheet(
                                     context: context,
                                     isScrollControlled: true,
                                     backgroundColor: Palette.main,
@@ -180,7 +260,7 @@ class _AllEntriesState extends State<AllEntries> {
                                             children: <Widget>[
                                               const SizedBox(height: 10),
                                               Text(
-                                                "Filter by category",
+                                                "Filter by type",
                                                 style: TextStyle(
                                                   color: Palette.font,
                                                   fontSize: 30,
@@ -202,11 +282,11 @@ class _AllEntriesState extends State<AllEntries> {
                                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                                 child: DropdownButton(
                                                   dropdownColor: Palette.background,
-                                                  value: categoriesDMI.first.value,
-                                                  items: categoriesDMI,
+                                                  value: typesDMI.first.value,
+                                                  items: typesDMI,
                                                   onChanged: (item) {
                                                     setState(() {
-                                                      filter = 3;
+                                                      filter = 4;
                                                       filterKey = item;
                                                     });
                                                     NavDirector.back(context);
@@ -223,117 +303,32 @@ class _AllEntriesState extends State<AllEntries> {
                                         ),
                                       );
                                     }
-                                  );
-                                }
-                              },
-                              child: Text(
-                                "Category",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Palette.background,
-                                ),
+                                );
+                              }
+                            },
+                            child: Text(
+                              "Type",
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Palette.background,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            height: 30,
-                            width: 70,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Palette.accent,
-                              ),
-                              onPressed: () {
-                                if (filterKey == "") { //! temporary
-                                  showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Palette.main,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topRight: Radius.circular(25),
-                                          topLeft: Radius.circular(25),
-                                        ),
-                                      ),
-                                      builder: (context) {
-                                        return SizedBox(
-                                          height: 300,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                                            child: Column(
-                                              children: <Widget>[
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  "Filter by type",
-                                                  style: TextStyle(
-                                                    color: Palette.font,
-                                                    fontSize: 30,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.only(
-                                                    left: 20,
-                                                    right: 20,
-                                                    top: 10,
-                                                    bottom: 30,
-                                                  ),
-                                                  child: Divider(
-                                                    color: Palette.accent,
-                                                    thickness: 2,
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                  child: DropdownButton(
-                                                    dropdownColor: Palette.background,
-                                                    value: typesDMI.first.value,
-                                                    items: typesDMI,
-                                                    onChanged: (item) {
-                                                      setState(() {
-                                                        filter = 4;
-                                                        filterKey = item;
-                                                      });
-                                                      NavDirector.back(context);
-                                                    },
-                                                    isExpanded: true,
-                                                    style: TextStyle(
-                                                        color: Palette.textField,
-                                                        fontSize: 25
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                  );
-                                }
-                              },
-                              child: Text(
-                                "Type",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Palette.background,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            EntriesTable(
-              filter: filter,
-              filterKey: filterKey,
-              superFilter: superFilter,
-              superFilterKey: superFilterKey,
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          EntriesTable(
+            filter: filter,
+            filterKey: filterKey,
+            superFilter: superFilter,
+            superFilterKey: superFilterKey,
+          ),
+        ],
       ),
     );
   }

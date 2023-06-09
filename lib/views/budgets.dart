@@ -32,16 +32,12 @@ class _BudgetsState extends State<Budgets> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
-      title: "Budgets",
-      picked: 3,
-      body: budgetCards.isEmpty
+    return budgetCards.isEmpty
           ?  const Center(
         child: CircularProgressIndicator(),
       )
           : ListView(
         children: budgetCards,
-      )
     );
   }
 }

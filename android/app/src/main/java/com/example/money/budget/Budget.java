@@ -32,6 +32,9 @@ public class Budget {
     @ColumnInfo(name = "endDate")
     public Date endDate;
 
+    @ColumnInfo(name = "pinned")
+    public boolean pinned = false;
+
     public Budget(String title, double amount,
                   Category category, Interval interval,
                   Date endDate, Date startDate) {
@@ -41,5 +44,9 @@ public class Budget {
         this.interval = interval;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public void pin() {
+        pinned = !pinned;
     }
 }

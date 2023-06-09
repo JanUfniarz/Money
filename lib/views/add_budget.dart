@@ -4,6 +4,7 @@ import 'package:money/palette.dart';
 
 import '../invoker.dart';
 import '../widgets/date_picker.dart';
+import '../widgets/my_scaffold.dart';
 
 class AddBudget extends StatefulWidget {
   const AddBudget({Key? key}) : super(key: key);
@@ -61,18 +62,8 @@ class _AddBudgetState extends State<AddBudget> {
     endDate ??= RestorableDateTime(DateTime.now());
     startDate ??= RestorableDateTime(DateTime.now());
 
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main2,
-        title: Text(
-          "Add Budget",
-          style: TextStyle(
-            color: Palette.background,
-          ),
-        ),
-        centerTitle: true,
-      ),
+    return MyScaffold(
+      title: "Add Budget",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: Column(
@@ -168,7 +159,9 @@ class _AddBudgetState extends State<AddBudget> {
                     "title: $title\namount: $amount\ncategory: "
                         "$category\ninterval: $interval\ndate: $endDate"
                   );
-                  //Invoker.addBudget(title, amount, category, interval,startDate, endDate);
+                  Invoker.addBudget(title, amount, category, interval,
+                      _fromDate(startDate),
+                      _fromDate(endDate));
                   NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -188,4 +181,27 @@ class _AddBudgetState extends State<AddBudget> {
       ),
     );
   }
+
+  String? _fromDate(RestorableDateTime? date) {
+
+    //? final restorableDateTime = RestorableDateTime(DateTime.now());
+    //? restorableDateTime.registerRestoreInformation('main');
+
+
+    return date?.value
+        .toString()
+        .substring(0, date.value
+        .toString()
+        .length - 13);
+  }
+
+  //? @override
+  // String? get restorationId => "main";
+  //
+  // @override
+  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+  //   registerForRestoration(_restorableDateTime, 'date_picker');
+  // }
+  //
+  //? final _restorableDateTime = RestorableDateTime(DateTime.now());
 }

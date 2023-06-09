@@ -4,6 +4,7 @@ import 'package:money/palette.dart';
 
 import '../invoker.dart';
 import '../widgets/graph_linear.dart';
+import '../widgets/my_scaffold.dart';
 import 'all_entries.dart';
 
 class AccountView extends StatefulWidget {
@@ -29,13 +30,8 @@ class _AccountViewState extends State<AccountView> {
     value ??= NavDirector.fromRoute(context)['value'];
     index = NavDirector.fromRoute(context)['index'];
 
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        title: const Text("Account"),
-        centerTitle: true,
-        backgroundColor: Palette.main,
-      ),
+    return MyScaffold(
+      title: "Account",
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(

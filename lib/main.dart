@@ -3,22 +3,18 @@ import 'package:money/views/account_view.dart';
 import 'package:money/views/add_accout.dart';
 import 'package:money/views/add_budget.dart';
 import 'package:money/views/add_entry.dart';
-import 'package:money/views/all_accounts.dart';
-import 'package:money/views/all_entries.dart';
-import 'package:money/views/budgets.dart';
-
-import 'views/home.dart';
+import 'package:money/widgets/my_scaffold.dart';
 
 void main() => runApp(MaterialApp(
   initialRoute: "/home",
   routes: {
-    "/home" : (context) => const Home(),
+    "/home" : (context) => const MyScaffold(picked: 0),
     "/add_account" : (context) => const AddAccount(),
     "/account_view" : (context) => const AccountView(),
     "/add_entry" : (context) => const AddEntry(),
-    "/all_entries" : (context) => const AllEntries(),
-    "/all_accounts" : (context) => const AllAccounts(),
-    "/budgets" : (context) => const Budgets(),
+    "/all_entries" : (context) => const MyScaffold(picked: 2),
+    "/all_accounts" : (context) => const MyScaffold(picked: 1),
+    "/budgets" : (context) => const MyScaffold(picked: 3),
     "/add_budget" : (context) => const AddBudget(),
   },
 ));

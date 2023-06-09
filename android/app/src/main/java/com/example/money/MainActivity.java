@@ -32,6 +32,8 @@ import io.flutter.plugin.common.MethodChannel;
 public class MainActivity extends FlutterActivity {
     private static final String CHANNEL = "com.flutter.Invoker/MainActivity";
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     private List<Account> accounts = new ArrayList<>();
     private AccountDatabase account_db;
     private  List<Entry> entries = new ArrayList<>();
@@ -143,8 +145,7 @@ public class MainActivity extends FlutterActivity {
                                                                         .toUpperCase()
                                                                         .replaceAll(" ", "_")),
                                                         (double) arguments.get("amount"),
-                                                        new SimpleDateFormat("yyyy-MM-dd")
-                                                                .parse((String) arguments.get("date")),
+                                                        DATE_FORMAT.parse((String) arguments.get("date")),
                                                         accByName((String) arguments.get("account")),
                                                         arguments.get("account2").equals("#")
                                                                 ? new Account("#", -1)
@@ -266,10 +267,8 @@ public class MainActivity extends FlutterActivity {
                                                                 .toUpperCase()
                                                                 .replaceAll(" ", "_")
                                                 ),
-                                                new SimpleDateFormat("yyyy-MM-dd")
-                                                        .parse((String) arguments.get("startDate")),
-                                                new SimpleDateFormat("yyyy-MM-dd")
-                                                        .parse((String) arguments.get("endDate"))
+                                                DATE_FORMAT.parse((String) arguments.get("startDate")),
+                                                DATE_FORMAT.parse((String) arguments.get("endDate"))
                                         ));
                                     } catch (ParseException e) {
                                         throw new RuntimeException(e);
@@ -306,6 +305,20 @@ public class MainActivity extends FlutterActivity {
                                     result.success(Converter.dateToTimestamp(
                                             budgets.get((int) arguments.get("index"))
                                                     .endDate));
+                                    break;
+
+                                case "pin" :
+                                    budgets.get((int) arguments.get("index")).pin();
+                                    break;
+
+                                case "getPinned" :
+                                    result.success(
+                                            budgets.get((int) arguments.get("index")).pinned);
+                                    break;
+
+                                case "deleteBudget" :
+                                    budget_db.budgetDao().delete(
+                                            budgets.get((int) arguments.get("index")));
                                     break;
                             }
                         }

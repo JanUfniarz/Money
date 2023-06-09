@@ -1,47 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:money/palette.dart';
+import 'package:money/views/all_accounts.dart';
+import 'package:money/views/all_entries.dart';
 
 import '../invoker.dart';
 import '../nav_director.dart';
+import '../views/budgets.dart';
+import '../views/home.dart';
 
 class MyScaffold extends StatefulWidget {
 
-  final String title;
-  final int picked;
-  final Widget body;
+  final String? title;
+  final int? picked;
+  final Widget? body;
 
-  const MyScaffold({Key? key, title, picked, required this.body})
-      : title = title ?? "Money",
-        picked = picked ?? 0,
-        super(key: key);
+  const MyScaffold({Key? key, this.title, this.picked, this.body})
+      : super(key: key);
 
   @override
   State<MyScaffold> createState() => _MyScaffoldState();
 }
 
 class _MyScaffoldState extends State<MyScaffold> {
+
+  int? picked;
+
+  Widget _body(int picked) {
+    switch (picked) {
+      case 0: return const Home();
+      case 1: return const AllAccounts();
+      case 2: return const AllEntries();
+      case 3: return const Budgets();
+      default: return const Center(
+        child: Text("Invalid picked value!"),
+      );
+    }
+  }
+
+  String _title(int picked) {
+    switch (picked) {
+      case 0: return "Money";
+      case 1: return "All Accounts";
+      case 2: return "All Entries";
+      case 3: return "All budgets";
+      default: return "Invalid picked value!";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main,
-        title: Text(
-          widget.title,
-          style: TextStyle(
-            color: Palette.font,
+    if (widget.picked == null) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Palette.background,
+        appBar: AppBar(
+          backgroundColor: Palette.main,
+          title: Text(
+            widget.title ?? "Money",
+            style: TextStyle(
+              color: Palette.font,
+            ),
           ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      bottomNavigationBar: _MyNavigationBar(
-        picked: widget.picked,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: _MyFAB(picked: widget.picked),
-      body: widget.body,
-    );
+        body: widget.body,
+      );
+    } else {
+      picked ??= widget.picked;
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Palette.background,
+        appBar: AppBar(
+          backgroundColor: Palette.main,
+          title: Text(
+            _title(picked!),
+            style: TextStyle(
+              color: Palette.font,
+            ),
+          ),
+          centerTitle: true,
+        ),
+        bottomNavigationBar: _MyNavigationBar(
+          onClick: (index) => setState(() => picked = index),
+          picked: picked!,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: _MyFAB(picked: picked!),
+        body: _body(picked!),
+      );
+    }
   }
 }
 
@@ -64,6 +112,58 @@ class _MyFABState extends State<_MyFAB> {
   @override
   void initState() {
     _isOpen = ValueNotifier<bool>(false);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _isOpen.dispose();
+    super.dispose();
+  }
+
+  void _onTap(String type) async {
+    int accountCount = await Invoker.length();
+
+    switch (type) {
+      case "Expense" :
+      case "Income" :
+        if (accountCount > 0) {
+          await NavDirector.pushAddEntry(context, type: type);
+          NavDirector.goHere(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Add an account first"),
+          ));
+        }
+        break;
+
+      case "Transfer" :
+        if (accountCount > 1) {
+          await NavDirector.pushAddEntry(context, type: type);
+          NavDirector.goHere(context);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Add an account first"),
+          ));
+        }
+        break;
+
+      case "Account" :
+        Map<String, dynamic> result = await NavDirector.pushAddAccount(context);
+        Invoker.addAccount(result["name"], result["value"]);
+        NavDirector.goHere(context);
+        break;
+
+      case "Periodic" :
+      case "One Time" :
+        await NavDirector.pushAddBudget(context, periodic: (type == "Periodic"));
+        NavDirector.goHere(context);
+        break;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     switch (widget.picked) {
 
@@ -138,58 +238,6 @@ class _MyFABState extends State<_MyFAB> {
         break;
     }
 
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _isOpen.dispose();
-    super.dispose();
-  }
-
-  void _onTap(String type) async {
-    int accountCount = await Invoker.length();
-
-    switch (type) {
-      case "Expense" :
-      case "Income" :
-        if (accountCount > 0) {
-          await NavDirector.pushAddEntry(context, type: type);
-          NavDirector.goHere(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Add an account first"),
-          ));
-        }
-        break;
-
-      case "Transfer" :
-        if (accountCount > 1) {
-          await NavDirector.pushAddEntry(context, type: type);
-          NavDirector.goHere(context);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text("Add an account first"),
-          ));
-        }
-        break;
-
-      case "Account" :
-        Map<String, dynamic> result = await NavDirector.pushAddAccount(context);
-        Invoker.addAccount(result["name"], result["value"]);
-        NavDirector.goHere(context);
-        break;
-
-      case "Periodic" :
-      case "One Time" :
-        await NavDirector.pushAddBudget(context, periodic: (type == "Periodic"));
-        NavDirector.goHere(context);
-        break;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return SpeedDial(
       backgroundColor: Palette.accent,
       foregroundColor: Palette.background,
@@ -207,8 +255,12 @@ class _MyFABState extends State<_MyFAB> {
 
 class _MyNavigationBar extends StatefulWidget {
   final int picked;
+  final Function(int index) onClick;
 
-  const _MyNavigationBar({Key? key, required this.picked}) : super(key: key);
+  const _MyNavigationBar({Key? key,
+    required this.picked,
+    required this.onClick,
+  }) : super(key: key);
 
   @override
   State<_MyNavigationBar> createState() => _MyNavigationBarState();
@@ -240,14 +292,15 @@ class _MyNavigationBarState extends State<_MyNavigationBar> {
         children: List.generate(
           _icons.length,
               (index) => InkWell(
-            onTap: () {
-              switch (index) {
-                case 0: NavDirector.goHome(context); break;
-                case 1: NavDirector.goAllAccounts(context); break;
-                case 2: NavDirector.goAllEntries(context); break;
-                case 3: NavDirector.goBudgets(context); break;
-              }
-            },
+            //? onTap: () {
+            //   switch (index) {
+            //     case 0: NavDirector.goHome(context); break;
+            //     case 1: NavDirector.goAllAccounts(context); break;
+            //     case 2: NavDirector.goAllEntries(context); break;
+            //     case 3: NavDirector.goBudgets(context); break;
+            //   }
+            //? },
+            onTap: () => widget.onClick(index),
             child: Padding(
               padding: EdgeInsets.only(
                 top: 8,

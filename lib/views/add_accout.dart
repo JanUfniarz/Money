@@ -3,6 +3,7 @@ import 'package:money/nav_director.dart';
 import 'package:money/palette.dart';
 
 import '../invoker.dart';
+import '../widgets/my_scaffold.dart';
 
 class AddAccount extends StatefulWidget {
 
@@ -22,13 +23,8 @@ class _AddAccountState extends State<AddAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        backgroundColor: Palette.main,
-        title: const Text("Add Account"),
-        centerTitle: true,
-      ),
+    return MyScaffold(
+      title: "Add Account",
       body: Padding(
         padding: const EdgeInsets.all(50),
         child: Column(

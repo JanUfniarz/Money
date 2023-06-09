@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../invoker.dart';
+import '../nav_director.dart';
 import '../palette.dart';
 
 
@@ -33,6 +34,8 @@ class _BudgetCardState extends State<BudgetCard> {
       budgetAmount: await Invoker.budgetAmount(widget.index),
       actualAmount: await Invoker.budgetActualAmount(widget.index),
       date: await Invoker.budgetDate(widget.index),
+      pinned: await Invoker.pinned(widget.index),
+      index: widget.index,
     );
 
   @override
@@ -51,6 +54,8 @@ class _BaseBudgetCard extends StatefulWidget {
   final double budgetAmount;
   final double actualAmount;
   final String date;
+  final bool pinned;
+  final int index;
 
   const _BaseBudgetCard({Key? key,
     required this.tittle,
@@ -58,6 +63,8 @@ class _BaseBudgetCard extends StatefulWidget {
     required this.budgetAmount,
     required this.actualAmount,
     required this.date,
+    required this.pinned,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -91,12 +98,13 @@ class _BaseBudgetCardState extends State<_BaseBudgetCard> {
                   children: [
                     InkWell(
                       onTap: () {
-                        // TODO
+                        Invoker.pin(widget.index);
+                        NavDirector.goHere(context);
                       },
                       child: Icon(
                         Icons.pin_end,
                         size: 40,
-                        color: Palette.accent,
+                        color: widget.pinned ? Palette.accent : Palette.font,
                       ),
                     ),
                     Padding(
@@ -111,7 +119,8 @@ class _BaseBudgetCardState extends State<_BaseBudgetCard> {
                     ),
                     InkWell(
                       onTap: () {
-                        // TODO
+                        Invoker.deleteBudget(widget.index);
+                        NavDirector.goHere(context);
                       },
                       child: Icon(
                         Icons.delete,

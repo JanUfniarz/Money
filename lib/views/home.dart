@@ -19,58 +19,56 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const BalanceCard(),
-            const MyDivider(),
-            const LinearGraph(),
-            const MyDivider(),
-            Center(
-              child: Text(
-                "Add new:",
-                style: TextStyle(
-                  color: Palette.font,
-                  fontSize: 25,
-                ),
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const BalanceCard(),
+          const MyDivider(),
+          const LinearGraph(),
+          const MyDivider(),
+          Center(
+            child: Text(
+              "Add new:",
+              style: TextStyle(
+                color: Palette.font,
+                fontSize: 25,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  NewEntryButton(type: "Income"),
-                  NewEntryButton(type: "Expense"),
-                  NewEntryButton(type: "Transfer")
-                ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const <Widget>[
+                NewEntryButton(type: "Income"),
+                NewEntryButton(type: "Expense"),
+                NewEntryButton(type: "Transfer")
+              ],
+            ),
+          ),
+          Center(
+            child: Text(
+              "Entries",
+              style: TextStyle(
+                color: Palette.font,
+                fontSize: 25,
               ),
             ),
-            Center(
-              child: Text(
-                "Entries",
-                style: TextStyle(
-                  color: Palette.font,
-                  fontSize: 25,
-                ),
-              ),
+          ),
+          GestureDetector(
+            onTap: () => NavDirector.goAllEntries(context),
+            child: const EntriesTable(
+              numberOfEntries: 5,
             ),
-            GestureDetector(
-              onTap: () => NavDirector.goAllEntries(context),
-              child: const EntriesTable(
-                numberOfEntries: 5,
-              ),
-            ),
-            const MyDivider(),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: CircularGraph(),
-            ),
-          ],
-        ),
+          ),
+          const MyDivider(),
+          const Padding(
+            padding: EdgeInsets.all(10),
+            child: CircularGraph(),
+          ),
+        ],
       ),
     );
   }

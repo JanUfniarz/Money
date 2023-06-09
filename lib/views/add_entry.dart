@@ -4,6 +4,7 @@ import 'package:money/nav_director.dart';
 import 'package:money/widgets/date_picker.dart';
 import '../invoker.dart';
 import '../palette.dart';
+import '../widgets/my_scaffold.dart';
 
 class AddEntry extends StatefulWidget {
   const AddEntry({Key? key}) : super(key: key);
@@ -102,19 +103,8 @@ class _AddEntryState extends State<AddEntry> {
       accountToTransfer ??= accountNames.elementAt(1).value;
     }
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Palette.background,
-      appBar: AppBar(
-        title: Text(
-          "Add $type",
-          style: TextStyle(
-            color: Palette.background,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Palette.main2,
-      ),
+    return MyScaffold(
+      title: "Add $type",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
         child: Column(

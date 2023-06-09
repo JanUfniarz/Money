@@ -2,13 +2,11 @@ package com.example.money;
 
 import androidx.room.TypeConverter;
 
-import com.example.money.Singleton;
 import com.example.money.account.Account;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class Converter {
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -40,11 +38,8 @@ public class Converter {
     @TypeConverter
     public static Account fromId(int id) {
         if (id == -1) return new Account("#", -1);
-        Singleton singleton = Singleton.getInstance();
 
-        List<Account> allAccounts = singleton.allAccounts;
-
-        for (Account it : allAccounts) if (it.id == id) return it;
+        for (Account it : Singleton.getInstance().allAccounts) if (it.id == id) return it;
 
         return new Account(
                 "Deleted",
@@ -53,7 +48,7 @@ public class Converter {
 
     @TypeConverter
     public static int accountToId(Account account) {
-        if (account.name == "#") return -1;
+        if (account.name.equals("#")) return -1;
         return account.id;
     }
 }

@@ -105,15 +105,11 @@ class _AllAccountsState extends State<AllAccounts> {
       ),
     ));
 
-    return MyScaffold(
-      picked: 1,
-      title: "All Accounts",
-      body: ListView.builder(
-        itemCount: cards.length,
-        itemBuilder: (context, index) {
-          return cards[index];
-        },
-      ),
+    return ListView.builder(
+      itemCount: cards.length,
+      itemBuilder: (context, index) {
+        return cards[index];
+      },
     );
   }
 }
