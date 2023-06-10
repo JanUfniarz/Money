@@ -608,8 +608,10 @@ class _EntriesTableState extends State<EntriesTable> {
         finalCards.add(DateBar(date: card.date));
       }
     }
-    finalCards.add(filteredCards[0]);
-    finalCards.add(DateBar(date: filteredCards[0].date));
+    if (filteredCards.isNotEmpty){
+      finalCards.add(filteredCards[0]);
+      finalCards.add(DateBar(date: filteredCards[0].date));
+    }
 
     finalCards = finalCards.reversed.toList();
 
