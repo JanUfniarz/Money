@@ -157,69 +157,53 @@ class _AllEntriesState extends State<AllEntries> {
                             ),
                             onPressed: () {
                               if (filterKey == "") { //! temporary
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Palette.main,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(25),
-                                      topLeft: Radius.circular(25),
-                                    ),
-                                  ),
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: 300,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                                        child: Column(
-                                          children: <Widget>[
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Filter by category",
-                                              style: TextStyle(
-                                                color: Palette.font,
-                                                fontSize: 30,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 20,
-                                                right: 20,
-                                                top: 10,
-                                                bottom: 30,
-                                              ),
-                                              child: Divider(
-                                                color: Palette.accent,
-                                                thickness: 2,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                                              child: DropdownButton(
-                                                dropdownColor: Palette.background,
-                                                value: categoriesDMI.first.value,
-                                                items: categoriesDMI,
-                                                onChanged: (item) {
-                                                  setState(() {
-                                                    filter = 3;
-                                                    filterKey = item;
-                                                  });
-                                                  NavDirector.back(context);
-                                                },
-                                                isExpanded: true,
-                                                style: TextStyle(
-                                                    color: Palette.textField,
-                                                    fontSize: 25
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                NavDirector.bottomSheet(context, Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        "Filter by category",
+                                        style: TextStyle(
+                                          color: Palette.font,
+                                          fontSize: 30,
                                         ),
                                       ),
-                                    );
-                                  }
-                                );
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                          top: 10,
+                                          bottom: 30,
+                                        ),
+                                        child: Divider(
+                                          color: Palette.accent,
+                                          thickness: 2,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: DropdownButton(
+                                          dropdownColor: Palette.background,
+                                          value: categoriesDMI.first.value,
+                                          items: categoriesDMI,
+                                          onChanged: (item) {
+                                            setState(() {
+                                              filter = 3;
+                                              filterKey = item;
+                                            });
+                                            NavDirector.back(context);
+                                          },
+                                          isExpanded: true,
+                                          style: TextStyle(
+                                              color: Palette.textField,
+                                              fontSize: 25
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ));
                               }
                             },
                             child: Text(
@@ -241,69 +225,53 @@ class _AllEntriesState extends State<AllEntries> {
                             ),
                             onPressed: () {
                               if (filterKey == "") { //! temporary
-                                showModalBottomSheet(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    backgroundColor: Palette.main,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(25),
-                                        topLeft: Radius.circular(25),
+                                NavDirector.bottomSheet(context, Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        "Filter by type",
+                                        style: TextStyle(
+                                          color: Palette.font,
+                                          fontSize: 30,
+                                        ),
                                       ),
-                                    ),
-                                    builder: (context) {
-                                      return SizedBox(
-                                        height: 300,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                                          child: Column(
-                                            children: <Widget>[
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                "Filter by type",
-                                                style: TextStyle(
-                                                  color: Palette.font,
-                                                  fontSize: 30,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 20,
-                                                  right: 20,
-                                                  top: 10,
-                                                  bottom: 30,
-                                                ),
-                                                child: Divider(
-                                                  color: Palette.accent,
-                                                  thickness: 2,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                child: DropdownButton(
-                                                  dropdownColor: Palette.background,
-                                                  value: typesDMI.first.value,
-                                                  items: typesDMI,
-                                                  onChanged: (item) {
-                                                    setState(() {
-                                                      filter = 4;
-                                                      filterKey = item;
-                                                    });
-                                                    NavDirector.back(context);
-                                                  },
-                                                  isExpanded: true,
-                                                  style: TextStyle(
-                                                      color: Palette.textField,
-                                                      fontSize: 25
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 20,
+                                          right: 20,
+                                          top: 10,
+                                          bottom: 30,
+                                        ),
+                                        child: Divider(
+                                          color: Palette.accent,
+                                          thickness: 2,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: DropdownButton(
+                                          dropdownColor: Palette.background,
+                                          value: typesDMI.first.value,
+                                          items: typesDMI,
+                                          onChanged: (item) {
+                                            setState(() {
+                                              filter = 4;
+                                              filterKey = item;
+                                            });
+                                            NavDirector.back(context);
+                                          },
+                                          isExpanded: true,
+                                          style: TextStyle(
+                                              color: Palette.textField,
+                                              fontSize: 25
                                           ),
                                         ),
-                                      );
-                                    }
-                                );
+                                      ),
+                                    ],
+                                  ),
+                                ));
                               }
                             },
                             child: Text(

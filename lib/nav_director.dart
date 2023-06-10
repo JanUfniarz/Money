@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money/palette.dart';
 
 class NavDirector {
   static const String _home = "/home";
@@ -92,4 +93,29 @@ class NavDirector {
         .settings.arguments == null) return false;
     return fromRoute(context).values.any((val) => val != null);
   }
+
+  static Future<dynamic> bottomSheet(
+      BuildContext context,
+      Widget? child,
+      ) => showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Palette.main,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(25),
+          topLeft: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context)
+                .viewInsets.bottom
+        ),
+        child: SizedBox(
+            height: 300,
+            child: child,
+        ),
+      ),
+  );
 }

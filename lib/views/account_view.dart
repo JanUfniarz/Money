@@ -75,90 +75,67 @@ class _AccountViewState extends State<AccountView> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                backgroundColor: Palette.main,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topRight: Radius.circular(25),
-                                    topLeft: Radius.circular(25),
-                                  ),
-                                ),
-                                builder: (context) {
-                                  return Padding(
-                                    padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context)
-                                            .viewInsets.bottom
+                              NavDirector.bottomSheet(context, Padding(
+                                padding: const EdgeInsets
+                                    .symmetric(horizontal: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Change Name",
+                                      style: TextStyle(
+                                        color: Palette.font,
+                                        fontSize: 30,
+                                      ),
                                     ),
-                                    child: SizedBox(
-                                      height: 300,
-                                      child: Padding(
-                                        padding: const EdgeInsets
-                                            .symmetric(horizontal: 20),
-                                        child: Column(
-                                          children: <Widget>[
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Change Name",
-                                              style: TextStyle(
-                                                color: Palette.font,
-                                                fontSize: 30,
-                                              ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 30,
+                                      ),
+                                      child: Divider(
+                                        color: Palette.accent,
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        hintText: 'New Name',
+                                        filled: true,
+                                        fillColor: Palette.textField,
+                                      ),
+                                      onChanged: (text) => newName = text
+                                    ),
+                                    const SizedBox(height: 30),
+                                    SizedBox(
+                                      width: 90,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Invoker.changeName(index, newName);
+                                          setState(() => name = newName);
+                                          NavDirector.back(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Palette.accent,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Save",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Palette.background,
+                                              fontSize: 15,
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 20,
-                                                right: 20,
-                                                top: 10,
-                                                bottom: 30,
-                                              ),
-                                              child: Divider(
-                                                color: Palette.accent,
-                                                thickness: 2,
-                                              ),
-                                            ),
-                                            TextField(
-                                              decoration: InputDecoration(
-                                                hintText: 'New Name',
-                                                filled: true,
-                                                fillColor: Palette.textField,
-                                              ),
-                                              onChanged: (text) => newName = text
-                                            ),
-                                            const SizedBox(height: 30),
-                                            SizedBox(
-                                              width: 90,
-                                              height: 50,
-                                              child: ElevatedButton(
-                                                onPressed: () {
-                                                  Invoker.changeName(index, newName);
-
-                                                  setState(() => name = newName);
-                                                  NavDirector.back(context);
-                                                },
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor: Palette.accent,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    "Save",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Palette.background,
-                                                      fontSize: 15,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                }
-                              );
+                                  ],
+                                ),
+                              ));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Palette.main,
@@ -181,91 +158,68 @@ class _AccountViewState extends State<AccountView> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Palette.main,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(25),
-                                      topLeft: Radius.circular(25),
-                                    ),
-                                  ),
-                                  builder: (context) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(
-                                          bottom: MediaQuery.of(context)
-                                              .viewInsets.bottom
+                              NavDirector.bottomSheet(context, Padding(
+                                padding: const EdgeInsets
+                                    .symmetric(horizontal: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Change Balance",
+                                      style: TextStyle(
+                                        color: Palette.font,
+                                        fontSize: 30,
                                       ),
-                                      child: SizedBox(
-                                        height: 300,
-                                        child: Padding(
-                                          padding: const EdgeInsets
-                                              .symmetric(horizontal: 20),
-                                          child: Column(
-                                            children: <Widget>[
-                                              const SizedBox(height: 10),
-                                              Text(
-                                                "Change Balance",
-                                                style: TextStyle(
-                                                  color: Palette.font,
-                                                  fontSize: 30,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                  left: 20,
-                                                  right: 20,
-                                                  top: 10,
-                                                  bottom: 30,
-                                                ),
-                                                child: Divider(
-                                                  color: Palette.accent,
-                                                  thickness: 2,
-                                                ),
-                                              ),
-                                              TextField(
-                                                  decoration: InputDecoration(
-                                                    hintText: 'New Balance',
-                                                    filled: true,
-                                                    fillColor: Palette.textField,
-                                                  ),
-                                                  keyboardType: TextInputType.number,
-                                                  onChanged: (text) => newValue = double.parse(text)
-                                              ),
-                                              const SizedBox(height: 30),
-                                              SizedBox(
-                                                width: 90,
-                                                height: 50,
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    Invoker.changeValue(index, newValue);
-
-                                                    setState(() => value = newValue);
-                                                    NavDirector.back(context);
-                                                  },
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor: Palette.accent,
-                                                  ),
-                                                  child: Center(
-                                                    child: Text(
-                                                      "Save",
-                                                      textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                        color: Palette.background,
-                                                        fontSize: 15,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 30,
+                                      ),
+                                      child: Divider(
+                                        color: Palette.accent,
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    TextField(
+                                        decoration: InputDecoration(
+                                          hintText: 'New Balance',
+                                          filled: true,
+                                          fillColor: Palette.textField,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (text) => newValue = double.parse(text)
+                                    ),
+                                    const SizedBox(height: 30),
+                                    SizedBox(
+                                      width: 90,
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Invoker.changeValue(index, newValue);
+                                          setState(() => value = newValue);
+                                          NavDirector.back(context);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Palette.accent,
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Save",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Palette.background,
+                                              fontSize: 15,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  }
-                              );
+                                    ),
+                                  ],
+                                ),
+                              ));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Palette.main,
@@ -288,101 +242,85 @@ class _AccountViewState extends State<AccountView> {
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  backgroundColor: Palette.main,
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(
-                                      topRight: Radius.circular(25),
-                                      topLeft: Radius.circular(25),
-                                    ),
-                                  ),
-                                  builder: (context) {
-                                    return SizedBox(
-                                      height: 300,
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                                        child: Column(
-                                          children: <Widget>[
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              "Delete Account",
-                                              style: TextStyle(
-                                                color: Palette.font,
-                                                fontSize: 30,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                left: 20,
-                                                right: 20,
-                                                top: 10,
-                                                bottom: 30,
-                                              ),
-                                              child: Divider(
-                                                color: Palette.accent,
-                                                thickness: 2,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 30),
-                                            Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 20),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    width: 90,
-                                                    height: 50,
-                                                    child: ElevatedButton(
-                                                      onPressed: () {
-                                                        Invoker.deleteAccount(index);
-                                                        NavDirector.backToBottom(context);
-                                                        },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Palette.delete,
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Delete",
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Palette.font,
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: 90,
-                                                    height: 50,
-                                                    child: ElevatedButton(
-                                                      onPressed: () => NavDirector.back(context),
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Palette.accent,
-                                                      ),
-                                                      child: Center(
-                                                        child: Text(
-                                                          "Cancel",
-                                                          textAlign: TextAlign.center,
-                                                          style: TextStyle(
-                                                            color: Palette.background,
-                                                            fontSize: 15,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                              NavDirector.bottomSheet(context, Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  children: <Widget>[
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Delete Account",
+                                      style: TextStyle(
+                                        color: Palette.font,
+                                        fontSize: 30,
                                       ),
-                                    );
-                                  }
-                              );
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 20,
+                                        right: 20,
+                                        top: 10,
+                                        bottom: 30,
+                                      ),
+                                      child: Divider(
+                                        color: Palette.accent,
+                                        thickness: 2,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 90,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                Invoker.deleteAccount(index);
+                                                NavDirector.backToBottom(context);
+                                                },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Palette.delete,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Delete",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Palette.font,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 90,
+                                            height: 50,
+                                            child: ElevatedButton(
+                                              onPressed: () => NavDirector.back(context),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Palette.accent,
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "Cancel",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    color: Palette.background,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ));
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Palette.delete,
