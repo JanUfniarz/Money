@@ -1,7 +1,5 @@
 package com.example.money.account;
 
-import static com.example.money.enums.Type.*;
-
 import android.content.Context;
 import android.os.Build;
 
@@ -11,7 +9,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.money.Storable;
+import com.example.money.entry.Entry;
+import com.example.money.entry.EntryDatabase;
 
+import java.util.List;
 import java.util.Map;
 
 @Database(
@@ -52,22 +53,68 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                         .get((int) arguments.get("index")));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(String details, Map<String, Object> arguments) {
+        switch (details) {
 
+            case "name" :
+                Account toChangeN = accountDao().getAllAccounts()
+                        .get((int) arguments.get("index"));
+                toChangeN.name = (String) arguments.get("newName");
+                accountDao().updateAccounts(toChangeN);
+                break;
+
+            case "value" :
+                Account toChangeV = accountDao().getAllAccounts()
+                        .get((int) arguments.get("index"));
+                setValue(toChangeV,
+                        (double) arguments.get("newValue"));
+                accountDao().updateAccounts(toChangeV);
+                break;
+        }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
+        switch (details) {
 
+            default:
+                return null;
+
+            case "balanceSum" :
+                return String.valueOf(
+                        accountDao()
+                                .getAllAccounts()
+                                .stream()
+                                .map(this::getValue)
+                                .reduce(Double::sum)
+                                .orElseThrow());
+
+            case "name" :
+                return (accountDao()
+                        .getAllAccounts()
+                        .get((int) arguments.get("index")))
+                        .name;
+
+            case "value" :
+                return getValue(arguments.get("index") != null
+                        ? accountDao().getAllAccounts()
+                        .get((int) arguments.get("index"))
+                        : accByName((String) arguments.get("name")));
+
+            case "length" :
+                return accountDao().getAllAccounts().size();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private double getValue(Account account) {
-        
+
         final double[] value = {account.value};
 
-        entries.stream()
+        entries().stream()
                 .filter(entry -> entry.account == account)
                 .forEach(entry -> {
                     switch (entry.type) {
@@ -84,7 +131,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                             );
                     }
                 });
-        entries.stream()
+        entries().stream()
                 .filter(entry -> entry.account2 == account)
                 .forEach(entry -> value[0] += entry.amount);
         return value[0];
@@ -94,7 +141,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     private void setValue(Account account, double finalValue) {
         final double[] value = {finalValue};
 
-        entries.stream()
+        entries().stream()
                 .filter(entry -> entry.account == account)
                 .forEach(entry -> {
                     switch (entry.type) {
@@ -111,9 +158,22 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                             );
                     }
                 });
-        entries.stream()
+        entries().stream()
                 .filter(entry -> entry.account2 == account)
                 .forEach(entry -> value[0] -= entry.amount);
         account.value = value[0];
+    }
+
+    private List<Entry> entries() {
+        return EntryDatabase.getInstance().entryDao().getAllEntries();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private Account accByName(String name) {
+        return accountDao()
+                .getAllAccounts().stream()
+                .filter(ac -> ac.name.equals(name))
+                .findFirst()
+                .orElse(new Account("!!!", -1));
     }
 }

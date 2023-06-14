@@ -112,6 +112,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "balanceSum":
+                                    //* done
                                     result.success(String.valueOf(
                                             accounts.stream()
                                                     .map(this::getValue)
@@ -120,28 +121,33 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "getName":
+                                    //*done
                                     result.success((accounts
                                             .get((int) arguments.get("index")))
                                             .name);
                                     break;
 
                                 case "getValue":
+                                    //* done
                                     result.success(getValue(arguments.get("index") != null
                                             ? accounts.get((int) arguments.get("index"))
                                             : accByName((String) arguments.get("name"))));
                                     break;
 
                                 case "getLength":
+                                    //* done
                                     result.success(accounts.size());
                                     break;
 
                                 case "changeName":
+                                    //* done
                                     Account toChangeN = accounts.get((int) arguments.get("index"));
                                     toChangeN.name = (String) arguments.get("newName");
                                     account_db.accountDao().updateAccounts(toChangeN);
                                     break;
 
                                 case "changeValue":
+                                    //* done
                                     Account toChangeV = accounts.get((int) arguments.get("index"));
                                     setValue(toChangeV,
                                             (double) arguments.get("newValue"));
