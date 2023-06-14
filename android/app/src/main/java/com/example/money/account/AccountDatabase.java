@@ -78,6 +78,8 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
+        List<Account> accounts =  accountDao().getAllAccounts();
+
         switch (details) {
 
             default:
@@ -85,27 +87,22 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
             case "balanceSum" :
                 return String.valueOf(
-                        accountDao()
-                                .getAllAccounts()
-                                .stream()
+                        accounts.stream()
                                 .map(this::getValue)
                                 .reduce(Double::sum)
                                 .orElseThrow());
 
             case "name" :
-                return (accountDao()
-                        .getAllAccounts()
-                        .get((int) arguments.get("index")))
+                return (accounts.get((int) arguments.get("index")))
                         .name;
 
             case "value" :
                 return getValue(arguments.get("index") != null
-                        ? accountDao().getAllAccounts()
-                        .get((int) arguments.get("index"))
+                        ? accounts.get((int) arguments.get("index"))
                         : accByName((String) arguments.get("name")));
 
             case "length" :
-                return accountDao().getAllAccounts().size();
+                return accounts.size();
         }
     }
 
@@ -169,8 +166,8 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private Account accByName(String name) {
-        return accountDao()
+    public static Account accByName(String name) {
+        return AccountDatabase.getInstance().accountDao()
                 .getAllAccounts().stream()
                 .filter(ac -> ac.name.equals(name))
                 .findFirst()

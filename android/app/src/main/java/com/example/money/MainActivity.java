@@ -161,6 +161,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addEntry":
+                                    //* done
                                     try {
                                         entry_db.entryDao().InsertAll(
                                                 new Entry(
@@ -232,6 +233,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "deleteEntry" :
+                                    //* done
                                     entry_db.entryDao()
                                             .delete(entries.get(
                                                     (int) arguments.get("index")
@@ -412,7 +414,7 @@ public class MainActivity extends FlutterActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    private static String toFirstLetterUpperCase(String input) {
+    public static String toFirstLetterUpperCase(String input) {
         return input == null || input.isEmpty() ? input
                 : (input.substring(0, 1).toUpperCase()
                     + input.substring(1).toLowerCase())
