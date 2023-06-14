@@ -56,21 +56,25 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(String details, Map<String, Object> arguments) {
+
+        List<Account> accountList =  accountDao().getAllAccounts();
+
+        Account account = new Account(null, 0);
+
+        if (accountList.get((int) arguments.get("index")) != null)
+            account = accountList.get((int) arguments.get("index"));
+
         switch (details) {
 
             case "name" :
-                Account toChangeN = accountDao().getAllAccounts()
-                        .get((int) arguments.get("index"));
-                toChangeN.name = (String) arguments.get("newName");
-                accountDao().updateAccounts(toChangeN);
+                account.name = (String) arguments.get("newName");
+                accountDao().updateAccounts(account);
                 break;
 
             case "value" :
-                Account toChangeV = accountDao().getAllAccounts()
-                        .get((int) arguments.get("index"));
-                setValue(toChangeV,
+                setValue(account,
                         (double) arguments.get("newValue"));
-                accountDao().updateAccounts(toChangeV);
+                accountDao().updateAccounts(account);
                 break;
         }
     }
@@ -78,39 +82,40 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
-        List<Account> accounts =  accountDao().getAllAccounts();
+        List<Account> accountList =  accountDao().getAllAccounts();
+
+        Account account = new Account(null, 0);
+
+        if (accountList.get((int) arguments.get("index")) != null)
+            account = accountList.get((int) arguments.get("index"));
+
+        if ((String) arguments.get("name") != null)
+            account = accByName((String) arguments.get("name"));
 
         switch (details) {
 
-            default:
-                return null;
+            default: return null;
 
             case "balanceSum" :
                 return String.valueOf(
-                        accounts.stream()
+                        accountList.stream()
                                 .map(this::getValue)
                                 .reduce(Double::sum)
                                 .orElseThrow());
 
-            case "name" :
-                return (accounts.get((int) arguments.get("index")))
-                        .name;
+            case "name" : return account.name;
 
-            case "value" :
-                return getValue(arguments.get("index") != null
-                        ? accounts.get((int) arguments.get("index"))
-                        : accByName((String) arguments.get("name")));
+            case "value" : return getValue(account);
 
-            case "length" : return accounts.size();
+            case "length" : return accountList.size();
 
             case "initialValueSum" :
-                return accounts.stream()
-                    .map(a -> a.value)
-                    .reduce(Double::sum)
-                    .orElse(0.0);
+                return accountList.stream()
+                        .map(a -> a.value)
+                        .reduce(Double::sum)
+                        .orElse(0.0);
 
-            case "initialValue" : return accByName(
-                    (String) arguments.get("account")).value;
+            case "initialValue" : return account.value;
         }
     }
 

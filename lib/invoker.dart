@@ -131,9 +131,9 @@ class Invoker {
   static Future<dynamic> initValueSum() =>
       _channel.invokeMethod("getInitValueSum");
 
-  static Future<dynamic> initValue(String? account) =>
+  static Future<dynamic> initValue(String? name) =>
       _channel.invokeMethod("getInitialValue", {
-        "account": account,
+        "name" : name,
       });
 
   static Future<dynamic> lengthOfEntries() =>
