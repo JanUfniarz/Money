@@ -186,47 +186,47 @@ public class MainActivity extends FlutterActivity {
                                     }
                                     break;
 
-                                case "getLengthOfEntries" :
+                                case "getLengthOfEntries" : //* done
                                     result.success(entries.size());
                                     break;
 
-                                case "getEntryType" :
+                                case "getEntryType" : //* done
                                     result.success(toFirstLetterUpperCase(
                                             entries.get((int) arguments.get("index"))
                                                     .type.toString()));
                                     break;
 
-                                case "getEntryTitle" :
+                                case "getEntryTitle" : //* done
                                     result.success(entries.get(
                                             (int) arguments.get("index"))
                                             .title);
                                     break;
 
-                                case "getEntryAmount" :
+                                case "getEntryAmount" : //* done
                                     result.success(entries.get(
                                             (int) arguments.get("index"))
                                             .amount);
                                     break;
 
-                                case "getEntryCategory" :
+                                case "getEntryCategory" : //* done
                                     result.success(toFirstLetterUpperCase(
                                             entries.get((int) arguments.get("index"))
                                                     .category.toString()));
                                     break;
 
-                                case "getEntryAccountName" :
+                                case "getEntryAccountName" : //* done
                                     result.success(entries.get(
                                             (int) arguments.get("index"))
                                             .account.name);
                                     break;
 
-                                case "getEntryAccount2Name" :
+                                case "getEntryAccount2Name" :// *done
                                     result.success(entries.get(
                                             (int) arguments.get("index"))
                                             .account2.name);
                                     break;
 
-                                case "getEntryDate" :
+                                case "getEntryDate" : //* done
                                     result.success(Converter.dateToTimestamp(
                                             entries.get((int) arguments.get("index"))
                                                     .date));
@@ -240,7 +240,7 @@ public class MainActivity extends FlutterActivity {
                                             ));
                                     break;
 
-                                case "categorySum" :
+                                case "categorySum" : //* done
                                     result.success(entries.stream()
                                             .filter(entry -> entry.category == Category.valueOf(
                                                     ((String) arguments.get("category"))
@@ -255,20 +255,20 @@ public class MainActivity extends FlutterActivity {
                                             .orElse(0.0));
                                     break;
 
-                                case "getInitValueSum" :
+                                case "getInitValueSum" : //* done
                                     result.success(accounts.stream()
                                             .map(a -> a.value)
                                             .reduce(Double::sum)
                                             .orElse(0.0));
                                     break;
 
-                                case "getInitialValue" :
+                                case "getInitialValue" ://* done
                                     result.success(accByName(
                                             (String) arguments.get("account"))
                                             .value);
                                     break;
 
-                                case "getLastEntryIndex" :
+                                case "getLastEntryIndex" : // * done
                                     int lastEntryIndex = -1;
                                     for (int it = 0; it < entries.size(); it++)
                                         if (entries.get(it).account.name.equals(

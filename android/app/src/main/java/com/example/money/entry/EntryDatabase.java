@@ -89,6 +89,7 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
         List<Entry> entries = entryDao().getAllEntries();
@@ -98,22 +99,48 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
             entry = entries.get((int) arguments.get("index"));
 
         switch (details) {
-            default:
-                return null;
+            default : return null;
 
-            case "length" :
-                return entries.size();
+            case "length" : return entries.size();
 
-            case "type" :
-                return MainActivity.toFirstLetterUpperCase(
+            case "type" : return MainActivity.toFirstLetterUpperCase(
                         entry.type.toString());
 
-            case "title" :
-                return entry.title;
+            case "title" : return entry.title;
 
-            case "amount" :
-                return entry.amount;
-                
+            case "amount" : return entry.amount;
+
+            case "category" : return MainActivity.toFirstLetterUpperCase(
+                        entry.category.toString());
+
+            case "account" : return entry.account.name;
+
+            case "account2" : return entry.account2.name;
+
+            case "date" : return Converter.dateToTimestamp(entry.date);
+
+            case "categorySum" : return entries.stream()
+                    .filter(e -> e.category == Category.valueOf(
+                            ((String) arguments.get("category"))
+                                    .toUpperCase()
+                                    .replaceAll(" ", "_")))
+                    .filter(e -> e.type == Type.valueOf(
+                            ((String) arguments.get("type"))
+                                    .toUpperCase()
+                                    .replaceAll(" ", "_")))
+                    .map(e -> e.amount)
+                    .reduce(Double::sum)
+                    .orElse(0.0);
+
+            case "lastEntryIndex" :
+                int lastEntryIndex = -1;
+                for (int it = 0; it < entries.size(); it++)
+                    if (entries.get(it).account.name.equals(
+                            (String) arguments.get("name"))
+                            || entries.get(it).account2.name.equals(
+                            (String) arguments.get("name")))
+                        lastEntryIndex = it;
+                return lastEntryIndex;
         }
     }
 }

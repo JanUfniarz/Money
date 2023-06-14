@@ -101,8 +101,16 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                         ? accounts.get((int) arguments.get("index"))
                         : accByName((String) arguments.get("name")));
 
-            case "length" :
-                return accounts.size();
+            case "length" : return accounts.size();
+
+            case "initialValueSum" :
+                return accounts.stream()
+                    .map(a -> a.value)
+                    .reduce(Double::sum)
+                    .orElse(0.0);
+
+            case "initialValue" : return accByName(
+                    (String) arguments.get("account")).value;
         }
     }
 
@@ -167,7 +175,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Account accByName(String name) {
-        return AccountDatabase.getInstance().accountDao()
+        return getInstance().accountDao()
                 .getAllAccounts().stream()
                 .filter(ac -> ac.name.equals(name))
                 .findFirst()
