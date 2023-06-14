@@ -48,11 +48,7 @@ public class MainActivity extends FlutterActivity {
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
 
-        account_db = Room.databaseBuilder(
-                getApplicationContext(),
-                AccountDatabase.class,
-                "Account_database")
-                .allowMainThreadQueries().build();
+        account_db = AccountDatabase.getInstance(getApplicationContext());
 
         entry_db = Room.databaseBuilder(
                         getApplicationContext(),
@@ -69,6 +65,20 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
+
+                            /*
+                             * New protocol standard:
+                             *      "database/action/details"
+                             *
+                             * datbases:
+                             *      account, entry, budget
+                             *
+                             * actions:
+                             *      add, delete, update, get
+                             *
+                             * # means null
+                             */
+
                             final Map<String, Object> arguments = call.arguments();
 
                             //* reloading databases
@@ -80,6 +90,13 @@ public class MainActivity extends FlutterActivity {
 
                             budgets = budget_db.budgetDao().getAllBudgets();
 
+                            String[] split = call.method.split("/");
+                            String database = split[0];
+                            String action = split[1];
+                            String details = split[2];
+
+
+
                             switch (call.method) {
 
                                 default:
@@ -87,6 +104,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "addAccount":
+                                    //* done
                                     account_db.accountDao().InsertAll(new Account(
                                             (String) arguments.get("name"),
                                             (double) arguments.get("value")
@@ -131,6 +149,7 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "deleteAccount":
+                                    //* done
                                     account_db.accountDao().delete(
                                             accounts.get((int) arguments.get("index")));
                                     break;

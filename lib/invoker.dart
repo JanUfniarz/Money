@@ -20,7 +20,7 @@ class Invoker {
   }
 
   static Future<dynamic> addAccount(String? name, double? value) =>
-      _channel.invokeMethod("addAccount", {
+      _channel.invokeMethod("addAccount", { // account/add
         "name" : name,
         "value" : value,
       });
