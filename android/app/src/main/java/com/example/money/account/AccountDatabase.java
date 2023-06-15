@@ -85,7 +85,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
         if (accountList().get((int) arguments.get("index")) != null)
             account = accountList().get((int) arguments.get("index"));
 
-        if ((String) arguments.get("name") != null)
+        if (arguments.get("name") != null)
             account = accByName((String) arguments.get("name"));
 
         switch (details) {
