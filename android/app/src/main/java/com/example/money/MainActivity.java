@@ -279,7 +279,7 @@ public class MainActivity extends FlutterActivity {
                                     result.success(lastEntryIndex);
                                     break;
 
-                                case "addBudget":
+                                case "addBudget": //* done
                                     try {
                                         budget_db.budgetDao().InsertAll(new Budget(
                                                 (String) arguments.get("title"),
@@ -302,7 +302,7 @@ public class MainActivity extends FlutterActivity {
                                     }
                                     break;
 
-                                case "getLengthOfBudgets" :
+                                case "getLengthOfBudgets" : //* done
                                     result.success(budgets.size());
                                     break;
 
@@ -315,11 +315,11 @@ public class MainActivity extends FlutterActivity {
                                             (int) arguments.get("index")).category.toString()));
                                     break;
 
-                                case "getBudgetAmount" :
+                                case "getBudgetAmount" ://* done
                                     result.success(budgets.get((int) arguments.get("index")).amount);
                                     break;
 
-                                case "getBudgetActualAmount" :
+                                case "getBudgetActualAmount" ://* done
                                     Budget budget = budgets.get((int) arguments.get("index"));
                                     entries.stream()
                                             .filter(e -> e.date.compareTo(budget.startDate) > 0)
@@ -328,22 +328,22 @@ public class MainActivity extends FlutterActivity {
                                     result.success(budget.amount);
                                     break;
 
-                                case "getBudgetEndDate" :
+                                case "getBudgetEndDate" ://* done
                                     result.success(Converter.dateToTimestamp(
                                             budgets.get((int) arguments.get("index"))
                                                     .endDate));
                                     break;
 
-                                case "pin" :
+                                case "pin" : //* done
                                     budgets.get((int) arguments.get("index")).pin();
                                     break;
 
-                                case "getPinned" :
+                                case "getPinned" ://* done
                                     result.success(
                                             budgets.get((int) arguments.get("index")).pinned);
                                     break;
 
-                                case "deleteBudget" :
+                                case "deleteBudget" : //* done
                                     budget_db.budgetDao().delete(
                                             budgets.get((int) arguments.get("index")));
                                     break;

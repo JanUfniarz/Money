@@ -49,20 +49,17 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @Override
     public void delete(Map<String, Object> arguments) {
         accountDao().delete(
-                accountDao().getAllAccounts()
-                        .get((int) arguments.get("index")));
+                accountList().get((int) arguments.get("index")));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(String details, Map<String, Object> arguments) {
 
-        List<Account> accountList =  accountDao().getAllAccounts();
-
         Account account = new Account(null, 0);
 
-        if (accountList.get((int) arguments.get("index")) != null)
-            account = accountList.get((int) arguments.get("index"));
+        if (accountList().get((int) arguments.get("index")) != null)
+            account = accountList().get((int) arguments.get("index"));
 
         switch (details) {
 
@@ -82,12 +79,11 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
-        List<Account> accountList =  accountDao().getAllAccounts();
 
         Account account = new Account(null, 0);
 
-        if (accountList.get((int) arguments.get("index")) != null)
-            account = accountList.get((int) arguments.get("index"));
+        if (accountList().get((int) arguments.get("index")) != null)
+            account = accountList().get((int) arguments.get("index"));
 
         if ((String) arguments.get("name") != null)
             account = accByName((String) arguments.get("name"));
@@ -98,7 +94,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
             case "balanceSum" :
                 return String.valueOf(
-                        accountList.stream()
+                        accountList().stream()
                                 .map(this::getValue)
                                 .reduce(Double::sum)
                                 .orElseThrow());
@@ -107,10 +103,10 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
             case "value" : return getValue(account);
 
-            case "length" : return accountList.size();
+            case "length" : return accountList().size();
 
             case "initialValueSum" :
-                return accountList.stream()
+                return accountList().stream()
                         .map(a -> a.value)
                         .reduce(Double::sum)
                         .orElse(0.0);
@@ -186,4 +182,9 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                 .findFirst()
                 .orElse(new Account("!!!", -1));
     }
+
+    private List<Account> accountList() {
+        return accountDao().getAllAccounts();
+    }
+
 }

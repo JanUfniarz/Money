@@ -20,6 +20,7 @@ import com.example.money.enums.Type;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -79,9 +80,7 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
 
     @Override
     public void delete(Map<String, Object> arguments) {
-        entryDao().delete(
-                entryDao().getAllEntries()
-                        .get((int) arguments.get("index")));
+        entryDao().delete(entryList().get((int) arguments.get("index")));
     }
 
     @Override
@@ -92,16 +91,19 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
-        List<Entry> entries = entryDao().getAllEntries();
         Entry entry = new Entry(null, null,  0, null,
                 null, null, null);
         if (arguments.get("index") != null)
-            entry = entries.get((int) arguments.get("index"));
+            entry = entryList().get((int) arguments.get("index"));
+        
+        String name = "";
+        if (arguments.get("name") != null)
+            name = (String) arguments.get("name");
 
         switch (details) {
             default : return null;
 
-            case "length" : return entries.size();
+            case "length" : return entryList().size();
 
             case "type" : return MainActivity.toFirstLetterUpperCase(
                         entry.type.toString());
@@ -119,7 +121,7 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
 
             case "date" : return Converter.dateToTimestamp(entry.date);
 
-            case "categorySum" : return entries.stream()
+            case "categorySum" : return entryList().stream()
                     .filter(e -> e.category == Category.valueOf(
                             ((String) arguments.get("category"))
                                     .toUpperCase()
@@ -134,13 +136,17 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
 
             case "lastEntryIndex" :
                 int lastEntryIndex = -1;
-                for (int it = 0; it < entries.size(); it++)
-                    if (entries.get(it).account.name.equals(
-                            (String) arguments.get("name"))
-                            || entries.get(it).account2.name.equals(
-                            (String) arguments.get("name")))
+                for (int it = 0; it < entryList().size(); it++)
+                    if (entryList().get(it).account.name.equals(name)
+                            || entryList().get(it).account2.name.equals(name))
                         lastEntryIndex = it;
                 return lastEntryIndex;
         }
+    }
+
+    private List<Entry> entryList() {
+        List<Entry> list = entryDao().getAllEntries();
+        Collections.reverse(list);
+        return list;
     }
 }
