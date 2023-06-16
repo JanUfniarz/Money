@@ -93,12 +93,15 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     public Object get(String details, Map<String, Object> arguments) {
         Entry entry = new Entry(null, null,  0, null,
                 null, null, null);
-        if (arguments.get("index") != null)
-            entry = entryList().get((int) arguments.get("index"));
-        
         String name = "";
-        if (arguments.get("name") != null)
-            name = (String) arguments.get("name");
+
+        if (arguments != null) {
+            if (arguments.get("index") != null)
+                entry = entryList().get((int) arguments.get("index"));
+
+            if (arguments.get("name") != null)
+                name = (String) arguments.get("name");
+        }
 
         switch (details) {
             default : return null;
@@ -144,8 +147,8 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
         }
     }
 
-    private List<Entry> entryList() {
-        List<Entry> list = entryDao().getAllEntries();
+    public static List<Entry> entryList() {
+        List<Entry> list = getInstance().entryDao().getAllEntries();
         Collections.reverse(list);
         return list;
     }

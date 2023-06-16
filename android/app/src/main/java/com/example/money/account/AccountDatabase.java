@@ -82,11 +82,13 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
         Account account = new Account(null, 0);
 
-        if (accountList().get((int) arguments.get("index")) != null)
-            account = accountList().get((int) arguments.get("index"));
+        if (arguments != null) {
+            if (accountList().get((int) arguments.get("index")) != null)
+                account = accountList().get((int) arguments.get("index"));
 
-        if (arguments.get("name") != null)
-            account = accByName((String) arguments.get("name"));
+            if (arguments.get("name") != null)
+                account = accByName((String) arguments.get("name"));
+        }
 
         switch (details) {
 
@@ -120,7 +122,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
 
         final double[] value = {account.value};
 
-        entries().stream()
+        EntryDatabase.entryList().stream()
                 .filter(entry -> entry.account == account)
                 .forEach(entry -> {
                     switch (entry.type) {
@@ -137,7 +139,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                             );
                     }
                 });
-        entries().stream()
+        EntryDatabase.entryList().stream()
                 .filter(entry -> entry.account2 == account)
                 .forEach(entry -> value[0] += entry.amount);
         return value[0];
@@ -147,7 +149,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     private void setValue(Account account, double finalValue) {
         final double[] value = {finalValue};
 
-        entries().stream()
+        EntryDatabase.entryList().stream()
                 .filter(entry -> entry.account == account)
                 .forEach(entry -> {
                     switch (entry.type) {
@@ -164,27 +166,21 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                             );
                     }
                 });
-        entries().stream()
+        EntryDatabase.entryList().stream()
                 .filter(entry -> entry.account2 == account)
                 .forEach(entry -> value[0] -= entry.amount);
         account.value = value[0];
     }
 
-    private List<Entry> entries() {
-        return EntryDatabase.getInstance().entryDao().getAllEntries();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Account accByName(String name) {
-        return getInstance().accountDao()
-                .getAllAccounts().stream()
+        return accountList().stream()
                 .filter(ac -> ac.name.equals(name))
                 .findFirst()
                 .orElse(new Account("!!!", -1));
     }
 
-    private List<Account> accountList() {
-        return accountDao().getAllAccounts();
+    public static List<Account> accountList() {
+        return getInstance().accountDao().getAllAccounts();
     }
-
 }

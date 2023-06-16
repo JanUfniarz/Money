@@ -70,13 +70,22 @@ public class MainActivity extends FlutterActivity {
                             Storable database = AccountDatabase.getInstance(getApplicationContext());
 
                             switch (split[0]) {
-                                default: throw new RuntimeException("Invalid database name");
-                                case "account" : database =
-                                        AccountDatabase.getInstance(getApplicationContext());
-                                case "entry" : database =
-                                        EntryDatabase.getInstance(getApplicationContext());
-                                case "budget" : database =
-                                        BudgetDatabase.getInstance(getApplicationContext());
+                                default: result.notImplemented();
+
+                                case "account" :
+                                    database = AccountDatabase
+                                            .getInstance(getApplicationContext());
+                                    break;
+
+                                case "entry" :
+                                    database = EntryDatabase
+                                            .getInstance(getApplicationContext());
+                                    break;
+
+                                case "budget" :
+                                    database = BudgetDatabase
+                                            .getInstance(getApplicationContext());
+                                    break;
                             }
 
                             switch (split[1]) {
@@ -86,9 +95,16 @@ public class MainActivity extends FlutterActivity {
                                     break;
 
                                 case "add" : database.add(arguments);
+                                    break;
+
                                 case "delete" : database.delete(arguments);
+                                    break;
+
                                 case "update" : database.update(split[2], arguments);
+                                    break;
+
                                 case "get" : result.success(database.get(split[2], arguments));
+                                        break;
                             }
 
 //                            ?switch (call.method) {
