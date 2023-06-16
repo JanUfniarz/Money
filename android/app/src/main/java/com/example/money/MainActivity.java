@@ -76,15 +76,9 @@ public class MainActivity extends FlutterActivity {
 
                             switch (split[0]) {
                                 default: result.notImplemented();
-
-                                case "account" : database = account_db;
-                                    break;
-
-                                case "entry" : database = entry_db;
-                                    break;
-
-                                case "budget" : database = budget_db;
-                                    break;
+                                case "account" : database = account_db; break;
+                                case "entry" : database = entry_db; break;
+                                case "budget" : database = budget_db; break;
                             }
 
                             switch (split[1]) {

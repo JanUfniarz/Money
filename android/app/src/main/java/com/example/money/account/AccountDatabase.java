@@ -2,6 +2,7 @@ package com.example.money.account;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.Database;
@@ -69,8 +70,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                 break;
 
             case "value" :
-                setValue(account,
-                        (double) arguments.get("newValue"));
+                account.setValue((double) arguments.get("newValue"));
                 accountDao().updateAccounts(account);
                 break;
         }
@@ -83,7 +83,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
         Account account = new Account(null, 0);
 
         if (arguments != null) {
-            if (accountList().get((int) arguments.get("index")) != null)
+            if (arguments.get("index") != null)
                 account = accountList().get((int) arguments.get("index"));
 
             if (arguments.get("name") != null)
@@ -97,13 +97,13 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
             case "balanceSum" :
                 return String.valueOf(
                         accountList().stream()
-                                .map(this::getValue)
+                                .map(Account::getValue)
                                 .reduce(Double::sum)
                                 .orElse(0.0));
 
             case "name" : return account.name;
 
-            case "value" : return getValue(account);
+            case "value" : return account.getValue();
 
             case "length" : return accountList().size();
 
@@ -117,60 +117,60 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private double getValue(Account account) {
-
-        final double[] value = {account.value};
-
-        EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account == account)
-                .forEach(entry -> {
-                    switch (entry.type) {
-                        case INCOME:
-                            value[0] += entry.amount;
-                            break;
-                        case EXPENSE:
-                        case TRANSFER:
-                            value[0] -= entry.amount;
-                            break;
-                        default:
-                            throw new RuntimeException(
-                                    "Unknown entry type: " + entry.type
-                            );
-                    }
-                });
-        EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account2 == account)
-                .forEach(entry -> value[0] += entry.amount);
-        return value[0];
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setValue(Account account, double finalValue) {
-        final double[] value = {finalValue};
-
-        EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account == account)
-                .forEach(entry -> {
-                    switch (entry.type) {
-                        case INCOME:
-                            value[0] -= entry.amount;
-                            break;
-                        case EXPENSE:
-                        case TRANSFER:
-                            value[0] += entry.amount;
-                            break;
-                        default:
-                            throw new RuntimeException(
-                                    "Unknown entry type: " + entry.type
-                            );
-                    }
-                });
-        EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account2 == account)
-                .forEach(entry -> value[0] -= entry.amount);
-        account.value = value[0];
-    }
+//    ?@RequiresApi(api = Build.VERSION_CODES.N)
+//    private double getValue(Account account) {
+//
+//        final double[] value = {account.value};
+//
+//        EntryDatabase.entryList().stream()
+//                .filter(entry -> entry.account.equals(account))
+//                .forEach(entry -> {
+//                    switch (entry.type) {
+//                        case INCOME:
+//                            value[0] += entry.amount;
+//                            break;
+//                        case EXPENSE:
+//                        case TRANSFER:
+//                            value[0] -= entry.amount;
+//                            break;
+//                        default:
+//                            throw new RuntimeException(
+//                                    "Unknown entry type: " + entry.type
+//                            );
+//                    }
+//                });
+//        EntryDatabase.entryList().stream()
+//                .filter(entry -> entry.account2.equals(account))
+//                .forEach(entry -> value[0] += entry.amount);
+//        return value[0];
+//    }
+//
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    private void setValue(Account account, double finalValue) {
+//        final double[] value = {finalValue};
+//
+//        EntryDatabase.entryList().stream()
+//                .filter(entry -> entry.account.equals(account))
+//                .forEach(entry -> {
+//                    switch (entry.type) {
+//                        case INCOME:
+//                            value[0] -= entry.amount;
+//                            break;
+//                        case EXPENSE:
+//                        case TRANSFER:
+//                            value[0] += entry.amount;
+//                            break;
+//                        default:
+//                            throw new RuntimeException(
+//                                    "Unknown entry type: " + entry.type
+//                            );
+//                    }
+//                });
+//        EntryDatabase.entryList().stream()
+//                .filter(entry -> entry.account2.equals(account))
+//                .forEach(entry -> value[0] -= entry.amount);
+//        account.value = value[0];
+//    ?}
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Account accByName(String name) {
