@@ -152,4 +152,18 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
         Collections.reverse(list);
         return list;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public String toString() {
+
+        String[] str = {""};
+
+        entryList().forEach(entry -> str[0] = str[0].concat(
+                "\nEntry: " + entry.title
+                + "\n\ttype: " + entry.type + "\n\tamount: "
+                + entry.amount + "\n\taccount: " + entry.account.name));
+
+        return "EntryDatabase:\n============" + str;
+    }
 }

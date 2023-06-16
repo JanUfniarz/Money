@@ -1,6 +1,7 @@
 package com.example.money;
 
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -52,22 +53,16 @@ public class MainActivity extends FlutterActivity {
         EntryDatabase entry_db = EntryDatabase.getInstance(getApplicationContext());
         BudgetDatabase budget_db = BudgetDatabase.getInstance(getApplicationContext());
 
+        Log.d("Mainactivity", EntryDatabase.getInstance().toString());
+
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
 
-                            /*
-                             * New protocol standard:
-                             *      "database/action/details"
-                             *
-                             * datbases:
-                             *      account, entry, budget
-                             *
-                             * actions:
-                             *      add, delete, update, get
-                             *
-                             * # means null
-                             */
+/**
+  New protocol standard:           |   datbases:                   |   # means null
+**     "database/action/details"   |        account, entry, budget |
+ */
 
                             final Map<String, Object> arguments = call.arguments();
 
