@@ -47,6 +47,11 @@ public class MainActivity extends FlutterActivity {
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         super.configureFlutterEngine(flutterEngine);
+
+        AccountDatabase account_db = AccountDatabase.getInstance(getApplicationContext());
+        EntryDatabase entry_db = EntryDatabase.getInstance(getApplicationContext());
+        BudgetDatabase budget_db = BudgetDatabase.getInstance(getApplicationContext());
+
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
@@ -67,24 +72,18 @@ public class MainActivity extends FlutterActivity {
                             final Map<String, Object> arguments = call.arguments();
 
                             String[] split = call.method.split("/");
-                            Storable database = AccountDatabase.getInstance(getApplicationContext());
+                            Storable database = account_db;
 
                             switch (split[0]) {
                                 default: result.notImplemented();
 
-                                case "account" :
-                                    database = AccountDatabase
-                                            .getInstance(getApplicationContext());
+                                case "account" : database = account_db;
                                     break;
 
-                                case "entry" :
-                                    database = EntryDatabase
-                                            .getInstance(getApplicationContext());
+                                case "entry" : database = entry_db;
                                     break;
 
-                                case "budget" :
-                                    database = BudgetDatabase
-                                            .getInstance(getApplicationContext());
+                                case "budget" : database = budget_db;
                                     break;
                             }
 

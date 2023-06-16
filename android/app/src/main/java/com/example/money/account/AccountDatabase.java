@@ -99,7 +99,7 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
                         accountList().stream()
                                 .map(this::getValue)
                                 .reduce(Double::sum)
-                                .orElseThrow());
+                                .orElse(0.0));
 
             case "name" : return account.name;
 
