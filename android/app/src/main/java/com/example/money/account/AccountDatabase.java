@@ -2,7 +2,6 @@ package com.example.money.account;
 
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.Database;
@@ -10,8 +9,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.money.Storable;
-import com.example.money.entry.Entry;
-import com.example.money.entry.EntryDatabase;
 
 import java.util.List;
 import java.util.Map;

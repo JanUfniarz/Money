@@ -4,21 +4,12 @@ import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.room.Room;
 
-import com.example.money.account.*;
+import com.example.money.account.AccountDatabase;
 import com.example.money.budget.BudgetDatabase;
-import com.example.money.enums.*;
-import com.example.money.entry.*;
+import com.example.money.entry.EntryDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
@@ -39,11 +30,10 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), CHANNEL)
                 .setMethodCallHandler(
                         (call, result) -> {
-
                             final Map<String, Object> arguments = call.arguments();
 
                             String[] split = call.method.split("/");
-                            Storable database = account_db;
+                            Storable database;
 
                             switch (split[0]) {
                                 default: result.notImplemented();
@@ -70,7 +60,6 @@ public class MainActivity extends FlutterActivity {
                                 case "get" : result.success(database.get(split[2], arguments));
                                         break;
                             }
-
                         }
                 );
     }

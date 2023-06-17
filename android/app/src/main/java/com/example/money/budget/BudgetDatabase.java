@@ -21,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
-import kotlin.Function;
-
 @Database(
         entities = {Budget.class},
         version = 2,

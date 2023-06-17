@@ -11,7 +11,6 @@ import com.example.money.enums.Type;
 import java.util.Date;
 
 @Entity(tableName = "entry")
-//? @TypeConverters(Converter.class)
 public class Entry {
     @PrimaryKey(autoGenerate = true)
     public int id;
