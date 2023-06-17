@@ -1,7 +1,6 @@
 package com.example.money.account;
 
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.ColumnInfo;
@@ -28,16 +27,11 @@ public class Account {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public double getValue() {
-        Log.d("FUN", "getValue");
-            //! to się dzieje
-
         final double[] value = {this.value};
 
-        EntryDatabase.entryList().stream() //! jest pusta
+        EntryDatabase.entryList().stream()
                 .filter(entry -> entry.account.name.equals(this.name))
                 .forEach(entry -> {
-                    Log.d("Entry", entry.title);
-                        //! to już nie
                     switch (entry.type) {
                         case INCOME:
                             value[0] += entry.amount;

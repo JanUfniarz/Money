@@ -117,61 +117,6 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
         }
     }
 
-//    ?@RequiresApi(api = Build.VERSION_CODES.N)
-//    private double getValue(Account account) {
-//
-//        final double[] value = {account.value};
-//
-//        EntryDatabase.entryList().stream()
-//                .filter(entry -> entry.account.equals(account))
-//                .forEach(entry -> {
-//                    switch (entry.type) {
-//                        case INCOME:
-//                            value[0] += entry.amount;
-//                            break;
-//                        case EXPENSE:
-//                        case TRANSFER:
-//                            value[0] -= entry.amount;
-//                            break;
-//                        default:
-//                            throw new RuntimeException(
-//                                    "Unknown entry type: " + entry.type
-//                            );
-//                    }
-//                });
-//        EntryDatabase.entryList().stream()
-//                .filter(entry -> entry.account2.equals(account))
-//                .forEach(entry -> value[0] += entry.amount);
-//        return value[0];
-//    }
-//
-//    @RequiresApi(api = Build.VERSION_CODES.N)
-//    private void setValue(Account account, double finalValue) {
-//        final double[] value = {finalValue};
-//
-//        EntryDatabase.entryList().stream()
-//                .filter(entry -> entry.account.equals(account))
-//                .forEach(entry -> {
-//                    switch (entry.type) {
-//                        case INCOME:
-//                            value[0] -= entry.amount;
-//                            break;
-//                        case EXPENSE:
-//                        case TRANSFER:
-//                            value[0] += entry.amount;
-//                            break;
-//                        default:
-//                            throw new RuntimeException(
-//                                    "Unknown entry type: " + entry.type
-//                            );
-//                    }
-//                });
-//        EntryDatabase.entryList().stream()
-//                .filter(entry -> entry.account2.equals(account))
-//                .forEach(entry -> value[0] -= entry.amount);
-//        account.value = value[0];
-//    ?}
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static Account accByName(String name) {
         return accountList().stream()

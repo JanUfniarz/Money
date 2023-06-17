@@ -97,7 +97,7 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
         Budget budget = new Budget(null, 0, null,
                 null, null, null);
 
-        if (arguments != null) if (arguments.get("index") != null) //! error
+        if (arguments != null) if (arguments.get("index") != null)
             budget = budgetList().get((int) arguments.get("index"));
 
         switch (details) {

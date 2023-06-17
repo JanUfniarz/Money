@@ -40,7 +40,7 @@ public class Converter {
     public static Account fromId(int id) {
         if (id == -1) return new Account("#", -1);
 
-        for (Account it : AccountDatabase.getInstance().accountDao().getAllAccounts())
+        for (Account it : AccountDatabase.accountList())
             if (it.id == id) return it;
 
         return new Account(
