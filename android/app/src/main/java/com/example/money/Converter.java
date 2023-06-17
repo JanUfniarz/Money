@@ -3,6 +3,7 @@ package com.example.money;
 import androidx.room.TypeConverter;
 
 import com.example.money.account.Account;
+import com.example.money.account.AccountDatabase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,7 +40,8 @@ public class Converter {
     public static Account fromId(int id) {
         if (id == -1) return new Account("#", -1);
 
-        for (Account it : Singleton.getInstance().allAccounts) if (it.id == id) return it;
+        for (Account it : AccountDatabase.accountList())
+            if (it.id == id) return it;
 
         return new Account(
                 "Deleted",
