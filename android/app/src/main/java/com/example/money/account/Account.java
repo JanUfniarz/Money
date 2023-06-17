@@ -34,7 +34,7 @@ public class Account {
         final double[] value = {this.value};
 
         EntryDatabase.entryList().stream() //! jest pusta
-                .filter(entry -> entry.account.equals(this))
+                .filter(entry -> entry.account.name.equals(this.name))
                 .forEach(entry -> {
                     Log.d("Entry", entry.title);
                         //! to już nie
@@ -53,7 +53,7 @@ public class Account {
                     }
                 });
         EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account2.equals(this))
+                .filter(entry -> entry.account2.name.equals(this.name))
                 .forEach(entry -> value[0] += entry.amount);
         return value[0];
     }
@@ -63,7 +63,7 @@ public class Account {
         final double[] value = {finalValue};
 
         EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account.equals(this))
+                .filter(entry -> entry.account.name.equals(this.name))
                 .forEach(entry -> {
                     switch (entry.type) {
                         case INCOME:
@@ -79,7 +79,7 @@ public class Account {
                     }
                 });
         EntryDatabase.entryList().stream()
-                .filter(entry -> entry.account2.equals(this))
+                .filter(entry -> entry.account2.name.equals(this.name))
                 .forEach(entry -> value[0] -= entry.amount);
         this.value = value[0];
     }

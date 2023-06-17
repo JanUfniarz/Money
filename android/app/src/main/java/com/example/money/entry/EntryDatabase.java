@@ -3,6 +3,7 @@ package com.example.money.entry;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.room.Database;
@@ -147,9 +148,13 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public static List<Entry> entryList() {
-        List<Entry> list = getInstance().entryDao().getAllEntries();
+        Log.d("List", "entryList");
+        if (instance == null) Log.d("List", "Instance is null");
+        List<Entry> list = instance.entryDao().getAllEntries();
         Collections.reverse(list);
+        list.forEach(e -> Log.d("List e", e.title));
         return list;
     }
 
@@ -157,13 +162,13 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     @Override
     public String toString() {
 
-        String[] str = {""};
+        String[] str = {"EntryDatabase:\n============"};
 
         entryList().forEach(entry -> str[0] = str[0].concat(
                 "\nEntry: " + entry.title
                 + "\n\ttype: " + entry.type + "\n\tamount: "
                 + entry.amount + "\n\taccount: " + entry.account.name));
 
-        return "EntryDatabase:\n============" + str;
+        return str[0];
     }
 }
