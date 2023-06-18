@@ -59,6 +59,29 @@ class _AddBudgetState extends State<AddBudget> {
     if (!periodic) interval = "None";
     interval ??= _dmi(intervals).first.value;
 
+    DateTime endDatePer = DateTime.now();
+
+    switch (interval) {
+
+      case "Week" :
+        endDatePer = endDatePer.add(const Duration(days: 7));
+        break;
+
+      case "Month" :
+        endDatePer = DateTime(
+            endDatePer.year, endDatePer.month + 1, endDatePer.day);
+        //?     DateTime(
+        //   endDatePer.year + (endDatePer.month + 1) ~/ 12,
+        //   (endDatePer.month + 1) % 12,endDatePer.day,
+        //? );
+        break;
+
+      case "Year" :
+        endDatePer = DateTime(
+            endDatePer.year + 1, endDatePer.month, endDatePer.day);
+        break;
+    }
+
     return MyScaffold(
       title: "Add Budget",
       body: Padding(
@@ -152,7 +175,7 @@ class _AddBudgetState extends State<AddBudget> {
                 onPressed: () {
                   Invoker.addBudget(title, amount, category, interval,
                       _fromDate(startDate),
-                      _fromDate(endDate.value));
+                      _fromDate(periodic ? endDatePer : endDate.value));
                   NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
