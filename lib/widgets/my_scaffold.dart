@@ -156,7 +156,7 @@ class _MyFABState extends State<_MyFAB> {
 
       case "Periodic" :
       case "One Time" :
-        await NavDirector.pushAddBudget(context, periodic: (type == "Periodic"));
+        await NavDirector.pushAddBudget(context, isPeriodic: (type == "Periodic"));
         NavDirector.goHere(context);
         break;
     }

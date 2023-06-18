@@ -60,9 +60,9 @@ class NavDirector {
 
   static Future<dynamic> pushAddBudget(
       BuildContext context,
-      {bool? periodic}
+      {bool? isPeriodic}
       ) =>
-      _push(context, _addBudget, arguments: {"periodic" : periodic});
+      _push(context, _addBudget, arguments: {"isPeriodic" : isPeriodic});
 
   static Future<dynamic> _go(
       BuildContext context,

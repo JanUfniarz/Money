@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:money/widgets/my_scaffold.dart';
 
 import '../invoker.dart';
 import '../widgets/budget_card.dart';

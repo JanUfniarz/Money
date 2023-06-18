@@ -15,7 +15,7 @@ class AddBudget extends StatefulWidget {
 
 class _AddBudgetState extends State<AddBudget> {
 
-  bool periodic = true;
+  bool isPeriodic = true;
 
   // Values to be send
   String? title;
@@ -52,11 +52,11 @@ class _AddBudgetState extends State<AddBudget> {
   @override
   Widget build(BuildContext context) {
 
-    periodic = NavDirector.fromRoute(context)["periodic"];
+    isPeriodic = NavDirector.fromRoute(context)["isPeriodic"];
 
     category ??= _dmi(categories).first.value;
 
-    if (!periodic) interval = "None";
+    if (!isPeriodic) interval = "None";
     interval ??= _dmi(intervals).first.value;
 
     DateTime endDatePer = DateTime.now();
@@ -129,7 +129,7 @@ class _AddBudgetState extends State<AddBudget> {
                 ),
               ],
             ),
-            periodic
+            isPeriodic
                 ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -173,9 +173,12 @@ class _AddBudgetState extends State<AddBudget> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
+                  print("startDate: ${_fromDate(startDate)}"
+                      //"\nendDate: ${_fromDate(endDate.value)}"
+                      "\nendDatePer: ${_fromDate(endDatePer)}");
                   Invoker.addBudget(title, amount, category, interval,
                       _fromDate(startDate),
-                      _fromDate(periodic ? endDatePer : endDate.value));
+                      _fromDate(isPeriodic ? endDatePer : endDate.value));
                   NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -196,6 +199,5 @@ class _AddBudgetState extends State<AddBudget> {
     );
   }
 
-  String? _fromDate(DateTime? date) => date.toString()
-      .substring(0, date.toString().length - 13);
+  String? _fromDate(DateTime? date) => date.toString().substring(0, 10);
 }
