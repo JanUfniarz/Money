@@ -10,6 +10,17 @@ class DatePicker extends StatefulWidget {
   final RestorableDateTime selectedDate;
   final bool toBudget;
 
+  factory DatePicker.budget({required selectedDate}) => DatePicker(
+      restorationId: "main",
+      selectedDate: selectedDate,
+      toBudget: true,
+  );
+
+  factory DatePicker.entry({required selectedDate}) => DatePicker(
+    restorationId: "main",
+    selectedDate: selectedDate,
+  );
+
   @override
   State<DatePicker> createState() => _DatePickerState();
 }

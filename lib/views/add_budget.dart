@@ -143,10 +143,8 @@ class _AddBudgetState extends State<AddBudget> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                DatePicker(
-                  restorationId: "main",
+                DatePicker.budget(
                   selectedDate: endDate!,
-                  toBudget: true,
                 ),
               ],
             ),

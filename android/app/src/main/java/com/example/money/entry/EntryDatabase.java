@@ -135,7 +135,7 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
                     .reduce(Double::sum)
                     .orElse(0.0);
 
-            case "lastEntryIndex" :
+            case "lastIndex" :
                 int lastEntryIndex = -1;
                 for (int it = 0; it < entryList().size(); it++)
                     if (entryList().get(it).account.name.equals(name)

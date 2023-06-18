@@ -77,7 +77,7 @@ class Invoker {
   });
 
   static Future<dynamic> lastEntryIndex(String? name) =>
-      _channel.invokeMethod("entry/get/lastEntryIndex", {
+      _channel.invokeMethod("entry/get/lastIndex", {
         "name" : name,
       });
 

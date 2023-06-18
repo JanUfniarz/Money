@@ -207,8 +207,7 @@ class _AddEntryState extends State<AddEntry> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                DatePicker(
-                  restorationId: "main",
+                DatePicker.entry(
                   selectedDate: selectedDate,
                 ),
               ],
