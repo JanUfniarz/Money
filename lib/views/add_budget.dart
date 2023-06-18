@@ -22,8 +22,8 @@ class _AddBudgetState extends State<AddBudget> {
   double? amount;
   String? category;
   String? interval;
-  RestorableDateTime? endDate;
-  RestorableDateTime? startDate;
+  RestorableDateTime endDate = RestorableDateTime(DateTime.now());
+  DateTime startDate = DateTime.now();
 
   List<String> categories = [
     "Basic expenditure",
@@ -58,9 +58,6 @@ class _AddBudgetState extends State<AddBudget> {
 
     if (!periodic) interval = "None";
     interval ??= _dmi(intervals).first.value;
-
-    endDate ??= RestorableDateTime(DateTime.now());
-    startDate ??= RestorableDateTime(DateTime.now());
 
     return MyScaffold(
       title: "Add Budget",
@@ -144,7 +141,7 @@ class _AddBudgetState extends State<AddBudget> {
                 ),
                 const SizedBox(width: 10),
                 DatePicker.budget(
-                  selectedDate: endDate!,
+                  selectedDate: endDate,
                 ),
               ],
             ),
@@ -153,13 +150,9 @@ class _AddBudgetState extends State<AddBudget> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  print(
-                    "title: $title\namount: $amount\ncategory: "
-                        "$category\ninterval: $interval\ndate: $endDate"
-                  );
                   Invoker.addBudget(title, amount, category, interval,
                       _fromDate(startDate),
-                      _fromDate(endDate));
+                      _fromDate(endDate.value));
                   NavDirector.back(context);
                 },
                 style: ElevatedButton.styleFrom(
@@ -180,26 +173,6 @@ class _AddBudgetState extends State<AddBudget> {
     );
   }
 
-  String? _fromDate(RestorableDateTime? date) {
-
-    //? final restorableDateTime = RestorableDateTime(DateTime.now());
-    //? restorableDateTime.registerRestoreInformation('main');
-
-
-    return date?.value
-        .toString()
-        .substring(0, date.value
-        .toString()
-        .length - 13);
-  }
-
-  //? @override
-  // String? get restorationId => "main";
-  //
-  // @override
-  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-  //   registerForRestoration(_restorableDateTime, 'date_picker');
-  // }
-  //
-  //? final _restorableDateTime = RestorableDateTime(DateTime.now());
+  String? _fromDate(DateTime? date) => date.toString()
+      .substring(0, date.toString().length - 13);
 }

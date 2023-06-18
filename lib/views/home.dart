@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money/invoker.dart';
 import 'package:money/widgets/graph_circular.dart';
-import 'package:money/widgets/my_scaffold.dart';
 
 import '../nav_director.dart';
 import '../palette.dart';

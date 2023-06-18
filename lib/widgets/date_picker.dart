@@ -11,13 +11,13 @@ class DatePicker extends StatefulWidget {
   final bool toBudget;
 
   factory DatePicker.budget({required selectedDate}) => DatePicker(
-      restorationId: "main",
+      restorationId: "budget",
       selectedDate: selectedDate,
       toBudget: true,
   );
 
   factory DatePicker.entry({required selectedDate}) => DatePicker(
-    restorationId: "main",
+    restorationId: "entry",
     selectedDate: selectedDate,
   );
 
