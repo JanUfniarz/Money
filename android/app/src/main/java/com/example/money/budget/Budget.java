@@ -37,7 +37,7 @@ public class Budget {
 
     public Budget(String title, double amount,
                   Category category, Interval interval,
-                  Date endDate, Date startDate) {
+                  Date startDate, Date endDate) {
         this.title = title;
         this.amount = amount;
         this.category = category;

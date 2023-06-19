@@ -13,6 +13,7 @@ import com.example.money.Storable;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ConstantConditions")
 @Database(
         entities = {Account.class},
         version = 2,

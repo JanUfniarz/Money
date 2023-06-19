@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -24,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ConstantConditions")
 @Database(
         entities = {Entry.class},
         version = 2,
@@ -151,6 +153,7 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
         return list;
     }
 
+    @NonNull
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String toString() {

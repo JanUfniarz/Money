@@ -36,7 +36,7 @@ class _AddBudgetState extends State<AddBudget> {
   ];
 
   List<String> intervals = [
-    //"None",
+    "None",
     "Week",
     "Month",
     "Year",
@@ -173,9 +173,6 @@ class _AddBudgetState extends State<AddBudget> {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  print("startDate: ${_fromDate(startDate)}"
-                      //"\nendDate: ${_fromDate(endDate.value)}"
-                      "\nendDatePer: ${_fromDate(endDatePer)}");
                   Invoker.addBudget(title, amount, category, interval,
                       _fromDate(startDate),
                       _fromDate(isPeriodic ? endDatePer : endDate.value));

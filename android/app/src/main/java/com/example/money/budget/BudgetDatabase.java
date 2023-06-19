@@ -1,5 +1,6 @@
 package com.example.money.budget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("ConstantConditions")
 @Database(
         entities = {Budget.class},
         version = 2,
@@ -45,6 +47,7 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
         return instance;
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void add(Map<String, Object> arguments) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -79,12 +82,10 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
 
     @Override
     public void update(String details, Map<String, Object> arguments) {
-        switch (details) {
-            case "pin" :
-                budgetList().get((int) arguments.get("index")).pin();
-                budgetDao().updateBudgets(
-                        budgetList().get((int) arguments.get("index")));
-                break;
+        if ("pin".equals(details)) {
+            budgetList().get((int) arguments.get("index")).pin();
+            budgetDao().updateBudgets(
+                    budgetList().get((int) arguments.get("index")));
         }
     }
 

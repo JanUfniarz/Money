@@ -1,5 +1,7 @@
 package com.example.money;
 
+import android.annotation.SuppressLint;
+
 import androidx.room.TypeConverter;
 
 import com.example.money.account.Account;
@@ -10,29 +12,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Converter {
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat DATE_FORMAT =
+            new SimpleDateFormat("yyyy-MM-dd");
 
     //* Date
     @TypeConverter
     public static Date fromTimestamp(String value) {
-        if (value != null) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-                return sdf.parse(value);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        if (value != null) try {
+            return DATE_FORMAT.parse(value);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
     @TypeConverter
     public static String dateToTimestamp(Date date) {
-        if (date != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-            return sdf.format(date);
-        }
-        return null;
+        return DATE_FORMAT.format(date);
     }
 
     //* Account
@@ -43,9 +40,7 @@ public class Converter {
         for (Account it : AccountDatabase.accountList())
             if (it.id == id) return it;
 
-        return new Account(
-                "Deleted",
-                -1);
+        return new Account("Deleted", -1);
     }
 
     @TypeConverter
