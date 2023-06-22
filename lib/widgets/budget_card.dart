@@ -19,11 +19,16 @@ class _BudgetCardState extends State<BudgetCard> {
 
   _BaseBudgetCard? card;
 
+  bool pinned = false;
+
   @override
   void initState() {
     _loadData().then((data) =>
-      setState(() =>
-        card = data));
+      setState(() => card = data));
+
+    _loadPinned().then((data) =>
+        setState(() => pinned = data));
+
     super.initState();
   }
 
@@ -38,14 +43,14 @@ class _BudgetCardState extends State<BudgetCard> {
       index: widget.index,
     );
 
+  Future<bool> _loadPinned() async => await Invoker.pinned(widget.index);
+
   @override
   Widget build(BuildContext context) =>
       card ?? const Center(
         child: CircularProgressIndicator(),
       );
 }
-
-
 
 class _BaseBudgetCard extends StatefulWidget {
 
@@ -99,7 +104,8 @@ class _BaseBudgetCardState extends State<_BaseBudgetCard> {
                     InkWell(
                       onTap: () {
                         Invoker.pin(widget.index);
-                        NavDirector.goHere(context);
+                        //NavDirector.goHere(context);
+                        setState(() {});
                       },
                       child: Icon(
                         Icons.pin_end,

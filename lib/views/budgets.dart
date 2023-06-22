@@ -7,16 +7,16 @@ class Budgets extends StatefulWidget {
   const Budgets({Key? key}) : super(key: key);
 
   @override
-  State<Budgets> createState() => _BudgetsState();
+  State<Budgets> createState() => BudgetsState();
 }
 
-class _BudgetsState extends State<Budgets> {
+class BudgetsState extends State<Budgets> {
 
   List<BudgetCard> budgetCards = [];
 
   @override
   void initState() {
-    _loadData().then((data) {
+    loadData().then((data) {
       setState(() {
         budgetCards = data;
       });
@@ -24,7 +24,7 @@ class _BudgetsState extends State<Budgets> {
     super.initState();
   }
 
-  Future<List<BudgetCard>> _loadData() async =>
+  static Future<List<BudgetCard>> loadData() async =>
       List.generate(
           await Invoker.lengthOfBudgets(),
               (index) => BudgetCard(index: index));

@@ -5,8 +5,10 @@ import 'package:money/widgets/graph_circular.dart';
 import '../nav_director.dart';
 import '../palette.dart';
 import '../widgets/balance_card.dart';
+import '../widgets/budget_card.dart';
 import '../widgets/graph_linear.dart';
 import 'all_entries.dart';
+import 'budgets.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -16,8 +18,39 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  List<BudgetCard> budgetCards = [];
+  List<bool> _pinned = [];
+
+
+  @override
+  void initState() {
+
+    BudgetsState.loadData().then((data) => setState(() =>
+        budgetCards = data));
+
+    _loadData().then((data) => setState(() => _pinned = data));
+
+    super.initState();
+  }
+
+  Future<List<bool>> _loadData() async {
+    List<bool> res = [];
+    int length = await Invoker.lengthOfBudgets();
+    for (int it = 0; it < length; it++) {
+      res.add(await Invoker.pinned(it));
+    }
+    return res;
+  }
+  
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> filteredCards = [];
+    for (int it = 0; it < _pinned.length; it++) {
+      if (_pinned[it]) filteredCards.add(budgetCards[it]);
+    }
+    
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -26,6 +59,17 @@ class _HomeState extends State<Home> {
           const BalanceCard(),
           const MyDivider(),
           const LinearGraph(),
+          filteredCards.isEmpty ? Container() : const MyDivider(),
+          filteredCards.isEmpty ? Container() : Center(
+            child: Text(
+              "Pinned Budgets:",
+              style: TextStyle(
+                color: Palette.font,
+                fontSize: 25,
+              ),
+            ),
+          ),
+          ] + filteredCards + [
           const MyDivider(),
           Center(
             child: Text(

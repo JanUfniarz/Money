@@ -83,9 +83,9 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
     @Override
     public void update(String details, Map<String, Object> arguments) {
         if ("pin".equals(details)) {
-            budgetList().get((int) arguments.get("index")).pin();
-            budgetDao().updateBudgets(
-                    budgetList().get((int) arguments.get("index")));
+            Budget budget = budgetList().get((int) arguments.get("index"));
+            budget.pin();
+            budgetDao().updateBudgets(budget);
         }
     }
 
@@ -114,7 +114,7 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
             case "actualAmount" :
                 Budget[] temp = {budget};
                 EntryDatabase.entryList().stream()
-                        .filter(e -> e.date.compareTo(temp[0].startDate) > 0)
+                        .filter(e -> e.date.compareTo(temp[0].startDate) >= 0)
                         .filter(e -> e.category == temp[0].category)
                         .forEach(e -> temp[0].amount -= e.amount);
                 return temp[0].amount;

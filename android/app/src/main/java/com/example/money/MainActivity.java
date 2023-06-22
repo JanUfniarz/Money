@@ -32,17 +32,17 @@ public class MainActivity extends FlutterActivity {
                         (call, result) -> {
                             final Map<String, Object> arguments = call.arguments();
 
-                            String[] split = call.method.split("/");
+                            String[] callComponents = call.method.split("/");
                             Storable database;
 
-                            switch (split[0]) {
+                            switch (callComponents[0]) {
                                 default: result.notImplemented();
                                 case "account" : database = account_db; break;
                                 case "entry" : database = entry_db; break;
                                 case "budget" : database = budget_db; break;
                             }
 
-                            switch (split[1]) {
+                            switch (callComponents[1]) {
 
                                 default:
                                     result.notImplemented();
@@ -54,10 +54,10 @@ public class MainActivity extends FlutterActivity {
                                 case "delete" : database.delete(arguments);
                                     break;
 
-                                case "update" : database.update(split[2], arguments);
+                                case "update" : database.update(callComponents[2], arguments);
                                     break;
 
-                                case "get" : result.success(database.get(split[2], arguments));
+                                case "get" : result.success(database.get(callComponents[2], arguments));
                                         break;
                             }
                         }
