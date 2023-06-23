@@ -104,8 +104,7 @@ class _BaseBudgetCardState extends State<_BaseBudgetCard> {
                     InkWell(
                       onTap: () {
                         Invoker.pin(widget.index);
-                        //NavDirector.goHere(context);
-                        setState(() {});
+                        NavDirector.goHere(context);
                       },
                       child: Icon(
                         Icons.pin_end,

@@ -1,5 +1,11 @@
+// ignore_for_file: curly_braces_in_flow_control_structures
+
 import 'package:flutter/material.dart';
 import 'package:money/palette.dart';
+import 'package:money/views/all_accounts.dart';
+import 'package:money/views/all_entries.dart';
+import 'package:money/views/budgets.dart';
+import 'package:money/views/home.dart';
 
 class NavDirector {
   static const String _home = "/home";
@@ -33,12 +39,13 @@ class NavDirector {
 
   static Future<dynamic> goBudgets(BuildContext context) =>
       _go(context, _budgets);
-
-  static Future<dynamic> goHere(BuildContext context) =>
-      Navigator.pushReplacementNamed(
-      context,
-      (ModalRoute.of(context)?.settings)?.name ?? _home
-  );
+  
+  static void goHere(BuildContext context) {
+    if (context.findAncestorWidgetOfExactType<Home>() != null) goHome(context);
+    else if (context.findAncestorWidgetOfExactType<AllAccounts>() != null) goAllAccounts(context);
+    else if (context.findAncestorWidgetOfExactType<AllEntries>() != null) goAllEntries(context);
+    else if (context.findAncestorWidgetOfExactType<Budgets>() != null) goBudgets(context);
+  }
 
   static Future<dynamic> pushAddEntry(
       BuildContext context, 
