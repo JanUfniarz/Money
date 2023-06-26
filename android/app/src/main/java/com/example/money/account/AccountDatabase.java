@@ -54,24 +54,19 @@ public abstract class AccountDatabase extends RoomDatabase implements Storable {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void update(String details, Map<String, Object> arguments) {
-
-        Account account = new Account(null, 0);
-
-        if (accountList().get((int) arguments.get("index")) != null)
-            account = accountList().get((int) arguments.get("index"));
+        Account account = accountList().get((int) arguments.get("index"));
 
         switch (details) {
 
             case "name" :
                 account.name = (String) arguments.get("newName");
-                accountDao().updateAccounts(account);
                 break;
 
             case "value" :
                 account.setValue((double) arguments.get("newValue"));
-                accountDao().updateAccounts(account);
                 break;
         }
+        accountDao().updateAccounts(account);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)

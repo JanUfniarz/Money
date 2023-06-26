@@ -19,6 +19,9 @@ import com.example.money.enums.Interval;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,11 +85,23 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
 
     @Override
     public void update(String details, Map<String, Object> arguments) {
-        if ("pin".equals(details)) {
-            Budget budget = budgetList().get((int) arguments.get("index"));
-            budget.pin();
-            budgetDao().updateBudgets(budget);
+        Budget budget = budgetList().get((int) arguments.get("index"));
+
+        switch (details) {
+
+            case "pin":
+                budget.pin();
+                break;
+
+            case "startDate" :
+                budget.startDate = (Date) arguments.get("newStartDate");
+                break;
+
+            case "endDate" :
+                budget.endDate = (Date) arguments.get("newEndDate");
+                break;
         }
+        budgetDao().updateBudgets(budget);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -96,8 +111,10 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
         Budget budget = new Budget(null, 0, null,
                 null, null, null);
 
-        if (arguments != null) if (arguments.get("index") != null)
+        if (arguments != null) if (arguments.get("index") != null) {
             budget = budgetList().get((int) arguments.get("index"));
+            cycleDate(budget);
+        }
 
         switch (details) {
             default: return null;
@@ -122,6 +139,36 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
             case "endDate" : return Converter.dateToTimestamp(budget.endDate);
 
             case "pinned" : return budget.pinned;
+        }
+    }
+
+    void cycleDate(Budget budget) {
+        if (budget.interval != Interval.NONE && new Date().after(budget.endDate)) {
+            Map<String, Object> arguments = new HashMap<>();
+
+            arguments.put("newStartDate", budget.endDate);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(budget.endDate);
+
+            switch (budget.interval) {
+
+                case YEAR:
+                    calendar.add(Calendar.YEAR, 1);
+                    break;
+
+                case MONTH:
+                    calendar.add(Calendar.MONTH, 1);
+                    break;
+
+                case WEEK:
+                    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                    break;
+            }
+            arguments.put("newEndDate", calendar.getTime());
+
+            update("startDate", arguments);
+            update("endDate", arguments);
         }
     }
 

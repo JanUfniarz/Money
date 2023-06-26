@@ -57,7 +57,8 @@ public class MainActivity extends FlutterActivity {
                                 case "update" : database.update(callComponents[2], arguments);
                                     break;
 
-                                case "get" : result.success(database.get(callComponents[2], arguments));
+                                case "get" :
+                                    result.success(database.get(callComponents[2], arguments));
                                         break;
                             }
                         }
