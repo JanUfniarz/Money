@@ -13,9 +13,6 @@ import java.time.format.DateTimeFormatter;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class Converter {
-//?    @SuppressLint("SimpleDateFormat")
-//    private static final SimpleDateFormat DATE_FORMAT =
-//?            new SimpleDateFormat("yyyy-MM-dd");
 
     private static final DateTimeFormatter formatter =
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -23,20 +20,12 @@ public class Converter {
     //* Date
     @TypeConverter
     public static LocalDate fromTimestamp(String value) {
-        if (value != null) //? try {
-            //? return DATE_FORMAT.parse(value);
-
-            return LocalDate.parse(value, formatter);
-
-//?        } catch (ParseException e) {
-//?            e.printStackTrace();
-//?        }
+        if (value != null) return LocalDate.parse(value, formatter);
         return null;
     }
 
     @TypeConverter
     public static String dateToTimestamp(LocalDate date) {
-        //? return DATE_FORMAT.format(date);
         return date.format(formatter);
     }
 

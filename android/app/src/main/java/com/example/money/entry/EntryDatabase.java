@@ -53,35 +53,28 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
-//?    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void add(Map<String, Object> arguments) {
-//?        try {
-            entryDao().InsertAll(
-                    new Entry(
-                            (String) arguments.get("title"),
-                            Type.valueOf(
-                                    ((String) arguments.get("type"))
-                                            .toUpperCase()
-                                            .replaceAll(" ", "_")),
-                            (double) arguments.get("amount"),
-//?                            new SimpleDateFormat("yyyy-MM-dd").parse(
-//?                                    (String) arguments.get("date")),
-                            LocalDate.parse((String) arguments.get("date"),
-                                    DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                            AccountDatabase.accByName((String) arguments.get("account")),
-                            arguments.get("account2").equals("#")
-                                    ? new Account("#", -1)
-                                    : AccountDatabase.accByName(
-                                            (String) arguments.get("account2")),
-                            Category.valueOf(
-                                    ((String) arguments.get("category"))
-                                            .toUpperCase()
-                                            .replaceAll(" ", "_"))
-                    ));
-//?        } catch (ParseException e) {
-//?            throw new RuntimeException(e);
-//?        }
+        entryDao().InsertAll(
+                new Entry(
+                        (String) arguments.get("title"),
+                        Type.valueOf(
+                                ((String) arguments.get("type"))
+                                        .toUpperCase()
+                                        .replaceAll(" ", "_")),
+                        (double) arguments.get("amount"),
+                        LocalDate.parse((String) arguments.get("date"),
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                        AccountDatabase.accByName((String) arguments.get("account")),
+                        arguments.get("account2").equals("#")
+                                ? new Account("#", -1)
+                                : AccountDatabase.accByName(
+                                        (String) arguments.get("account2")),
+                        Category.valueOf(
+                                ((String) arguments.get("category"))
+                                        .toUpperCase()
+                                        .replaceAll(" ", "_"))
+                ));
     }
 
     @Override
@@ -92,7 +85,6 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     @Override
     public void update(String details, Map<String, Object> arguments) {}
 
-//?    @RequiresApi(api = Build.VERSION_CODES.N)
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
