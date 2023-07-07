@@ -17,14 +17,13 @@ import com.example.money.entry.EntryDatabase;
 import com.example.money.enums.Category;
 import com.example.money.enums.Interval;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 @SuppressWarnings("ConstantConditions")
 @Database(
         entities = {Budget.class},
@@ -53,9 +52,10 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
     @SuppressLint("SimpleDateFormat")
     @Override
     public void add(Map<String, Object> arguments) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//?        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        try {
+//?        try {
             budgetDao().InsertAll(new Budget(
                     (String) arguments.get("title"),
                     (double) arguments.get("amount"),
@@ -69,12 +69,14 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
                                     .toUpperCase()
                                     .replaceAll(" ", "_")
                     ),
-                    dateFormat.parse((String) arguments.get("startDate")),
-                    dateFormat.parse((String) arguments.get("endDate"))
+//?                    dateFormat.parse((String) arguments.get("startDate")),
+//?                    dateFormat.parse((String) arguments.get("endDate"))
+                    LocalDate.parse((String) arguments.get("startDate"), formatter),
+                    LocalDate.parse((String) arguments.get("endDate"), formatter)
             ));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+//?        } catch (ParseException e) {
+//?            throw new RuntimeException(e);
+//?        }
     }
 
     @Override
@@ -94,17 +96,17 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
                 break;
 
             case "startDate" :
-                budget.startDate = (Date) arguments.get("newStartDate");
+                budget.startDate = (LocalDate) arguments.get("newStartDate");
                 break;
 
             case "endDate" :
-                budget.endDate = (Date) arguments.get("newEndDate");
+                budget.endDate = (LocalDate) arguments.get("newEndDate");
                 break;
         }
         budgetDao().updateBudgets(budget);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
 
@@ -143,29 +145,39 @@ public abstract class BudgetDatabase extends RoomDatabase implements Storable {
     }
 
     void cycleDate(Budget budget) {
-        if (budget.interval != Interval.NONE && new Date().after(budget.endDate)) {
+        if (budget.interval != Interval.NONE && LocalDate.now().isAfter(budget.endDate)
+            /*?new Date().after(budget.endDate)*/) {
             Map<String, Object> arguments = new HashMap<>();
 
             arguments.put("newStartDate", budget.endDate);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(budget.endDate);
+//?            Calendar calendar = Calendar.getInstance();
+//?            calendar.setTime(budget.endDate);
+
+            LocalDate newEndDate;
 
             switch (budget.interval) {
 
                 case YEAR:
-                    calendar.add(Calendar.YEAR, 1);
+//?                    calendar.add(Calendar.YEAR, 1);
+                    newEndDate = budget.endDate.plusYears(1);
                     break;
 
                 case MONTH:
-                    calendar.add(Calendar.MONTH, 1);
+//?                    calendar.add(Calendar.MONTH, 1);
+                    newEndDate = budget.endDate.plusMonths(1);
                     break;
 
                 case WEEK:
-                    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+//?                    calendar.add(Calendar.WEEK_OF_YEAR, 1);
+                    newEndDate = budget.endDate.plusWeeks(1);
                     break;
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + budget.interval);
             }
-            arguments.put("newEndDate", calendar.getTime());
+//?            arguments.put("newEndDate", calendar.getTime());
+            arguments.put("newEndDate", newEndDate);
 
             update("startDate", arguments);
             update("endDate", arguments);

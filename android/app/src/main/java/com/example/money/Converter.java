@@ -1,35 +1,43 @@
 package com.example.money;
 
-import android.annotation.SuppressLint;
+import android.os.Build;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.TypeConverter;
 
 import com.example.money.account.Account;
 import com.example.money.account.AccountDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Converter {
-    @SuppressLint("SimpleDateFormat")
-    private static final SimpleDateFormat DATE_FORMAT =
-            new SimpleDateFormat("yyyy-MM-dd");
+//?    @SuppressLint("SimpleDateFormat")
+//    private static final SimpleDateFormat DATE_FORMAT =
+//?            new SimpleDateFormat("yyyy-MM-dd");
+
+    private static final DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     //* Date
     @TypeConverter
-    public static Date fromTimestamp(String value) {
-        if (value != null) try {
-            return DATE_FORMAT.parse(value);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+    public static LocalDate fromTimestamp(String value) {
+        if (value != null) //? try {
+            //? return DATE_FORMAT.parse(value);
+
+            return LocalDate.parse(value, formatter);
+
+//?        } catch (ParseException e) {
+//?            e.printStackTrace();
+//?        }
         return null;
     }
 
     @TypeConverter
-    public static String dateToTimestamp(Date date) {
-        return DATE_FORMAT.format(date);
+    public static String dateToTimestamp(LocalDate date) {
+        //? return DATE_FORMAT.format(date);
+        return date.format(formatter);
     }
 
     //* Account

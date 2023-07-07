@@ -8,7 +8,7 @@ import com.example.money.account.Account;
 import com.example.money.enums.Category;
 import com.example.money.enums.Type;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(tableName = "entry")
 public class Entry {
@@ -25,7 +25,8 @@ public class Entry {
     public double amount;
 
     @ColumnInfo(name = "date")
-    public Date date;
+    //? public Date date;
+    public LocalDate date;
 
     @ColumnInfo(name = "account")
     public Account account;
@@ -39,7 +40,8 @@ public class Entry {
     public Entry(String title,
                  Type type,
                  double amount,
-                 Date date,
+                 //? Date date,
+                 LocalDate date,
                  Account account,
                  Account account2,
                  Category category

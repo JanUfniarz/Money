@@ -19,12 +19,13 @@ import com.example.money.account.AccountDatabase;
 import com.example.money.enums.Category;
 import com.example.money.enums.Type;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 @SuppressWarnings("ConstantConditions")
 @Database(
         entities = {Entry.class},
@@ -50,11 +51,12 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
         return instance;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
-    @RequiresApi(api = Build.VERSION_CODES.N)
+//?    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void add(Map<String, Object> arguments) {
-        try {
+//?        try {
             entryDao().InsertAll(
                     new Entry(
                             (String) arguments.get("title"),
@@ -63,8 +65,10 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
                                             .toUpperCase()
                                             .replaceAll(" ", "_")),
                             (double) arguments.get("amount"),
-                            new SimpleDateFormat("yyyy-MM-dd").parse(
-                                    (String) arguments.get("date")),
+//?                            new SimpleDateFormat("yyyy-MM-dd").parse(
+//?                                    (String) arguments.get("date")),
+                            LocalDate.parse((String) arguments.get("date"),
+                                    DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                             AccountDatabase.accByName((String) arguments.get("account")),
                             arguments.get("account2").equals("#")
                                     ? new Account("#", -1)
@@ -75,9 +79,9 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
                                             .toUpperCase()
                                             .replaceAll(" ", "_"))
                     ));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+//?        } catch (ParseException e) {
+//?            throw new RuntimeException(e);
+//?        }
     }
 
     @Override
@@ -88,7 +92,8 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     @Override
     public void update(String details, Map<String, Object> arguments) {}
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+//?    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public Object get(String details, Map<String, Object> arguments) {
         Entry entry = new Entry(null, null,  0, null,
@@ -154,7 +159,6 @@ public abstract class EntryDatabase extends RoomDatabase implements Storable {
     }
 
     @NonNull
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public String toString() {
 

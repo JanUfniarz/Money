@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 import com.example.money.enums.Category;
 import com.example.money.enums.Interval;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity(tableName = "budget")
 public class Budget {
@@ -27,17 +27,17 @@ public class Budget {
     public Interval interval;
 
     @ColumnInfo(name = "startDate")
-    public Date startDate;
+    public LocalDate startDate;
 
     @ColumnInfo(name = "endDate")
-    public Date endDate;
+    public LocalDate endDate;
 
     @ColumnInfo(name = "pinned")
     public boolean pinned = false;
 
     public Budget(String title, double amount,
                   Category category, Interval interval,
-                  Date startDate, Date endDate) {
+                  LocalDate startDate, LocalDate endDate) {
         this.title = title;
         this.amount = amount;
         this.category = category;

@@ -36,7 +36,7 @@ class _AddBudgetState extends State<AddBudget> {
   ];
 
   List<String> intervals = [
-    "None",
+    //"None",
     "Week",
     "Month",
     "Year",
