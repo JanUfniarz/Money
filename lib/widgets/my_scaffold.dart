@@ -15,8 +15,14 @@ class MyScaffold extends StatefulWidget {
   final int? picked;
   final Widget? body;
 
-  const MyScaffold({Key? key, this.title, this.picked, this.body})
-      : super(key: key);
+  const MyScaffold.basic({Key? key, this.title, this.body})
+      : picked = null,
+        super(key: key);
+
+  const MyScaffold.full({Key? key, required this.picked})
+      : title = null,
+        body = null,
+        super(key: key);
 
   @override
   State<MyScaffold> createState() => _MyScaffoldState();

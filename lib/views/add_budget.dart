@@ -82,7 +82,7 @@ class _AddBudgetState extends State<AddBudget> {
         break;
     }
 
-    return MyScaffold(
+    return MyScaffold.basic(
       title: "Add Budget",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),

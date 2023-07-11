@@ -103,7 +103,7 @@ class _AddEntryState extends State<AddEntry> {
       accountToTransfer ??= accountNames.elementAt(1).value;
     }
 
-    return MyScaffold(
+    return MyScaffold.basic(
       title: "Add $type",
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),

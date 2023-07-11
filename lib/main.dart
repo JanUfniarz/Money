@@ -8,13 +8,13 @@ import 'package:money/widgets/my_scaffold.dart';
 void main() => runApp(MaterialApp(
   initialRoute: "/home",
   routes: {
-    "/home" : (context) => const MyScaffold(picked: 0),
+    "/home" : (context) => const MyScaffold.full(picked: 0),
     "/add_account" : (context) => const AddAccount(),
     "/account_view" : (context) => const AccountView(),
     "/add_entry" : (context) => const AddEntry(),
-    "/all_entries" : (context) => const MyScaffold(picked: 2),
-    "/all_accounts" : (context) => const MyScaffold(picked: 1),
-    "/budgets" : (context) => const MyScaffold(picked: 3),
+    "/all_entries" : (context) => const MyScaffold.full(picked: 2),
+    "/all_accounts" : (context) => const MyScaffold.full(picked: 1),
+    "/budgets" : (context) => const MyScaffold.full(picked: 3),
     "/add_budget" : (context) => const AddBudget(),
   },
 ));

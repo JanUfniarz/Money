@@ -23,7 +23,7 @@ class _AddAccountState extends State<AddAccount> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
+    return MyScaffold.basic(
       title: "Add Account",
       body: Padding(
         padding: const EdgeInsets.all(50),

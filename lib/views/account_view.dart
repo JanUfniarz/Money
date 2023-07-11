@@ -30,7 +30,7 @@ class _AccountViewState extends State<AccountView> {
     value ??= NavDirector.fromRoute(context)['value'];
     index = NavDirector.fromRoute(context)['index'];
 
-    return MyScaffold(
+    return MyScaffold.basic(
       title: "Account",
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

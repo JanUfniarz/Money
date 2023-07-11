@@ -25,7 +25,7 @@ public class Account {
         this.value = value;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public double getValue() {
         final double[] value = {this.value};
 
@@ -52,7 +52,7 @@ public class Account {
         return value[0];
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setValue(double finalValue) {
         final double[] value = {finalValue};
 
